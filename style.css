@@ -63,3 +63,11 @@ body
 	color: white;
 	cursor: pointer;
 }
+
+.note
+{
+	font-size:18px;
+	height:25px;
+	padding: 10px;
+	background-color: lightgray;
+}
