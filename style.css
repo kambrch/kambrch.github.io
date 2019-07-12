@@ -86,3 +86,26 @@ a
 	color: gray;
 	text-decoration: none;
 }
+
+a:link //Normany nie odwiedzony link
+{
+	color: green;
+    text-decoration: none;
+}
+
+a:visited // własciwości linku odwiedzonego
+{
+    color: #00ff00;
+    text-decoration: none;
+}
+
+a:hover // właściwości linku najechanego myszką
+{
+    color: black;
+    text-decoration: none;
+}
+
+a:active // właściwości aktywnego linku
+{
+    color: #0000ff;
+}
