@@ -41,6 +41,15 @@ body
 	text-align: justify;
 }
 
+#footer
+{
+	clear: both;
+	color: white;
+	text-align: center;
+	padding: 20px;
+	font-size: 18px;
+}
+
 .option
 {
 	font-size:18px;
