@@ -1,6 +1,6 @@
 body
 {
-	background-color: gray;
+	background-color: lightgray;
 	font-family: Verdana;
 	font-size: 20px;
 	color: white;
@@ -24,7 +24,7 @@ body
 
 #sidebar
 {
-	background-color: #lightgray;
+	background-color: #gray;
 	color: white;
 	float: left;
 	witdh: 150px;
@@ -32,7 +32,6 @@ body
 	text-align: center;
 	padding: 20px;
 	font-size: 18px;
-	border-right: 2px dotted #666666;
 	
 }
 
@@ -40,7 +39,7 @@ body
 {
 	float: left;
 	padding: 40px;
-	witdh: 1000px;
+	witdh: 750px;
 	background-color: #dedede;
 	min-height: 580px;
 	text-align: justify;
