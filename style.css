@@ -54,6 +54,7 @@ body
 {
 	font-size:18px;
 	height:25px;
+	min-width: 120px;
 	padding: 10px;
 }
 
@@ -70,4 +71,11 @@ body
 	height:25px;
 	padding: 10px;
 	background-color: lightgray;
+}
+
+.note:hover
+{
+	background-color: #f36742;
+	color: white;
+	cursor: pointer;	
 }
