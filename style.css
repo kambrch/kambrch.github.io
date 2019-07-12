@@ -1,6 +1,6 @@
 body
 {
-	background-color: lightgray;
+	background-color: gray;
 	font-family: Verdana;
 	font-size: 20px;
 	color: white;
@@ -24,7 +24,7 @@ body
 
 #sidebar
 {
-	background-color: #gray;
+	background-color: #lightgray;
 	color: white;
 	float: left;
 	witdh: 150px;
@@ -39,7 +39,7 @@ body
 {
 	float: left;
 	padding: 40px;
-	witdh: 750px;
+	witdh: 850px;
 	background-color: #dedede;
 	min-height: 580px;
 	text-align: justify;
