@@ -1,6 +1,6 @@
 body
 {
-	background-color: red;
+	background-color: gray;
 	font-family: Verdana;
 	font-size: 20px;
 	color: white;
@@ -40,7 +40,7 @@ body
 {
 	float: left;
 	padding: 40px;
-	witdh: 500px;
+	witdh: 1000px;
 	background-color: #dedede;
 	min-height: 580px;
 	text-align: justify;
