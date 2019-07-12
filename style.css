@@ -1,7 +1,7 @@
 body
 {
-	background-color: #404040;
-	font-family: 'Lato', sans-serif;
+	background-color: gray;
+	font-family: 'Apolonia', sans-serif;
 }
 
 #container
@@ -20,43 +20,6 @@ body
 	font-weight: 900;
 }
 
-#menu
-{
-	background-color: #303030;
-	margin-top: 20px;
-	color: #ffffff;
-	padding: 10px;
-	
-}
-
-#topbar
-{
-	background-color: #128870;
-	color: white;
-	padding: 10px;
-	margin-top: 20px;
-	margin-bottom: 25px;
-	height: 170px;
-}
-
-#topbarL
-{
-	float:left;
-	padding: 20px;
-	width: 138px;
-	text-align: center;
-	border-right: 2px dotted #cccccc;
-}
-
-#topbarR
-{
-	float: left;
-	padding: 20px;
-	width: 760px;
-	font-size: 16px;
-	text-align: justify;
-}
-
 #sidebar
 {
 	float: left;
@@ -66,7 +29,6 @@ body
 	background-color: lightgray;
 	text-align: center;
 	font-size: 18px;
-	border-right: 2px dotted #666666;
 }
 
 #content
@@ -90,47 +52,15 @@ body
 
 .option
 {
-	float: left;
-	min-width: 50px;
-	height: 25px;
-	font-size: 18px;
-	padding: 10px;
-	border-right: 2px dotted #444444;
-	opacity: 0.8;
-}
-
-.option:hover
-{
-	background-color: #000000;
-	cursor: pointer;
-}
-
-.optionL
-{
 	font-size:18px;
 	height:25px;
 	padding: 10px;
 	border-bottom: 2px dotted #444444;
 }
 
-.optionL:hover
+.option:hover
 {
 	background-color: #f36742;
 	color: white;
 	cursor: pointer;
-}
-
-.bigtitle
-{
-	font-size: 32px;
-	font-weight: 900;
-	letter-spacing: 2px;
-}
-
-.dottedline
-{
-	height: 5px;
-	margin-top: 15px;
-	margin-bottom: 20px;
-	border-bottom: 2px dotted #444444;
 }
