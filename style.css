@@ -65,14 +65,13 @@ body
 	cursor: pointer;
 }
 
-.note
-{
-	clear: both;
-	font-size:18px;
-	height:25px;
-	padding: 10px;
-	background-color: lightgray;
-}
+!.note
+!{
+!	font-size:18px;
+!	height:25px;
+!	padding: 10px;
+!	background-color: lightgray;
+!}
 
 .note:hover
 {
