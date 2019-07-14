@@ -67,6 +67,7 @@ body
 
 .note
 {
+	clear: both;
 	font-size:18px;
 	height:25px;
 	padding: 10px;
