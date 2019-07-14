@@ -78,13 +78,3 @@ body
 	color: white;
 	cursor: pointer;	
 }
-
-a
-{ 
-	color: gray;
-	text-decoration: none;
-}
-
-a:visited
-{ 
-}
