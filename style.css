@@ -44,6 +44,7 @@ body
 #footer
 {
 	clear: both;
+	color: white;
 	text-align: center;
 	padding: 20px;
 	font-size: 18px;
@@ -77,4 +78,10 @@ body
 	background-color: #f36742;
 	color: white;
 	cursor: pointer;	
+}
+
+a
+{ 
+	color: gray;
+	text-decoration: none;
 }
