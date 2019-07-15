@@ -2,9 +2,6 @@ body
 {
 	background-color: gray;
 	font-family: 'Apolonia', sans-serif;
-	margin:0;
-	padding:0;
-	height:100%;
 }
 
 #container
@@ -12,8 +9,6 @@ body
 	width: 1000px;
 	margin-left: auto;
 	margin-right: auto;
-	min-height:100%;
-	position:relative;
 }
 
 #logo
@@ -52,9 +47,6 @@ body
 	text-align: center;
 	padding: 20px;
 	font-size: 18px;
-	position:absolute;
-	bottom:0;
-	width:100%;
 }
 
 .option
