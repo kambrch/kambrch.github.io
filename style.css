@@ -34,11 +34,6 @@ body
 #content
 {
 	float: left;
-	padding: 40px;
-	width: 730px;
-	background-color: #dedede;
-	min-height: 580px;
-	text-align: justify;
 }
 
 #footer
