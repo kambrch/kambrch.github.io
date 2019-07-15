@@ -52,6 +52,7 @@ body
 
 .option
 {
+	clear: both;
 	font-size:18px;
 	height:25px;
 	min-width: 120px;
@@ -67,6 +68,7 @@ body
 
 .note
 {
+	clear: both;
 	font-size:18px;
 	height:25px;
 	padding: 10px;
