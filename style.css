@@ -41,15 +41,6 @@ body
 	text-align: justify;
 }
 
-#footer
-{
-	clear: both;
-	color: white;
-	text-align: center;
-	padding: 20px;
-	font-size: 18px;
-}
-
 .option
 {
 	font-size:18px;
@@ -65,13 +56,13 @@ body
 	cursor: pointer;
 }
 
-!.note
-!{
-!	font-size:18px;
-!	height:25px;
-!	padding: 10px;
-!	background-color: lightgray;
-!}
+.note
+{
+	font-size:18px;
+	height:25px;
+	padding: 10px;
+	background-color: lightgray;
+}
 
 .note:hover
 {
@@ -84,4 +75,13 @@ a
 { 
 	color: gray;
 	text-decoration: none;
+}
+
+#footer
+{
+	clear: both;
+	color: white;
+	text-align: center;
+	padding: 20px;
+	font-size: 18px;
 }
