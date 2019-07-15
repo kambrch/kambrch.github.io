@@ -41,6 +41,14 @@ body
 	text-align: justify;
 }
 
+#footer
+{
+	color: white;
+	text-align: center;
+	padding: 20px;
+	font-size: 18px;
+}
+
 .option
 {
 	font-size:18px;
@@ -75,13 +83,4 @@ a
 { 
 	color: gray;
 	text-decoration: none;
-}
-
-#footer
-{
-	clear: both;
-	color: white;
-	text-align: center;
-	padding: 20px;
-	font-size: 18px;
 }
