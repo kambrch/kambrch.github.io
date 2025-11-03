@@ -1,8 +1,5 @@
 @def title = "Kamaś’s Home"
-@def tags = ["physics", "chemistry", "code", "ham radio", "hacking", "Wrocław"]
-@def description = "Physicist, amateur chemist, hacker, and perpetual learner. Based in Wrocław; open to opportunities."
-@def image = "/assets/kamash_komodka.jpg"
-@def hascode = false
+@def tags = ["about me"]
 
 # About me
 
