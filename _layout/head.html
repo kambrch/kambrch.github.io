@@ -1,0 +1,45 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  {{if hasmath}} {{insert head_katex.html }}     {{end}}
+  {{if hascode}} {{insert head_highlight.html }}   {{end}}
+  {{insert style.html}}
+  {{isdef title}} <title>{{fill title}}</title>  {{end}}
+</head>
+<body>
+{{insert sidebar.html}}
+<!-- Content appended here -->
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Person",
+  "name": "Kamil Bruchal",
+  "alternateName": ["Kamaś", "Kamash"],
+  "jobTitle": "Physicist",
+  "affiliation": [
+    {"@type":"Organization","name":"PhoBiA"},
+    {"@type":"Organization","name":"Institute of Advanced Materials"},
+    {"@type":"Organization","name":"Hackerspace Wrocław"}
+  ],
+  "url": "https://kambr.pl",
+  "image": "https://kambr.pl/assets/kamash_komodka.jpg",
+  "email": "mailto:kambr@kambr.pl",
+  "sameAs": [
+    "https://github.com/kambrch",
+    "https://www.qrz.com/db/SP6WRN",
+    "https://phobia.pwr.edu.pl/kamil-bruchal",
+    "https://iam.pwr.edu.pl/people/kamil-bruchal",
+    "https://hswro.org"
+  ],
+  "address": {
+    "@type":"PostalAddress",
+    "addressLocality":"Wrocław",
+    "addressCountry":"PL"
+  }
+}
+</script>
+
+<link rel="stylesheet" href="/assets/css/style.css">

@@ -1,0 +1,30 @@
+/* assets/css/style.css */
+
+/* delikatne zaokrąglenie i cień */
+img.rounded {
+  border-radius: 8px;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.6);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+/* efekt lekkiego powiększenia przy najechaniu */
+img.rounded:hover {
+  transform: scale(1.02);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.7);
+}
+
+/* wariant z delikatną ramką */
+img.framed {
+  border: 1px solid #444;
+  padding: 3px;
+  background-color: #1e1e1e;
+}
+
+/* dla podpisów w figure */
+figcaption {
+  text-align: center;
+  color: #aaa;
+  font-style: italic;
+  font-size: 0.9em;
+  margin-top: 0.4em;
+}
