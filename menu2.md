@@ -1,7 +1,7 @@
 +++
 title = "CV"
 hascode = true
-rss = "Curriculum Vitae comming soon"
+rss = "Curriculum Vitae coming soon"
 rss_title = "More goodies"
 rss_pubdate = Date(2025, 10, 01)
 
@@ -26,10 +26,10 @@ rss_pubdate = Date(2025, 10, 01)
 ## Employment
 - University teacher at [WUST](https://pwr.edu.pl/en/) (2024-2025)
 - PhD student and researcher at [WUST](https://pwr.edu.pl/en/) (2022-2025)
-- Student-reseracher at [WUST](https://pwr.edu.pl/en/) (2021-2022)
-- Intern in [LNCMI-Tolouse](https://lncmi.cnrs.fr/en/) (2021)
+- Student-researcher at [WUST](https://pwr.edu.pl/en/) (2021-2022)
+- Intern in [LNCMI-Toulouse](https://lncmi.cnrs.fr/en/) (2021)
 - Intern in [Julius-Maximilians-Universität Würzburg](https://www.uni-wuerzburg.de/) (2019)
 
 ## Teaching 
-- Introductionary physics 
+- Introductory physics 
 - Laboratories of physics
