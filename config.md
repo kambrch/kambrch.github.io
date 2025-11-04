@@ -5,7 +5,7 @@ Add here global page variables to use throughout your website.
 author = "Kamil 'Kamash' Bruchal"
 mintoclevel = 2
 
-# prepath = "yourproject"
+prepath = ""
 
 ignore = ["node_modules/"]
 
