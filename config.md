@@ -25,7 +25,7 @@ schema_sameas_json = """[
   "https://hswro.org"
 ]"""
 
-prepath = ""
+base_url = "https://www.kambr.pl/"
 
 ignore = ["node_modules/"]
 
