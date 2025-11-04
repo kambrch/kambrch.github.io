@@ -8,13 +8,7 @@
     <priority>0.5</priority>
 </url>
 <url>
-    <loc>https://kambrch.github.io/blog/2025-11-04-my-first-post/index.html</loc>
-    <lastmod>2025-11-04</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.5</priority>
-</url>
-<url>
-    <loc>https://kambrch.github.io/blog/2025-11-10-second-post/index.html</loc>
+    <loc>https://kambrch.github.io/blog/2025-11-04-second-post/index.html</loc>
     <lastmod>2025-11-04</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
@@ -32,13 +26,13 @@
     <priority>0.5</priority>
 </url>
 <url>
-    <loc>https://kambrch.github.io/blog/index.html</loc>
+    <loc>https://kambrch.github.io/menu1/index.html</loc>
     <lastmod>2025-11-04</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
 </url>
 <url>
-    <loc>https://kambrch.github.io/menu1/index.html</loc>
+    <loc>https://kambrch.github.io/blog/2025-11-04-my-first-post/index.html</loc>
     <lastmod>2025-11-04</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
