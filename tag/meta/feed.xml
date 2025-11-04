@@ -23,44 +23,6 @@
 
 <item>
   <title>
-    <![CDATA[  Projects  ]]>
-  </title>
-  <link> https://kambrch.github.io/menu1/index.html </link>
-  <guid> https://kambrch.github.io/menu1/index.html </guid>
-  <description>
-    <![CDATA[  Description of personal projects.  ]]>
-  </description>  
-    
-  <pubDate>Mon, 03 Nov 2025 00:00:00 +0000</pubDate>  
-  
-  
-  <atom:author>
-    <atom:name>Kamil 'Kamash' Bruchal</atom:name>
-  </atom:author>
-        
-</item>
-
-<item>
-  <title>
-    <![CDATA[  More goodies  ]]>
-  </title>
-  <link> https://kambrch.github.io/menu2/index.html </link>
-  <guid> https://kambrch.github.io/menu2/index.html </guid>
-  <description>
-    <![CDATA[  Curriculum Vitae coming soon  ]]>
-  </description>  
-    
-  <pubDate>Wed, 01 Oct 2025 00:00:00 +0000</pubDate>  
-  
-  
-  <atom:author>
-    <atom:name>Kamil 'Kamash' Bruchal</atom:name>
-  </atom:author>
-        
-</item>
-
-<item>
-  <title>
     <![CDATA[  First Post  ]]>
   </title>
   <link>  </link>
