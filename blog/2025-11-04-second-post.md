@@ -45,6 +45,12 @@ I wrote a small `{{blog_nav}}` macro, that expands into `< Previous | All posts 
 
 The macro looks up the current post’s identifiers (slug, path, URL) in the cached list, so it keeps working even if Franklin adjusts URLs or folders move.
 
+### 2025-11-04 afternoon polish
+
+- Tag buttons now show usage counts, remember the active view in the URL hash, and update their pressed state for screen readers.
+- Each card displays an estimated reading time and a clearer “Read more” call-to-action.
+- The post footer navigation is now a three-card layout with directional hints instead of the old pipe-separated text links.
+
 ### Notes to self
 
 Keep the setup minimal. Markdown in, static HTML out.

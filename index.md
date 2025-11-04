@@ -14,10 +14,11 @@ Currently I'm looking for interesting work opportunities in experimental physics
 ## Around the web
 
 * Code on GitHub → [kambrch](https://github.com/kambrch)
-* PhoBiA research group profile → [pwr.edu.pl/kamil-bruchal](https://phobia.pwr.edu.pl/kamil-bruchal)
+* LinkedIn profile → [kamil-bruchal](https://www.linkedin.com/in/kamil-bruchal/)
+* PhoBiA student society profile → [phobia.pwr.edu.pl/kamil-bruchal](https://phobia.pwr.edu.pl/kamil-bruchal)
 * Institute of Advanced Materials → [iam.pwr.edu.pl/people/kamil-bruchal](https://iam.pwr.edu.pl/people/kamil-bruchal)
 * Hackerspace Wrocław → [hswro.org](https://hswro.org)
-* Amateur radio (SP6WRN) → [QRZ.com profile](https://www.qrz.com/db/SP6WRN)
+* Amateur radio → [SP6WRN](https://www.qrz.com/db/SP6WRN)
 
 ## Interests
 

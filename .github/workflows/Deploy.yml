@@ -19,6 +19,10 @@ jobs:
       uses: actions/setup-python@v5
       with:
         python-version: '3.8'
+    - name: Install python dependencies
+      run: |
+        python -m pip install --upgrade pip
+        python -m pip install css-html-js-minify
     # NOTE: Here you can install dependencies such as matplotlib if you use
     # packages such as PyPlot.
     # - run: pip install matplotlib
@@ -35,8 +39,8 @@ jobs:
     #   The last line should be `optimize()` though you may want to give it
     #   specific arguments, see the documentation or ?optimize in the REPL.
     - name: Build
-      run: julia -e '
-            using Pkg; Pkg.activate("."); Pkg.instantiate();
+      run: julia --project=. -e '
+            using Pkg; Pkg.instantiate();
             using NodeJS; run(`$(npm_cmd()) install highlight.js`);
             using Franklin;
             optimize()'

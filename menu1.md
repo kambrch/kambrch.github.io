@@ -1,6 +1,5 @@
 +++
 title = "Projects"
-hascode = true
 date = Date(2025, 11, 03)
 rss = "Description of personal projects."
 
@@ -12,4 +11,3 @@ tags = ["projects"]
 **Status:** 🧱 Work in Progress
 
 **Estimated completion:** *When it’s close enough*  
-
