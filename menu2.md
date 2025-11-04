@@ -9,7 +9,7 @@ rss_pubdate = Date(2025, 10, 01)
 
 # *Curriculum Vitae* {{cv_anchor cv "Curriculum Vitae"}}
 
-Applied physicist working on optical refrigeration, lab automation, and data-first teaching. This page assembles a live CV straight from structured Julia data, so updates propagate across the site automatically.
+Physicist, specialist in the interaction of light with nanostructures, and former academic teacher. Currently seeking employment.
 
 {{cv_metrics}}
 
