@@ -10,10 +10,10 @@ prepath = ""
 ignore = ["node_modules/"]
 
 ## RSS (the website_{title, descr, url} must be defined to get RSS)
-#generate_rss = true
-#website_title = "Kamash Site"
-#website_descr = "My personal website generated with Franklin."
-# website_url   = "https://tlienart.github.io/FranklinTemplates.jl/"
+generate_rss = true
+website_title = "Kamash Site"
+website_descr = "My personal website generated with Franklin."
+website_url = "https://kambrch.github.io/"
 +++
 
 <!--
