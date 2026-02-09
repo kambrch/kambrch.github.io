@@ -8,20 +8,6 @@
         {{ insert foot_highlight.html }}
     {{ end }}
 
-    <!-- Mobile Menu Toggle Script -->
-    <script>
-      document.addEventListener("DOMContentLoaded", function() {
-        const mobileMenuToggle = document.querySelector('.mobile-menu-toggle');
-        const sidebarNav = document.querySelector('.sidebar-nav');
-        
-        if (mobileMenuToggle && sidebarNav) {
-          mobileMenuToggle.addEventListener('click', function() {
-            sidebarNav.classList.toggle('active');
-          });
-        }
-      });
-    </script>
-    
     <!-- Lazy Loading Fallback Script -->
     <script>
       // Check if browser supports loading="lazy" attribute
