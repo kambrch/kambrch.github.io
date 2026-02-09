@@ -54,8 +54,10 @@ julia --project=@. -e 'using NodeJS; run(`$(npm_cmd()) install highlight.js`)'
 - `_css/` - Stylesheets
 - `_assets/` - Images and other assets
 - `blog/` - Individual blog posts
-- `utils.jl` - Custom Julia functions for the site
-- `cv_data.jl` - CV data in Julia format
+- `utils.jl` - Franklin entrypoint that loads custom Julia helpers
+- `src/site_utils.jl` - Custom Julia helper functions/macros for the site
+- `data/cv_data.jl` - CV data in Julia format
+- `scripts/` - Project automation scripts (e.g. image optimization)
 
 ## Custom Features
 
