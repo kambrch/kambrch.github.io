@@ -256,9 +256,32 @@ html {
 
 .sidebar {
   text-align: center;
-  padding: 2rem 1rem;
+  padding: 1rem 1rem;
   color: rgba(255, 255, 255, 0.5);
   background-color: #202020;
+  width: 100%;
+}
+
+@media (max-width: 767px) {
+  .sidebar {
+    position: relative;
+    width: 100%;
+    padding: 1rem 0.5rem;
+  }
+  
+  .sidebar-about h1 {
+    font-size: 2.5rem;
+  }
+  
+  .sidebar-nav {
+    padding: 1rem 0;
+  }
+  
+  .sidebar-nav-item {
+    padding: 0.5rem;
+    display: inline-block;
+    margin: 0.25rem;
+  }
 }
 
 @media (min-width: 768px) {
@@ -304,6 +327,43 @@ a.sidebar-nav-item:focus {
   font-weight: bold;
 }
 
+/* Mobile Menu Toggle */
+.mobile-menu-toggle {
+  display: none;
+  background: none;
+  border: none;
+  color: white;
+  font-size: 1.5rem;
+  cursor: pointer;
+  padding: 0.5rem;
+  margin-bottom: 1rem;
+}
+
+@media (max-width: 767px) {
+  .mobile-menu-toggle {
+    display: block;
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+    z-index: 100;
+  }
+  
+  .sidebar-nav {
+    display: none;
+    width: 100%;
+  }
+  
+  .sidebar-nav.active {
+    display: block;
+    text-align: center;
+  }
+  
+  .sidebar-nav-item {
+    display: block;
+    margin: 0.5rem 0;
+  }
+}
+
 /* Sticky sidebar
  *
  * Add the `sidebar-sticky` class to the sidebar's container to affix it the
@@ -327,8 +387,16 @@ a.sidebar-nav-item:focus {
  */
 
 .content {
-  padding-top: 4rem;
-  padding-bottom: 4rem;
+  padding-top: 1rem;
+  padding-bottom: 1rem;
+}
+
+@media (max-width: 767px) {
+  .content {
+    padding-left: 1rem;
+    padding-right: 1rem;
+    margin: 0;
+  }
 }
 
 @media (min-width: 768px) {
@@ -336,5 +404,7 @@ a.sidebar-nav-item:focus {
     max-width: 45rem;
     margin-left: 15rem;
     margin-right: 2rem;
+    padding-top: 4rem;
+    padding-bottom: 4rem;
   }
 }

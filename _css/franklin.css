@@ -81,8 +81,8 @@ html {
 
 .franklin-content {
   position: relative;
-  padding-left: 12.5%;
-  padding-right: 12.5%;
+  padding-left: 5%;
+  padding-right: 5%;
   line-height: 1.35em;
 }
 
@@ -92,10 +92,20 @@ html {
     width: 705px;
     margin-left: auto;
     margin-right: auto;
+    padding-left: 0;
+    padding-right: 0;
   }
 }
 
-/* On narrow device, reduce margins. */
+/* On narrow devices, adjust margins. */
+@media (max-width: 768px) {
+  .franklin-content {
+    padding-left: 4%;
+    padding-right: 4%;
+  }
+}
+
+/* On very narrow devices, increase margins slightly */
 @media (max-width: 480px) {
   .franklin-content {
     padding-left: 6%;
@@ -107,9 +117,16 @@ html {
     TITLES
 ================================================================== */
 
-.franklin-content h1 { font-size: 24px; }
-.franklin-content h2 { font-size: 22px; }
-.franklin-content h3 { font-size: 20px; }
+.franklin-content h1 { font-size: 1.75rem; }
+.franklin-content h2 { font-size: 1.5rem; }
+.franklin-content h3 { font-size: 1.25rem; }
+
+/* Adjust heading sizes for mobile */
+@media (max-width: 768px) {
+  .franklin-content h1 { font-size: 1.5rem; }
+  .franklin-content h2 { font-size: 1.3rem; }
+  .franklin-content h3 { font-size: 1.1rem; }
+}
 
 .franklin-content h1,
 h2,
@@ -241,15 +258,32 @@ td {
 ================================================================== */
 
 .franklin-content img {
-  width: 70%;
+  width: 100%;
+  max-width: 70%;
   text-align: center;
-  padding-left: 10%;
+  padding-left: 15%;
+  height: auto;
 }
 
 .franklin-content .img-small img {
-  width: 50%;
+  width: 100%;
+  max-width: 50%;
   text-align: center;
-  padding-left: 20%;
+  padding-left: 25%;
+  height: auto;
+}
+
+/* Extra small devices (phones, 600px and down) */
+@media only screen and (max-width: 600px) {
+  .franklin-content img {
+    max-width: 100%;
+    padding-left: 0;
+  }
+  
+  .franklin-content .img-small img {
+    max-width: 100%;
+    padding-left: 0;
+  }
 }
 
 /* ==================================================================

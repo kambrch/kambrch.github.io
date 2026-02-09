@@ -8,6 +8,20 @@
         {{ insert foot_highlight.html }}
     {{ end }}
 
+    <!-- Mobile Menu Toggle Script -->
+    <script>
+      document.addEventListener("DOMContentLoaded", function() {
+        const mobileMenuToggle = document.querySelector('.mobile-menu-toggle');
+        const sidebarNav = document.querySelector('.sidebar-nav');
+        
+        if (mobileMenuToggle && sidebarNav) {
+          mobileMenuToggle.addEventListener('click', function() {
+            sidebarNav.classList.toggle('active');
+          });
+        }
+      });
+    </script>
+    
     <!-- Lazy Loading Fallback Script -->
     <script>
       // Check if browser supports loading="lazy" attribute
@@ -26,26 +40,26 @@
           if (!('IntersectionObserver' in window)) {
             return;
           }
-          
+
           // Create an intersection observer
           const imageObserver = new IntersectionObserver((entries, observer) => {
             entries.forEach(entry => {
               if (entry.isIntersecting) {
                 // Image is in viewport, load it
                 const img = entry.target;
-                
+
                 // Copy the src from data-src or original src
                 if (img.dataset.src) {
                   img.src = img.dataset.src;
                   img.removeAttribute('data-src');
                 }
-                
+
                 // Stop observing this image
                 observer.unobserve(img);
               }
             });
           });
-          
+
           // Observe all lazy images
           images.forEach(img => {
             // Store original src in dataset and use a transparent 1x1 pixel as placeholder
