@@ -15,7 +15,8 @@
 
   <!-- Open Graph / Facebook -->
   <meta property="og:type" content="website">
-  <meta property="og:url" content="{{fill website_url}}">
+  <link rel="canonical" href="{{canonical_url}}">
+  <meta property="og:url" content="{{canonical_url}}">
   <meta property="og:title" content="{{isdef title}}{{fill title}}{{else}}{{fill website_title}}{{end}}">
   <meta property="og:description" content="{{isdef website_descr}}{{fill website_descr}}{{else}}Personal website of Kamil Bruchal, physicist and Julia developer{{end}}">
   <meta property="og:image" content="{{fill schema_image}}">
@@ -23,7 +24,7 @@
 
   <!-- Twitter -->
   <meta property="twitter:card" content="summary_large_image">
-  <meta property="twitter:url" content="{{fill website_url}}">
+  <meta property="twitter:url" content="{{canonical_url}}">
   <meta property="twitter:title" content="{{isdef title}}{{fill title}}{{else}}{{fill website_title}}{{end}}">
   <meta property="twitter:description" content="{{isdef website_descr}}{{fill website_descr}}{{else}}Personal website of Kamil Bruchal, physicist and Julia developer{{end}}">
   <meta property="twitter:image" content="{{fill schema_image}}">

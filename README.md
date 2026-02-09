@@ -35,6 +35,7 @@ To build the static site for production:
 
 ```bash
 julia --project=@. -e 'using Franklin; optimize()'
+./scripts/normalize-generated-urls.sh __site
 ```
 
 If you want code-block prerendering during optimize, also install highlight.js once:

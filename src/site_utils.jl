@@ -9,6 +9,7 @@ export blog_posts,
   all_blog_tags,
   hfun_blog_index,
   hfun_blog_nav,
+  hfun_canonical_url,
   hfun_cv_metrics,
   hfun_cv_downloads,
   hfun_cv_publications,
@@ -138,6 +139,25 @@ html_escape(s::AbstractString) = begin
   escaped = replace(escaped, ">" => "&gt;")
   escaped = replace(escaped, "\"" => "&quot;")
   return replace(escaped, "'" => "&#39;")
+end
+
+normalize_site_url(url::AbstractString) = begin
+  normalized = strip(String(url))
+  normalized = replace(normalized, r"/index\.html$" => "/")
+  return normalized
+end
+
+function hfun_canonical_url()
+  page_url = Franklin.locvar("fd_full_url")
+  if page_url isa String && !isempty(strip(page_url))
+    return html_escape(normalize_site_url(page_url))
+  end
+  site_url = Franklin.globvar("website_url")
+  if site_url isa String && !isempty(strip(site_url))
+    url = strip(site_url)
+    return html_escape(endswith(url, "/") ? url : url * "/")
+  end
+  return ""
 end
 
 function normalize_identifier(value::AbstractString)

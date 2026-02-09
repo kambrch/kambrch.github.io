@@ -11,6 +11,7 @@ pages:
       using NodeJS; run(`$(npm_cmd()) install highlight.js`);
       using Franklin;
       optimize()'
+    - ./scripts/normalize-generated-urls.sh __site
     - mv __site public
   artifacts:
     paths:
