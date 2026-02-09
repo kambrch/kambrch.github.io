@@ -18,6 +18,14 @@
         document.addEventListener("DOMContentLoaded", function() {
           // Find all images with loading="lazy" attribute
           const images = document.querySelectorAll('img[loading="lazy"]');
+          if (images.length === 0) {
+            return;
+          }
+
+          // If IntersectionObserver is not available, keep native src as-is
+          if (!('IntersectionObserver' in window)) {
+            return;
+          }
           
           // Create an intersection observer
           const imageObserver = new IntersectionObserver((entries, observer) => {

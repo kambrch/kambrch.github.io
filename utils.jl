@@ -56,7 +56,6 @@ using .CVData
     # Assuming the original image exists in different sizes
     # Create paths for different resolutions
     base_path = replace(resolved, r"\.[^.]*$" => "")  # Remove extension
-    ext = match(r"\.[^.]*$", resolved).match  # Get extension
     
     # Create srcset with different sizes (if available)
     # Using the same image path as fallback since we don't have variants yet
@@ -64,7 +63,12 @@ using .CVData
     
     # If WebP version exists, create picture element with WebP as primary
     webp_path = base_path * ".webp"
-    has_webp = isfile(joinpath(Franklin.FPATH[], "..", path))
+    webp_rel = replace(String(path), r"\.[^.]*$" => ".webp")
+    source_webp_rel =
+      startswith(webp_rel, "assets/") ? replace(webp_rel, r"^assets/" => "_assets/") : webp_rel
+    has_webp =
+      isfile(source_webp_rel) ||
+      isfile(webp_rel)
     # Note: We'll use the same path for now, but in practice you'd want WebP versions
     
     align_style = align == "left"  ? "float:left;" :
@@ -782,10 +786,12 @@ function hfun_cv_downloads(_=nothing)
     format = html_escape(item.format)
     updated = long_date_label(item.updated)
     classes = ["cv-downloads__btn"]
-    attrs = ["href=\"$(html_escape(item.href))\""]
+    attrs = String[]
     if !item.available
       push!(classes, "is-disabled")
       push!(attrs, "tabindex=\"-1\"", "aria-disabled=\"true\"")
+    else
+      push!(attrs, "href=\"$(html_escape(item.href))\"")
     end
     write(
       io,
@@ -1146,7 +1152,7 @@ function hfun_sitemap_xml()
   for page in pages
     write(io, """
   <url>
-    <loc>{{fill website_url}}$(page.loc)</loc>
+    <loc>{{fill website_url}}$(lstrip(page.loc, '/'))</loc>
     <lastmod>$(Dates.format(Dates.now(), "yyyy-mm-dd"))</lastmod>
     <changefreq>$(page.changefreq)</changefreq>
     <priority>$(page.priority)</priority>
@@ -1159,7 +1165,7 @@ function hfun_sitemap_xml()
     for post in blog_posts
       write(io, """
   <url>
-    <loc>{{fill website_url}}$(post.url)</loc>
+    <loc>{{fill website_url}}$(lstrip(post.url, '/'))</loc>
     <lastmod>$(Dates.format(post.date, "yyyy-mm-dd"))</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>

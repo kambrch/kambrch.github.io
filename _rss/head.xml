@@ -25,7 +25,11 @@ rss_file variable in your config file if you want to use something different tha
     </title>
     <link> {{website_url}} </link>
     <description>
+      {{isdef website_description}}
       <![CDATA[  {{fd2rss website_description}}  ]]>
+      {{else}}
+      <![CDATA[  {{fd2rss website_descr}}  ]]>
+      {{end}}
     </description>
     <atom:link
       href="{{fd_rss_feed_url}}"
