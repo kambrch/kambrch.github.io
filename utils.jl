@@ -93,6 +93,19 @@ function normalize_identifier(value::AbstractString)
   return clean
 end
 
+"""
+    getfield_safe(obj, field, default)
+
+Safely get a field from an object, returning a default value if the field doesn't exist.
+"""
+function getfield_safe(obj, field::Symbol, default)
+  try
+    return getproperty(obj, field)
+  catch
+    return default
+  end
+end
+
 function add_identifier!(store::Vector{String}, seen::Set{String}, value::AbstractString)
   candidate = strip(String(value))
   isempty(candidate) && return
@@ -202,12 +215,17 @@ function compute_blog_posts()
 
   file_records = FileRecord[]
   signature_parts = String[]
-  for entry in sort(readdir(blog_dir))
-    endswith(entry, ".md") || continue
-    filepath = joinpath(blog_dir, entry)
-    statinfo = stat(filepath)
-    push!(file_records, (; entry, filepath, statinfo))
-    push!(signature_parts, string(statinfo.mtime))
+  try
+    for entry in sort(readdir(blog_dir))
+      endswith(entry, ".md") || continue
+      filepath = joinpath(blog_dir, entry)
+      statinfo = stat(filepath)
+      push!(file_records, (; entry, filepath, statinfo))
+      push!(signature_parts, string(statinfo.mtime))
+    end
+  catch e
+    @error "Error reading blog directory" exception=(e, catch_backtrace())
+    return BlogPostTuple[]
   end
 
   signature = string(length(file_records)) * ":" * join(signature_parts, ";")
@@ -218,42 +236,48 @@ function compute_blog_posts()
 
   posts = BlogPostTuple[]
   for record in file_records
-    slug = replace(record.entry, r"\.md$" => "")
-    rpath = "blog/" * slug
-    raw_title = pagevar(rpath, :title)
-    title = if raw_title isa AbstractString && !isempty(strip(raw_title))
-      String(raw_title)
-    else
-      words = split(replace(slug, '-' => ' '))
-      join(uppercasefirst.(words), " ")
+    try
+      slug = replace(record.entry, r"\.md$" => "")
+      rpath = "blog/" * slug
+      raw_title = pagevar(rpath, :title)
+      title = if raw_title isa AbstractString && !isempty(strip(raw_title))
+        String(raw_title)
+      else
+        words = split(replace(slug, '-' => ' '))
+        join(uppercasefirst.(words), " ")
+      end
+      tags = normalize_tags(pagevar(rpath, :tags))
+      date_val = pagevar(rpath, :published)
+      if isnothing(date_val)
+        date_val = pagevar(rpath, :date)
+      end
+      date = parse_post_date(date_val, slug, record.statinfo)
+      snippet, word_count = extract_post_summary(record.filepath)
+      reading_minutes = word_count == 0 ? 0 : max(1, (word_count + 199) ÷ 200)
+      url = "/" * rpath * "/"
+      push!(
+        posts,
+        (
+          ;
+          slug,
+          rpath,
+          url,
+          title,
+          date,
+          tags,
+          snippet,
+          word_count,
+          reading_minutes,
+        ),
+      )
+    catch e
+      @error "Error processing blog post $(record.entry)" exception=(e, catch_backtrace())
+      # Continue processing other posts even if one fails
+      continue
     end
-    tags = normalize_tags(pagevar(rpath, :tags))
-    date_val = pagevar(rpath, :published)
-    if isnothing(date_val)
-      date_val = pagevar(rpath, :date)
-    end
-    date = parse_post_date(date_val, slug, record.statinfo)
-    snippet, word_count = extract_post_summary(record.filepath)
-    reading_minutes = word_count == 0 ? 0 : max(1, (word_count + 199) ÷ 200)
-    url = "/" * rpath * "/"
-    push!(
-      posts,
-      (
-        ;
-        slug,
-        rpath,
-        url,
-        title,
-        date,
-        tags,
-        snippet,
-        word_count,
-        reading_minutes,
-      ),
-    )
   end
 
-  sort!(posts, by = p -> p.date)
+  sort!(posts, by = p -> getfield_safe(p, :date, Date(1900, 1, 1)))
   BLOG_CACHE[] = (signature = signature, posts = posts)
   return posts
 end
@@ -745,38 +769,48 @@ function hfun_cv_downloads(_=nothing)
 end
 
 function hfun_cv_publications(_=nothing)
-  isempty(CV_PUBLICATIONS) && return "<p>No publications listed yet.</p>"
-  io = IOBuffer()
-  write(io, "<div class=\"cv-publications\">")
-  for pub in sort(CV_PUBLICATIONS, by = p -> p.year, rev = true)
-    write(io, "<article class=\"cv-publications__item\">")
-    write(io, "<header class=\"cv-publications__header\">")
-    write(
-      io,
-      "<h3 class=\"cv-publications__title\">$(html_escape(pub.title))</h3>",
-    )
-    write(
-      io,
-      "<p class=\"cv-publications__meta\">$(html_escape(pub.authors)) · " *
-      "$(html_escape(pub.venue)) · $(pub.year)</p>",
-    )
-    write(io, "</header>")
-    if !isempty(strip(pub.summary))
+  try
+    isempty(CV_PUBLICATIONS) && return "<p>No publications listed yet.</p>"
+    io = IOBuffer()
+    write(io, "<div class=\"cv-publications\">")
+    for pub in sort(CV_PUBLICATIONS, by = p -> getfield_safe(p, :year, 0), rev = true)
+      write(io, "<article class=\"cv-publications__item\">")
+      write(io, "<header class=\"cv-publications__header\">")
+      title = html_escape(getfield_safe(pub, :title, "Untitled Publication"))
       write(
         io,
-        "<p class=\"cv-publications__summary\">$(html_escape(pub.summary))</p>",
+        "<h3 class=\"cv-publications__title\">$title</h3>",
       )
-    end
-    if !isempty(pub.doi)
+      authors = html_escape(getfield_safe(pub, :authors, "Unknown Authors"))
+      venue = html_escape(getfield_safe(pub, :venue, "Unknown Venue"))
+      year = getfield_safe(pub, :year, "Unknown Year")
       write(
         io,
-        "<p class=\"cv-publications__links\"><a href=\"$(html_escape(pub.doi))\">DOI link</a></p>",
+        "<p class=\"cv-publications__meta\">$authors · $venue · $year</p>",
       )
+      write(io, "</header>")
+      summary = getfield_safe(pub, :summary, "")
+      if !isempty(strip(summary))
+        write(
+          io,
+          "<p class=\"cv-publications__summary\">$(html_escape(summary))</p>",
+        )
+      end
+      doi = getfield_safe(pub, :doi, "")
+      if !isempty(doi)
+        write(
+          io,
+          "<p class=\"cv-publications__links\"><a href=\"$(html_escape(doi))\">DOI link</a></p>",
+        )
+      end
+      write(io, "</article>")
     end
-    write(io, "</article>")
+    write(io, "</div>")
+    return String(take!(io))
+  catch e
+    @error "Error in hfun_cv_publications" exception=(e, catch_backtrace())
+    return "<p>Error displaying publications.</p>"
   end
-  write(io, "</div>")
-  return String(take!(io))
 end
 
 function hfun_cv_teaching(_=nothing)
@@ -811,37 +845,48 @@ function render_highlights(io::IOBuffer, highlights::Vector{String})
 end
 
 function hfun_cv_employment(_=nothing)
-  isempty(CV_EMPLOYMENT) && return "<p>No employment history yet.</p>"
-  items = sort(CV_EMPLOYMENT, by = job -> job.start_date, rev = true)
-  io = IOBuffer()
-  write(io, "<div class=\"cv-section-list\">")
-  for job in items
-    period = format_date_range(job.start_date, job.end_date)
-    status = job.end_date === nothing ? "Present" : nothing
-    write(io, "<article class=\"cv-section-item\">")
-    write(
-      io,
-      "<header class=\"cv-section__header\">" *
-      "<span class=\"cv-section__period\">$period</span>" *
-      "</header>",
-    )
-    write(
-      io,
-      "<h3 class=\"cv-section__title\">$(html_escape(job.role))</h3>",
-    )
-    info = html_escape(job.organization)
-    if !isempty(job.location)
-      info *= " · " * html_escape(job.location)
+  try
+    isempty(CV_EMPLOYMENT) && return "<p>No employment history yet.</p>"
+    items = sort(CV_EMPLOYMENT, by = job -> getfield_safe(job, :start_date, Date(1900, 1, 1)), rev = true)
+    io = IOBuffer()
+    write(io, "<div class=\"cv-section-list\">")
+    for job in items
+      start_date = getfield_safe(job, :start_date, Date(1900, 1, 1))
+      end_date = getfield_safe(job, :end_date, nothing)
+      period = format_date_range(start_date, end_date)
+      status = end_date === nothing ? "Present" : nothing
+      write(io, "<article class=\"cv-section-item\">")
+      write(
+        io,
+        "<header class=\"cv-section__header\">" *
+        "<span class=\"cv-section__period\">$period</span>" *
+        "</header>",
+      )
+      role = html_escape(getfield_safe(job, :role, "Unknown Position"))
+      write(
+        io,
+        "<h3 class=\"cv-section__title\">$role</h3>",
+      )
+      organization = html_escape(getfield_safe(job, :organization, "Unknown Organization"))
+      info = organization
+      location = getfield_safe(job, :location, "")
+      if !isempty(location)
+        info *= " · " * html_escape(location)
+      end
+      if status !== nothing
+        info *= " · " * status
+      end
+      write(io, "<p class=\"cv-section__subtitle\">$info</p>")
+      highlights = getfield_safe(job, :highlights, String[])
+      render_highlights(io, highlights)
+      write(io, "</article>")
     end
-    if status !== nothing
-      info *= " · " * status
-    end
-    write(io, "<p class=\"cv-section__subtitle\">$info</p>")
-    render_highlights(io, job.highlights)
-    write(io, "</article>")
+    write(io, "</div>")
+    return String(take!(io))
+  catch e
+    @error "Error in hfun_cv_employment" exception=(e, catch_backtrace())
+    return "<p>Error displaying employment history.</p>"
   end
-  write(io, "</div>")
-  return String(take!(io))
 end
 
 function hfun_cv_education(_=nothing)
