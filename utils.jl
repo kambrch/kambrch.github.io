@@ -1092,6 +1092,57 @@ function hfun_cv_anchor(args)
   return String(take!(write_buffer))
 end
 
+"""
+    hfun_sitemap_xml()
+
+Generate a sitemap.xml for search engines.
+"""
+function hfun_sitemap_xml()
+  io = IOBuffer()
+  write(io, """<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">""")
+  
+  # Define the main pages to include in the sitemap
+  pages = [
+    (; loc = "/", priority = "1.0", changefreq = "weekly"),
+    (; loc = "/projects/", priority = "0.8", changefreq = "monthly"),
+    (; loc = "/cv/", priority = "0.8", changefreq = "monthly"),
+    (; loc = "/blog/", priority = "0.9", changefreq = "weekly"),
+    (; loc = "/kamsoft/", priority = "0.7", changefreq = "monthly"),
+  ]
+  
+  for page in pages
+    write(io, """
+  <url>
+    <loc>{{fill website_url}}$(page.loc)</loc>
+    <lastmod>$(Dates.format(Dates.now(), "yyyy-mm-dd"))</lastmod>
+    <changefreq>$(page.changefreq)</changefreq>
+    <priority>$(page.priority)</priority>
+  </url>""")
+  end
+  
+  # Add blog posts to sitemap if they exist
+  try
+    blog_posts = compute_blog_posts()
+    for post in blog_posts
+      write(io, """
+  <url>
+    <loc>{{fill website_url}}$(post.url)</loc>
+    <lastmod>$(Dates.format(post.date, "yyyy-mm-dd"))</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>""")
+    end
+  catch
+    # If there's an error getting blog posts, continue anyway
+  end
+  
+  write(io, """
+</urlset>""")
+  
+  return String(take!(io))
+end
+
 end # module SiteUtils
 
 using .SiteUtils
