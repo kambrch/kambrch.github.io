@@ -3,13 +3,21 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <!-- Resource Hints -->
+  <link rel="preload" href="/css/franklin.css" as="style">
+  <link rel="preload" href="/css/poole_hyde.css" as="style">
+  <link rel="preload" href="/assets/css/style.css" as="style">
   
+  <!-- Cache Control Headers -->
+  <meta http-equiv="Cache-Control" content="public, max-age=31536000">
+
   <!-- Basic SEO Meta Tags -->
   <meta name="description" content="{{isdef website_descr}}{{fill website_descr}}{{else}}Personal website of Kamil Bruchal, physicist and Julia developer{{end}}">
   <meta name="keywords" content="physicist,Julia,developer,data science,data engineering,scientific computing,Wrocław,poland">
   <meta name="author" content="{{fill author}}">
   <meta name="robots" content="index, follow">
-  
+
   <!-- Open Graph / Facebook -->
   <meta property="og:type" content="website">
   <meta property="og:url" content="{{fill website_url}}">
@@ -17,14 +25,14 @@
   <meta property="og:description" content="{{isdef website_descr}}{{fill website_descr}}{{else}}Personal website of Kamil Bruchal, physicist and Julia developer{{end}}">
   <meta property="og:image" content="{{fill schema_image}}">
   <meta property="og:site_name" content="{{fill website_title}}">
-  
+
   <!-- Twitter -->
   <meta property="twitter:card" content="summary_large_image">
   <meta property="twitter:url" content="{{fill website_url}}">
   <meta property="twitter:title" content="{{isdef title}}{{fill title}}{{else}}{{fill website_title}}{{end}}">
   <meta property="twitter:description" content="{{isdef website_descr}}{{fill website_descr}}{{else}}Personal website of Kamil Bruchal, physicist and Julia developer{{end}}">
   <meta property="twitter:image" content="{{fill schema_image}}">
-  
+
   {{if hasmath}} {{insert head_katex.html }}     {{end}}
   {{if hascode}} {{insert head_highlight.html }}   {{end}}
   {{insert style.html}}

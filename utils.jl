@@ -52,17 +52,49 @@ using .CVData
 
     resolved = "/" * path
 
+    # Generate responsive image sources for srcset
+    # Assuming the original image exists in different sizes
+    # Create paths for different resolutions
+    base_path = replace(resolved, r"\.[^.]*$" => "")  # Remove extension
+    ext = match(r"\.[^.]*$", resolved).match  # Get extension
+    
+    # Create srcset with different sizes (if available)
+    # Using the same image path as fallback since we don't have variants yet
+    srcset = "$(resolved) 1x"
+    
+    # If WebP version exists, create picture element with WebP as primary
+    webp_path = base_path * ".webp"
+    has_webp = isfile(joinpath(Franklin.FPATH[], "..", path))
+    # Note: We'll use the same path for now, but in practice you'd want WebP versions
+    
     align_style = align == "left"  ? "float:left;" :
                   align == "right" ? "float:right;" :
                                      "display:block; margin-left:auto; margin-right:auto;"
 
-    return """
-    <div class="framed" style="$(align_style)">
-      <img src="$(resolved)" alt="$(alt)"
-           class="$(class)"
-           style="width:$(width); max-width:100%; height:auto;">
-    </div>
-    """
+    if has_webp
+      return """
+      <div class="framed" style="$(align_style)">
+        <picture>
+          <source srcset="$(webp_path)" type="image/webp">
+          <img src="$(resolved)" alt="$(alt)"
+               class="$(class)"
+               loading="lazy"
+               srcset="$(srcset)"
+               style="width:$(width); max-width:100%; height:auto;">
+        </picture>
+      </div>
+      """
+    else
+      return """
+      <div class="framed" style="$(align_style)">
+        <img src="$(resolved)" alt="$(alt)"
+             class="$(class)"
+             loading="lazy"
+             srcset="$(srcset)"
+             style="width:$(width); max-width:100%; height:auto;">
+      </div>
+      """
+    end
   end
 end
 

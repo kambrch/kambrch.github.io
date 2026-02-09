@@ -1,20 +1,75 @@
 <!-- CONTENT ENDS HERE -->
     </div>  <!-- div: content container -->
+  </main> <!-- Close main element -->
     {{ if hasmath }}
         {{ insert foot_katex.html }}
     {{ end }}
     {{ if hascode }}
         {{ insert foot_highlight.html }}
     {{ end }}
-    
+
+    <!-- Lazy Loading Fallback Script -->
+    <script>
+      // Check if browser supports loading="lazy" attribute
+      if ('loading' in HTMLImageElement.prototype) {
+        // Browser supports native lazy loading - no additional script needed
+      } else {
+        // Browser does not support native lazy loading - use Intersection Observer as fallback
+        document.addEventListener("DOMContentLoaded", function() {
+          // Find all images with loading="lazy" attribute
+          const images = document.querySelectorAll('img[loading="lazy"]');
+          
+          // Create an intersection observer
+          const imageObserver = new IntersectionObserver((entries, observer) => {
+            entries.forEach(entry => {
+              if (entry.isIntersecting) {
+                // Image is in viewport, load it
+                const img = entry.target;
+                
+                // Copy the src from data-src or original src
+                if (img.dataset.src) {
+                  img.src = img.dataset.src;
+                  img.removeAttribute('data-src');
+                }
+                
+                // Stop observing this image
+                observer.unobserve(img);
+              }
+            });
+          });
+          
+          // Observe all lazy images
+          images.forEach(img => {
+            // Store original src in dataset and use a transparent 1x1 pixel as placeholder
+            img.dataset.src = img.src;
+            img.src = 'data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7';
+            imageObserver.observe(img);
+          });
+        });
+      }
+    </script>
+
     <!-- Google Analytics -->
     {{isdef google_analytics_id}}
-    <script async src="https://www.googletagmanager.com/gtag/js?id={{fill google_analytics_id}}"></script>
     <script>
-      window.dataLayer = window.dataLayer || [];
-      function gtag(){dataLayer.push(arguments);}
-      gtag('js', new Date());
-      gtag('config', '{{fill google_analytics_id}}');
+      // Load Google Analytics after page load to improve performance
+      window.addEventListener('load', function() {
+        setTimeout(function() {
+          // Create script element for Google Analytics
+          var script = document.createElement('script');
+          script.async = true;
+          script.src = 'https://www.googletagmanager.com/gtag/js?id={{fill google_analytics_id}}';
+          document.head.appendChild(script);
+          
+          // Initialize gtag once script loads
+          script.onload = function() {
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){dataLayer.push(arguments);}
+            gtag('js', new Date());
+            gtag('config', '{{fill google_analytics_id}}');
+          };
+        }, 2000); // Delay by 2 seconds to allow page to load first
+      });
     </script>
     {{end}}
   </body>
