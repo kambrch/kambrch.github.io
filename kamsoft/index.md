@@ -1,14 +1,21 @@
-@def title = "KAMSOFT - Data Engineering & Scientific Computing Consulting"
+@def title = "KAMSOFT - Data Science, Data Engineering & Scientific Computing Consulting"
 
 @def tags = ["business", "data-engineering", "data-science", "scientific-computing", "software-development"]
 
 # KAMSOFT
+## Data Science · Data Engineering · Scientific Computing
 
-Independent consulting in **data engineering**, **scientific computing**, and **software development**  
-for research-driven companies and individual clients.
+**DATA · MODELS · INSIGHTS**
 
-I work on computational and data-oriented problems that require correctness, reproducibility,  
-and long-term maintainability rather than quick demonstrations.
+Independent consulting for research-driven companies and individual clients.  
+I turn exploratory code, numerical models, and ad-hoc data workflows into reliable, maintainable systems.
+
+### Quick facts
+- **Owner:** Kamil Bruchal (Kamsoft)
+- **Email:** kamsoft@kambr.pl
+- **Website:** kambr.pl/kamsoft
+- **Focus:** Data Science · Data Engineering · Scientific Computing
+- **Working style:** correctness, reproducibility, maintainability
 
 ## About
 
@@ -37,31 +44,45 @@ I work directly with clients, keep assumptions explicit, and aim to deliver solu
 
 ### Data Science
 - Statistical analysis and predictive modeling  
-- Machine learning model development with an emphasis on validation  
-- Experiment design and A/B testing  
-- Decision-oriented data visualization and reporting  
+- Machine learning workflows with reproducibility and evaluation discipline  
+- Feature engineering, dataset construction, and experiment tracking  
+- Model deployment integration (when needed)  
 
 ### Scientific Computing
-- High-performance and parallel computing  
-- Numerical simulation and mathematical modeling  
-- Scientific and research software development  
-- Computational support for R&D and applied research  
+- Numerical simulations and model implementation  
+- Performance optimization (vectorization, parallelism, profiling)  
+- High-performance computing workflows  
+- Reproducible computational research tooling  
 
-## Services
+### Software Development
+- Backend systems and internal tooling  
+- API design and automation  
+- Codebase refactoring and technical debt reduction  
+- Testing and CI practices for scientific / data-heavy code  
 
-I offer collaboration in the following forms:
-- **Technical Partnerships**: Long-term collaboration with R&D-heavy or data-driven organizations  
-- **Individual Consulting**: Project-based work for researchers, engineers, and independent professionals  
-- **Custom Development**: Tailored solutions for non-standard computational or data problems  
+## Tools & Stack (typical)
+- Python, Julia  
+- NumPy/SciPy, Pandas, Polars  
+- SQL, DuckDB, Postgres  
+- Docker, CI/CD  
+- HPC environments, Linux tooling  
 
-## Collaboration Approach
+## Engagement
 
-I focus on building systems that are technically sound, transparent in their assumptions, and practical to maintain. My work favors simple, defensible solutions over unnecessary complexity, and I am direct about trade-offs and limitations.
+I typically work in one of these modes:
+- **Audit / assessment:** identify failure modes, bottlenecks, and a realistic roadmap  
+- **Implementation:** build or refactor the system, with tests and documentation  
+- **Support:** short-term help for a specific hard problem (performance, correctness, migration)  
 
-## Get in Touch
+## Get in touch
 
-If your data, models, or computational infrastructure are becoming a bottleneck rather than a tool, feel free to get in touch to discuss your project.
+If your data, models, or compute setup is becoming a bottleneck, email me:
+
+**kamsoft@kambr.pl**
+
+Or visit: **kambr.pl/kamsoft**
 
 ---
-*KAMSOFT — Data engineering and scientific computing that hold up in practice*
 
+**Kamsoft — Kamil Bruchal**  
+NIP: 8993048156 · REGON: 543855110 · Email: kamsoft@kambr.pl
