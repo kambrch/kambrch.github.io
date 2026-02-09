@@ -11,12 +11,12 @@
     <title>
       <![CDATA[  Kamash Site  ]]>
     </title>
-    <link> https://kambrch.github.io/ </link>
+    <link> https://www.kambr.pl/ </link>
     <description>
       <![CDATA[  My personal website generated with Franklin.  ]]>
     </description>
     <atom:link
-      href="https://kambrch.github.io/feed.xml"
+      href="https://www.kambr.pl/feed.xml"
       rel="self"
       type="application/rss+xml" />
 
@@ -25,13 +25,13 @@
   <title>
     <![CDATA[  First Post  ]]>
   </title>
-  <link> https://kambrch.github.io/blog/2025-11-04-my-first-post/index.html </link>
-  <guid> https://kambrch.github.io/blog/2025-11-04-my-first-post/index.html </guid>
+  <link> https://www.kambr.pl/blog/2025-11-04-my-first-post/index.html </link>
+  <guid> https://www.kambr.pl/blog/2025-11-04-my-first-post/index.html </guid>
   <description>
     <![CDATA[  Why I started a personal lab/REPL blog and what I plan to jot down here.  ]]>
   </description>  
     
-  <pubDate>Tue, 04 Nov 2025 00:00:00 +0000</pubDate>  
+  <pubDate>Mon, 09 Feb 2026 00:00:00 +0000</pubDate>  
   
   
   <atom:author>
@@ -44,8 +44,8 @@
   <title>
     <![CDATA[  Projects  ]]>
   </title>
-  <link> https://kambrch.github.io/menu1/index.html </link>
-  <guid> https://kambrch.github.io/menu1/index.html </guid>
+  <link> https://www.kambr.pl/projects/index.html </link>
+  <guid> https://www.kambr.pl/projects/index.html </guid>
   <description>
     <![CDATA[  Description of personal projects.  ]]>
   </description>  
@@ -63,8 +63,8 @@
   <title>
     <![CDATA[  More goodies  ]]>
   </title>
-  <link> https://kambrch.github.io/menu2/index.html </link>
-  <guid> https://kambrch.github.io/menu2/index.html </guid>
+  <link> https://www.kambr.pl/cv/index.html </link>
+  <guid> https://www.kambr.pl/cv/index.html </guid>
   <description>
     <![CDATA[  Curriculum Vitae coming soon  ]]>
   </description>  

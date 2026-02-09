@@ -11,12 +11,12 @@
     <title>
       <![CDATA[  Kamash Site  ]]>
     </title>
-    <link> https://kambrch.github.io/ </link>
+    <link> https://www.kambr.pl/ </link>
     <description>
       <![CDATA[  My personal website generated with Franklin.  ]]>
     </description>
     <atom:link
-      href="https://kambrch.github.io/feed.xml"
+      href="https://www.kambr.pl/feed.xml"
       rel="self"
       type="application/rss+xml" />
 

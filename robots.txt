@@ -1,4 +1,4 @@
-Sitemap: https://kambrch.github.io/sitemap.xml
+Sitemap: https://www.kambr.pl/sitemap.xml
 
 User-agent: *
 Disallow:

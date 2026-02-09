@@ -2,38 +2,44 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 
 <url>
-    <loc>https://kambrch.github.io/index.html</loc>
-    <lastmod>2025-11-04</lastmod>
+    <loc>https://www.kambr.pl/index.html</loc>
+    <lastmod>2026-02-09</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
 </url>
 <url>
-    <loc>https://kambrch.github.io/blog/2025-11-04-second-post/index.html</loc>
-    <lastmod>2025-11-04</lastmod>
+    <loc>https://www.kambr.pl/kamsoft/index.html</loc>
+    <lastmod>2026-02-09</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
 </url>
 <url>
-    <loc>https://kambrch.github.io/menu3/index.html</loc>
-    <lastmod>2025-11-04</lastmod>
+    <loc>https://www.kambr.pl/cv/index.html</loc>
+    <lastmod>2026-02-09</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
 </url>
 <url>
-    <loc>https://kambrch.github.io/menu2/index.html</loc>
-    <lastmod>2025-11-04</lastmod>
+    <loc>https://www.kambr.pl/blog/2025-11-04-second-post/index.html</loc>
+    <lastmod>2026-02-09</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
 </url>
 <url>
-    <loc>https://kambrch.github.io/menu1/index.html</loc>
-    <lastmod>2025-11-04</lastmod>
+    <loc>https://www.kambr.pl/projects/index.html</loc>
+    <lastmod>2026-02-09</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
 </url>
 <url>
-    <loc>https://kambrch.github.io/blog/2025-11-04-my-first-post/index.html</loc>
-    <lastmod>2025-11-04</lastmod>
+    <loc>https://www.kambr.pl/blog/index.html</loc>
+    <lastmod>2026-02-09</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
+</url>
+<url>
+    <loc>https://www.kambr.pl/blog/2025-11-04-my-first-post/index.html</loc>
+    <lastmod>2026-02-09</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
 </url>
