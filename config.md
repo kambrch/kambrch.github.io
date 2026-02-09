@@ -27,7 +27,7 @@ schema_sameas_json = """[
 
 base_url = "https://www.kambr.pl/"
 
-ignore = ["node_modules/"]
+ignore = ["node_modules/", ".venv/"]
 
 ## RSS (the website_{title, descr, url} must be defined to get RSS)
 generate_rss = true

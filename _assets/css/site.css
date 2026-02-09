@@ -1,0 +1,681 @@
+/* ==================================================================
+    VARIABLES
+================================================================== */
+
+:root {
+  --block-background: hsl(0, 0%, 94%);
+  --output-background: hsl(0, 0%, 98%);
+  --small: 14px;
+  --normal: 19px;
+  --text-color: hsv(0, 0%, 20%);
+}
+
+/* ==================================================================
+    DEFAULT FONT AND LAYOUT
+================================================================== */
+
+html {
+  font-family: Helvetica, Arial, sans-serif;
+  font-size: var(--normal);
+  color: var(--text-color);
+}
+
+/* ==================================================================
+    BASIC GRID FOR PROFILE PIC
+================================================================== */
+
+.franklin-content .row {
+  display: block;
+}
+
+.franklin-content .left {
+  float: left;
+  margin-right: 15px;
+}
+
+.franklin-content .right {
+  float: right;
+}
+
+.franklin-content .container img {
+  width: auto;
+  padding-left: 0;
+  border-radius: 10px;
+}
+
+.franklin-content .footnote {
+  position: relative;
+  top: -0.5em;
+  font-size: 70%;
+}
+
+/* ==================================================================
+    FOOT / COPYRIGHT
+================================================================== */
+
+.franklin-content .page-foot a {
+  text-decoration: none;
+  color: #a6a2a0;
+  text-decoration: underline;
+}
+
+.page-foot {
+  font-size: 80%;
+  font-family: Arial, serif;
+  color: #a6a2a0;
+  text-align: center;
+  margin-top: 6em;
+  border-top: 1px solid lightgrey;
+  padding-top: 2em;
+  margin-bottom: 4em;
+}
+
+/* ==================================================================
+    TEXT GEOMETRY
+================================================================== */
+
+.franklin-toc li {
+  /* Avoid clickable elements being too close together. */
+  margin: 0.6rem 0;
+}
+
+.franklin-content {
+  position: relative;
+  padding-left: 12.5%;
+  padding-right: 12.5%;
+  line-height: 1.35em;
+}
+
+/* On wide screens, fix content width to a max value. */
+@media (min-width: 940px) {
+  .franklin-content {
+    width: 705px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+}
+
+/* On narrow device, reduce margins. */
+@media (max-width: 480px) {
+  .franklin-content {
+    padding-left: 6%;
+    padding-right: 6%;
+  }
+}
+
+/* ==================================================================
+    TITLES
+================================================================== */
+
+.franklin-content h1 { font-size: 24px; }
+.franklin-content h2 { font-size: 22px; }
+.franklin-content h3 { font-size: 20px; }
+
+.franklin-content h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  text-align: left;
+}
+
+.franklin-content h1 {
+  padding-bottom: 0.5em;
+  border-bottom: 3px double lightgrey;
+  margin-top: 1.5em;
+  margin-bottom: 1em;
+}
+
+.franklin-content h2 {
+  padding-bottom: 0.3em;
+  border-bottom: 1px solid lightgrey;
+  margin-top: 2em;
+  margin-bottom: 1em;
+}
+
+.franklin-content h1 a { color: inherit; }
+.franklin-content h1 a:hover { text-decoration: none; }
+.franklin-content h2 a { color: inherit; }
+.franklin-content h2 a:hover { text-decoration: none; }
+.franklin-content h3 a { color: inherit; }
+.franklin-content h3 a:hover { text-decoration: none; }
+.franklin-content h4 a { color: inherit; }
+.franklin-content h4 a:hover { text-decoration: none; }
+.franklin-content h5 a { color: inherit; }
+.franklin-content h5 a:hover { text-decoration: none; }
+.franklin-content h6 a { color: inherit; }
+.franklin-content h6 a:hover { text-decoration: none; }
+
+.franklin-content table {
+  margin-left: auto;
+  margin-right: auto;
+  border-collapse: collapse;
+  text-align: center;
+}
+
+.franklin-toc ol ol {
+  list-style-type: lower-alpha;
+}
+
+.franklin-content th,
+td {
+  font-size: var(--small);
+  padding: 10px;
+  border: 1px solid black;
+}
+
+.franklin-content blockquote {
+  background: var(--block-background);
+  border-left: 7px solid #a8a8a8;
+  margin: 1.5em 10px;
+  padding: 0.5em 10px;
+  font-style: italic;
+}
+
+.franklin-content blockquote p {
+  display: inline;
+}
+
+/* ==================================================================
+    GENERAL FORMATTING
+================================================================== */
+
+/* Spacing between bullet points. */
+.franklin-content li p {
+  margin: 10px 0;
+}
+
+.franklin-content a {
+  color: #004de6;
+  text-decoration: none;
+}
+
+.franklin-content a:hover {
+  text-decoration: underline;
+}
+
+/* ==================================================================
+    HYPERREFS AND FOOTNOTES
+================================================================== */
+
+.franklin-content .eqref a { color: green; }
+.franklin-content .bibref a { color: green; }
+
+.franklin-content sup {
+  font-size: 70%;
+  vertical-align: super;
+  line-height: 0;
+}
+
+.franklin-content table.fndef {
+  margin: 0;
+  margin-bottom: 10px;
+}
+
+.franklin-content .fndef tr,
+td {
+  padding: 0;
+  border: 0;
+  text-align: left;
+}
+
+.franklin-content .fndef tr {
+  border-left: 2px solid lightgray;
+}
+
+.franklin-content .fndef td.fndef-backref {
+  vertical-align: top;
+  font-size: 70%;
+  padding-left: 5px;
+}
+
+.franklin-content .fndef td.fndef-content {
+  font-size: 80%;
+  padding-left: 10px;
+  width: 100%;
+}
+
+/* ==================================================================
+    IMAGES in CONTENT
+================================================================== */
+
+.franklin-content img {
+  width: 70%;
+  text-align: center;
+  padding-left: 10%;
+}
+
+.franklin-content .img-small img {
+  width: 50%;
+  text-align: center;
+  padding-left: 20%;
+}
+
+/* ==================================================================
+    KATEX
+================================================================== */
+
+body { counter-reset: eqnum; }
+
+.katex { font-size: 1em !important; }
+
+.katex-display .katex {
+  /* Overwrite KaTeX settings. */
+  display: inline-block;
+
+  /* Allow display equations to wrap on small screens. */
+  white-space: normal;
+}
+
+.katex-display::after {
+  counter-increment: eqnum;
+  content: "(" counter(eqnum) ")";
+  position: relative;
+  float: right;
+  padding-right: 5px;
+}
+
+.nonumber .katex-display::after {
+  counter-increment: nothing;
+  content: "";
+}
+
+/* ==================================================================
+    CODE & HIGHLIGHT.JS
+================================================================== */
+
+code {
+  background-color: var(--block-background);
+  padding: 0.1em 0.2em;
+  border-radius: 2px;
+  font-size: var(--small);
+}
+
+/* .franklin-content code { */
+
+/* background-color: rgba(27,31,35,0.05); */
+
+/* padding: 0.1em 0.2em; */
+
+/* border-radius: 2px; */
+
+/* font-size: 90%; } */
+
+.hljs {
+  font-size: var(--small);
+  line-height: 1.35em;
+  border-radius: 10px;
+}
+
+.hljs-meta { font-weight: bold;}
+
+.hljs-meta.shell_ {color: crimson;}
+.hljs-meta.prompt_ {color: rgb(25, 179, 51);}
+
+.code-output {
+  background: var(--output-background);
+  border: 1px dashed #dbdbdb;
+}
+
+/* ==================================================================
+    BOXES
+================================================================== */
+
+.franklin-content .colbox-blue {
+  background-color: #eef3f5;
+  padding-top: 5px;
+  padding-right: 10px;
+  padding-left: 10px;
+  padding-bottom: 5px;
+  margin-left: 5px;
+  margin-top: 5px;
+  margin-bottom: 5px;
+  border-radius: 0 10px 10px 0;
+  border-left: 5px solid #4c9cf1;
+}
+/*
+ *                        ___
+ *                       /\_ \
+ *  _____     ___     ___\//\ \      __
+ * /\ '__`\  / __`\  / __`\\ \ \   /'__`\
+ * \ \ \_\ \/\ \_\ \/\ \_\ \\_\ \_/\  __/
+ *  \ \ ,__/\ \____/\ \____//\____\ \____\
+ *   \ \ \/  \/___/  \/___/ \/____/\/____/
+ *    \ \_\
+ *     \/_/
+ *
+ * Designed, built, and released under MIT license by @mdo. Learn more at
+ * https://github.com/poole/poole.
+ */
+
+
+/*
+ * Contents
+ *
+ * Body resets
+ * Custom type
+ * Messages
+ * Container
+ * Masthead
+ * Posts and pages
+ * Pagination
+ * Reverse layout
+ * Themes
+ */
+
+
+/*
+ * Body resets
+ *
+ * Update the foundational and global aspects of the page.
+ */
+
+* {
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+}
+
+html,
+body {
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-size: 16px;
+  line-height: 1.5;
+}
+
+@media (min-width: 38em) {
+  html {
+    font-size: 20px;
+  }
+}
+
+body {
+  color: #515151;
+  background-color: #fff;
+  -webkit-text-size-adjust: 100%;
+  -ms-text-size-adjust: 100%;
+}
+
+/* No `:visited` state is required by default (browsers will use `a`) */
+a {
+  color: #268bd2;
+  text-decoration: none;
+}
+
+a strong {
+  color: inherit;
+}
+
+/* `:focus` is linked to `:hover` for basic accessibility */
+a:hover,
+a:focus {
+  text-decoration: underline;
+}
+
+/* Headings */
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  margin-bottom: 0.5rem;
+  font-weight: bold;
+  line-height: 1.25;
+  color: #313131;
+  text-rendering: optimizeLegibility;
+}
+
+h1 {
+  font-size: 2rem;
+}
+
+h2 {
+  margin-top: 1rem;
+  font-size: 1.5rem;
+}
+
+h3 {
+  margin-top: 1.5rem;
+  font-size: 1.25rem;
+}
+
+h4,
+h5,
+h6 {
+  margin-top: 1rem;
+  font-size: 1rem;
+}
+
+/* Body text */
+p {
+  margin-top: 0;
+  margin-bottom: 1rem;
+}
+
+strong {
+  color: #303030;
+}
+
+
+/* Lists */
+ul,
+ol,
+dl {
+  margin-top: 0;
+  margin-bottom: 1rem;
+}
+
+dt {
+  font-weight: bold;
+}
+
+dd {
+  margin-bottom: 0.5rem;
+}
+
+/* Misc */
+hr {
+  position: relative;
+  margin: 1.5rem 0;
+  border: 0;
+  border-top: 1px solid #eee;
+  border-bottom: 1px solid #fff;
+}
+
+abbr {
+  font-size: 85%;
+  font-weight: bold;
+  color: #555;
+  text-transform: uppercase;
+}
+
+abbr[title] {
+  cursor: help;
+  border-bottom: 1px dotted #e5e5e5;
+}
+
+/* Quotes */
+blockquote {
+  padding: 0.5rem 1rem;
+  margin: 0.8rem 0;
+  color: #7a7a7a;
+  border-left: 0.25rem solid #e5e5e5;
+}
+
+blockquote p:last-child {
+  margin-bottom: 0;
+}
+
+@media (min-width: 30em) {
+  blockquote {
+    padding-right: 5rem;
+    padding-left: 1.25rem;
+  }
+}
+
+img {
+  display: block;
+  max-width: 100%;
+  margin: 0 0 1rem;
+  border-radius: 5px;
+}
+
+/* Tables */
+table {
+  margin-bottom: 1rem;
+  width: 100%;
+  border: 1px solid #e5e5e5;
+  border-collapse: collapse;
+}
+
+td,
+th {
+  padding: 0.25rem 0.5rem;
+  border: 1px solid #e5e5e5;
+}
+
+tbody tr:nth-child(odd) td,
+tbody tr:nth-child(odd) th {
+  background-color: #f9f9f9;
+}
+
+/*
+ *  __                  __
+ * /\ \                /\ \
+ * \ \ \___   __  __   \_\ \     __
+ *  \ \  _ `\/\ \/\ \  /'_` \  /'__`\
+ *   \ \ \ \ \ \ \_\ \/\ \_\ \/\  __/
+ *    \ \_\ \_\/`____ \ \___,_\ \____\
+ *     \/_/\/_/`/___/> \/__,_ /\/____/
+ *                /\___/
+ *                \/__/
+ *
+ * Designed, built, and released under MIT license by @mdo. Learn more at
+ * https://github.com/poole/hyde.
+ */
+
+
+/*
+ * Contents
+ *
+ * Global resets
+ * Sidebar
+ * Container
+ * Reverse layout
+ * Themes
+ */
+
+
+/*
+ * Global resets
+ *
+ * Update the foundational and global aspects of the page.
+ */
+
+html {
+  font-family: "PT Sans", Helvetica, Arial, sans-serif;
+}
+
+/*
+ * Sidebar
+ *
+ * Flexible banner for housing site name, intro, and "footer" content. Starts
+ * out above content in mobile and later moves to the side with wider viewports.
+ */
+
+.sidebar {
+  text-align: center;
+  padding: 2rem 1rem;
+  color: rgba(255, 255, 255, 0.5);
+  background-color: #202020;
+}
+
+@media (min-width: 768px) {
+  .sidebar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    width: 15rem;
+    text-align: left;
+  }
+}
+
+/* Sidebar links */
+.sidebar a {
+  color: #fff;
+}
+
+/* About section */
+.sidebar-about h1 {
+  color: #fff;
+  margin-top: 0;
+  font-family: "Abril Fatface", serif;
+  font-size: 3.25rem;
+}
+
+/* Sidebar nav */
+.sidebar-nav {
+  margin-bottom: 1rem;
+}
+
+.sidebar-nav-item {
+  display: block;
+  line-height: 1.75;
+}
+
+a.sidebar-nav-item:hover,
+a.sidebar-nav-item:focus {
+  text-decoration: underline;
+}
+
+.sidebar-nav-item.active {
+  font-weight: bold;
+}
+
+/* Sticky sidebar
+ *
+ * Add the `sidebar-sticky` class to the sidebar's container to affix it the
+ * contents to the bottom of the sidebar in tablets and up.
+ */
+
+@media (min-width: 768px) {
+  .sidebar-sticky {
+    position: absolute;
+    right: 1rem;
+    bottom: 1rem;
+    left: 1rem;
+  }
+}
+
+
+/* Container
+ *
+ * Align the contents of the site above the proper threshold with some margin-fu
+ * with a 25%-wide `.sidebar`.
+ */
+
+.content {
+  padding-top: 4rem;
+  padding-bottom: 4rem;
+}
+
+@media (min-width: 768px) {
+  .content {
+    max-width: 45rem;
+    margin-left: 15rem;
+    margin-right: 2rem;
+  }
+}
+/* Skip link for accessibility */
+.skip-link{position:absolute;top:-40px;left:6px;background:#000;color:#fff;padding:8px;z-index:1000;text-decoration:none;border-radius:4px;transition:top 0.3s;font-size:14px}.skip-link:focus{top:6px}
+
+/* Minified CSS */
+html{font-size:17px}.franklin-content{position:relative;padding-left:8%;padding-right:5%;line-height:1.35em}@media (min-width:940px){.franklin-content{width:100%;margin-left:auto;margin-right:auto}}@media (max-width:768px){.franklin-content{padding-left:6%;padding-right:6%}}img.rounded{border-radius:8px;box-shadow:0 6px 18px rgba(0,0,0,.18);transition:transform .3s ease,box-shadow .3s ease}img.rounded:hover{transform:scale(1.02);box-shadow:0 10px 30px rgba(0,0,0,.22)}img.framed{border:1px solid #d5d5d5;padding:3px;background-color:#fdfdfd}img.soft{box-shadow:0 12px 32px rgba(0,0,0,.16)}img.shadow{box-shadow:0 22px 48px rgba(0,0,0,.26)}figcaption{text-align:center;color:#aaa;font-style:italic;font-size:.9em;margin-top:.4em}.blog-filters{display:flex;flex-wrap:wrap;gap:.5rem;margin-bottom:1.5rem}.blog-summary{display:flex;flex-wrap:wrap;align-items:baseline;gap:.5rem;margin-bottom:1rem;font-size:.95rem;color:#555}.blog-summary__count{font-weight:600;color:#202020}.blog-summary__sep{color:#b0b0b0}.blog-summary__latest{color:#666}.blog-filter__btn{display:inline-flex;align-items:center;gap:.45rem;background:transparent;border:1px solid #aaa;border-radius:999px;padding:.35rem .85rem;font-size:.9rem;cursor:pointer;transition:background .2s ease,color .2s ease}.blog-filter__btn:hover,.blog-filter__btn.is-active{background:#1f1f1f;color:#fff}.blog-filter__count{display:inline-flex;align-items:center;justify-content:center;min-width:1.4rem;padding:.1rem .4rem;border-radius:999px;background:#f0f0f0;color:#555;font-size:.75rem;font-weight:500}.blog-filter__btn.is-active .blog-filter__count{background:rgba(255,255,255,.18);color:#fff}.blog-filter__label{line-height:1.2}.blog-list{display:grid;gap:1.5rem}.blog-card{border:1px solid #e0e0e0;border-radius:.75rem;padding:1.25rem 1.5rem;background:#fff;transition:border-color .2s ease,transform .2s ease}.blog-card:hover{border-color:#cfcfcf;transform:translateY(-2px)}.blog-card__meta{display:flex;flex-wrap:wrap;gap:.6rem;font-size:.85rem;color:#666;margin-bottom:.4rem}.blog-card__meta-item{display:inline-flex;align-items:center;gap:.35rem}.blog-card__meta-item+.blog-card__meta-item::before{content:"•";color:#b0b0b0;margin-right:.25rem}.blog-card__title{margin:0 0 .8rem 0;font-size:1.35rem}.blog-card__snippet{margin:0 0 1rem 0;color:#333;line-height:1.5}.blog-card__tags{display:flex;flex-wrap:wrap;gap:.4rem}.blog-card__tag{display:inline-block;background:#f3f3f3;color:#555;border-radius:999px;padding:.2rem .65rem;font-size:.8rem}.blog-card.is-hidden{display:none}.blog-card__cta{margin-top:1rem;display:inline-flex;align-items:center;gap:.35rem;font-weight:600;color:#1f1f1f;text-decoration:none}.blog-card__cta:hover{text-decoration:underline}.blog-nav{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:.85rem;margin:3rem 0 1.75rem 0}.blog-nav__slot{display:flex}.blog-nav__slot--prev{justify-content:flex-start}.blog-nav__slot--all{justify-content:center}.blog-nav__slot--next{justify-content:flex-end}.blog-nav__slot--next .blog-nav__link{align-items:flex-end;text-align:right}.blog-nav__link{display:inline-flex;flex-direction:column;gap:.25rem;width:100%;padding:.75rem .85rem;border:1px solid #dedede;border-radius:.75rem;background:#fff;color:#1f1f1f;text-decoration:none;box-shadow:0 4px 12px rgba(0,0,0,.06);transition:border-color .2s ease,box-shadow .2s ease,transform .2s ease}.blog-nav__link:hover{border-color:#c8c8c8;box-shadow:0 8px 20px rgba(0,0,0,.12);transform:translateY(-1px)}.blog-nav__link--all{max-width:240px;align-items:center;margin:0 auto;text-align:center}.blog-nav__link.is-disabled{border-style:dashed;color:#9b9b9b;background:transparent;box-shadow:none;cursor:default;pointer-events:none}.blog-nav__hint{font-size:.7rem;text-transform:uppercase;letter-spacing:.07em;color:#7a7a7a}.blog-nav__title{font-size:.95rem;font-weight:600;color:#202020}@media (max-width:600px){.blog-nav{grid-template-columns:1fr}.blog-nav__slot--next{justify-content:flex-start}.blog-nav__slot--next .blog-nav__link{align-items:flex-start;text-align:left}.blog-nav__link--all{margin-left:0}}.sidebar-social{display:flex;gap:.75rem;margin-top:1.5rem}.sidebar-social__link{display:inline-flex;align-items:center;justify-content:center;width:32px;height:32px;border-radius:50%;border:1px solid #dcdcdc;color:#333;text-decoration:none;transition:background .2s ease,border-color .2s ease,color .2s ease}.sidebar-social__link:hover{background:#f2f2f2;border-color:#bdbdbd;color:#000}.sidebar-social__icon{width:18px;height:18px;fill:currentColor}.cv-anchor{margin-left:.35rem;font-size:.85rem;text-decoration:none;color:#bababa;visibility:hidden;transition:color .2s ease}.cv-anchor__target{position:relative;top:-80px;display:block;visibility:hidden}h2:hover .cv-anchor,h3:hover .cv-anchor{visibility:visible}.cv-anchor:hover{color:#606060}.cv-metrics{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:1rem;margin:2rem 0 1.5rem 0}.cv-metrics__item{padding:1rem 1.1rem;border:1px solid #e3e3e3;border-radius:.9rem;background:#fafafa;display:flex;flex-direction:column;gap:.35rem}.cv-metrics__value{font-size:1.65rem;font-weight:700;color:#1f1f1f}.cv-metrics__label{font-size:.9rem;color:#505050;font-weight:600}.cv-metrics__caption{font-size:.8rem;color:#808080}.cv-downloads{display:flex;flex-wrap:wrap;gap:.75rem;margin-bottom:2.5rem}.cv-downloads__btn{display:inline-flex;flex-direction:column;gap:.2rem;padding:.75rem 1rem;border-radius:.75rem;border:1px solid #dcdcdc;text-decoration:none;background:#fff;color:#222;box-shadow:0 4px 12px rgba(0,0,0,.08);transition:transform .15s ease,box-shadow .15s ease,border-color .15s ease}.cv-downloads__btn:hover{transform:translateY(-1px);border-color:#c1c1c1;box-shadow:0 8px 20px rgba(0,0,0,.1)}.cv-downloads__btn.is-disabled{cursor:not-allowed;opacity:.6;transform:none;box-shadow:none;pointer-events:none}.cv-downloads__label{font-weight:600}.cv-downloads__meta{font-size:.8rem;color:#646464}.cv-section-list{display:grid;gap:1.4rem;margin-bottom:2.8rem}.cv-section-item{padding:1.25rem 1.4rem;border-radius:1rem;border:1px solid #e2e2e2;background:#fff;box-shadow:0 6px 18px rgba(0,0,0,.05);transition:transform .2s ease,box-shadow .2s ease}.cv-section-item:hover{transform:translateY(-2px);box-shadow:0 10px 26px rgba(0,0,0,.1)}.cv-section__header{display:flex;justify-content:space-between;margin-bottom:.45rem;font-size:.8rem;color:#6d6d6d}.cv-section__period{font-weight:600;letter-spacing:.03em;text-transform:uppercase}.cv-section__title{margin:0 0 .35rem 0;font-size:1.15rem}.cv-section__subtitle{margin:0 0 .7rem 0;font-size:.9rem;color:#4d4d4d}.cv-section__highlights{margin:0 0 0 1.15rem;color:#333}.cv-section__highlights li{margin-bottom:.35rem}.cv-chip{display:inline-flex;align-items:center;gap:.25rem;padding:.15rem .6rem;border-radius:999px;background:#f0f0f0;color:#4e4e4e;font-size:.75rem;font-weight:500}.cv-chip--count{margin-left:.4rem;background:#e5e5e5;font-size:.7rem}.cv-publications{display:grid;gap:1.5rem;margin-bottom:2.5rem}.cv-publications__item{padding:1.25rem 1.4rem;border:1px solid #e6e6e6;border-radius:.95rem;background:#fff;box-shadow:0 6px 16px rgba(0,0,0,.05)}.cv-publications__title{margin:0 0 .6rem 0;font-size:1.15rem}.cv-publications__meta{margin:0 0 .75rem 0;font-size:.85rem;color:#6a6a6a}.cv-publications__summary{margin:0 0 .75rem 0;color:#333}.cv-publications__links a{color:#004de6}.cv-publications__tags{display:flex;flex-wrap:wrap;gap:.35rem}.cv-teaching{display:grid;gap:1.2rem;margin-bottom:3rem}.cv-teaching__item{padding:1rem 1.2rem;border-radius:.9rem;border:1px solid #e4e4e4;background:#fafafa}.cv-teaching__title{margin:0 0 .4rem 0;font-size:1rem}.cv-teaching__audience{margin:0 0 .5rem 0;font-size:.85rem;color:#5a5a5a}.cv-teaching__tags{display:flex;flex-wrap:wrap;gap:.35rem}.cv-timeline{display:flex;flex-direction:column;gap:1.5rem;margin-bottom:3rem}.cv-timeline__filters{display:flex;flex-wrap:wrap;gap:.6rem}.cv-timeline__filter{display:inline-flex;align-items:center;background:#fff;border:1px solid #d4d4d4;border-radius:999px;padding:.35rem .8rem;font-size:.85rem;cursor:pointer;transition:background .2s ease,border-color .2s ease,color .2s ease}.cv-timeline__filter:hover,.cv-timeline__filter.is-active{background:#1f1f1f;border-color:#1f1f1f;color:#fff}.cv-timeline__filter.is-active .cv-chip--count{background:rgba(255,255,255,.18);color:#fff}.cv-timeline__list{display:grid;gap:1.4rem}.cv-timeline__item{position:relative;padding:1.3rem 1.4rem 1.3rem 1.35rem;border-radius:1rem;border:1px solid #e3e3e3;background:#fff;box-shadow:0 4px 14px rgba(0,0,0,.05);transition:transform .2s ease,box-shadow .2s ease}.cv-timeline__item:hover{transform:translateY(-2px);box-shadow:0 10px 24px rgba(0,0,0,.12)}.cv-timeline__item.is-hidden{display:none}.cv-timeline__meta{display:flex;flex-wrap:wrap;gap:.6rem;margin-bottom:.5rem;font-size:.8rem;color:#6a6a6a}.cv-timeline__year{font-weight:700;color:#1f1f1f}.cv-timeline__title{margin:0 0 .4rem 0;font-size:1.1rem}.cv-timeline__subtitle{margin:0 0 .7rem 0;font-size:.9rem;color:#4d4d4d}.cv-timeline__highlights{margin:0 0 0 1.15rem;color:#333}.cv-timeline__highlights li{margin-bottom:.4rem}.cv-timeline__tags{display:flex;flex-wrap:wrap;gap:.35rem}

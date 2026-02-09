@@ -52,50 +52,72 @@ using .CVData
 
     resolved = "/" * path
 
-    # Generate responsive image sources for srcset
-    # Assuming the original image exists in different sizes
-    # Create paths for different resolutions
-    base_path = replace(resolved, r"\.[^.]*$" => "")  # Remove extension
-    
-    # Create srcset with different sizes (if available)
-    # Using the same image path as fallback since we don't have variants yet
-    srcset = "$(resolved) 1x"
-    
-    # If WebP version exists, create picture element with WebP as primary
-    webp_path = base_path * ".webp"
-    webp_rel = replace(String(path), r"\.[^.]*$" => ".webp")
-    source_webp_rel =
-      startswith(webp_rel, "assets/") ? replace(webp_rel, r"^assets/" => "_assets/") : webp_rel
-    has_webp =
-      isfile(source_webp_rel) ||
-      isfile(webp_rel)
-    # Note: We'll use the same path for now, but in practice you'd want WebP versions
-    
+    base_path = replace(resolved, r"\.[^.]*$" => "")
+    original_ext_match = match(r"\.([^.]+)$", String(path))
+    original_ext = isnothing(original_ext_match) ? "jpg" : lowercase(original_ext_match.captures[1])
+    source_path = startswith(String(path), "assets/") ? replace(String(path), r"^assets/" => "_assets/") : String(path)
+    source_base_path = replace(source_path, r"\.[^.]*$" => "")
+
+    widths = (480, 800, 1200)
+    function responsive_srcset(ext::String)
+      variants = String[]
+      for w in widths
+        candidate_local = "$(source_base_path)-$(w).$(ext)"
+        if isfile(candidate_local)
+          candidate_url = "$(base_path)-$(w).$(ext)"
+          push!(variants, "$candidate_url $(w)w")
+        end
+      end
+      return join(variants, ", ")
+    end
+
+    avif_srcset = responsive_srcset("avif")
+    webp_srcset = responsive_srcset("webp")
+    fallback_srcset = responsive_srcset(original_ext)
+    sizes = "(max-width: 768px) 100vw, 600px"
+    style_width = isempty(strip(String(width))) ? "" : "width:$(width); "
+    style_attr = "style=\"$(style_width)max-width:100%; height:auto;\""
+
     align_style = align == "left"  ? "float:left;" :
                   align == "right" ? "float:right;" :
                                      "display:block; margin-left:auto; margin-right:auto;"
 
-    if has_webp
+    if !isempty(avif_srcset) || !isempty(webp_srcset)
+      picture_sources = IOBuffer()
+      if !isempty(avif_srcset)
+        write(
+          picture_sources,
+          "<source srcset=\"$(avif_srcset)\" sizes=\"$(sizes)\" type=\"image/avif\">",
+        )
+      end
+      if !isempty(webp_srcset)
+        write(
+          picture_sources,
+          "<source srcset=\"$(webp_srcset)\" sizes=\"$(sizes)\" type=\"image/webp\">",
+        )
+      end
+      fallback_attr = isempty(fallback_srcset) ? "" : "srcset=\"$(fallback_srcset)\" sizes=\"$(sizes)\""
       return """
       <div class="framed" style="$(align_style)">
         <picture>
-          <source srcset="$(webp_path)" type="image/webp">
+          $(String(take!(picture_sources)))
           <img src="$(resolved)" alt="$(alt)"
                class="$(class)"
                loading="lazy"
-               srcset="$(srcset)"
-               style="width:$(width); max-width:100%; height:auto;">
+               $(fallback_attr)
+               $(style_attr)>
         </picture>
       </div>
       """
     else
+      fallback_attr = isempty(fallback_srcset) ? "" : "srcset=\"$(fallback_srcset)\" sizes=\"$(sizes)\""
       return """
       <div class="framed" style="$(align_style)">
         <img src="$(resolved)" alt="$(alt)"
              class="$(class)"
              loading="lazy"
-             srcset="$(srcset)"
-             style="width:$(width); max-width:100%; height:auto;">
+             $(fallback_attr)
+             $(style_attr)>
       </div>
       """
     end

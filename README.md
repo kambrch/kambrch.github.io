@@ -17,7 +17,12 @@ To run this site locally, you'll need to have [Julia](https://julialang.org/) in
    julia --project=@. -e 'import Pkg; Pkg.instantiate();'
    ```
 
-3. Serve the site locally:
+3. Install build dependencies used by Franklin optimizations (minifier):
+   ```bash
+   python3 -m pip install -r requirements.txt
+   ```
+
+4. Serve the site locally:
    ```bash
    julia --project=@. -e 'using Franklin; serve()'
    ```
@@ -30,6 +35,11 @@ To build the static site for production:
 
 ```bash
 julia --project=@. -e 'using Franklin; optimize()'
+```
+
+If you want code-block prerendering during optimize, also install highlight.js once:
+```bash
+julia --project=@. -e 'using NodeJS; run(`$(npm_cmd()) install highlight.js`)'
 ```
 
 ## Project Structure
@@ -67,6 +77,14 @@ Example of including an optimized image in a page:
 ```html
 {{img assets/img/example.jpg "Alt text" "600px" "center" "rounded soft shadow framed"}}
 ```
+
+Generate responsive image variants (480/800/1200 widths by default):
+```bash
+./scripts/optimize-images.sh
+```
+
+The `{{img ...}}` helper will automatically pick up generated `*.avif`, `*.webp`, and
+same-format responsive variants when present.
 
 ## Deployment
 
