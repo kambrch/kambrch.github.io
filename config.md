@@ -33,7 +33,7 @@ ignore = ["node_modules/"]
 generate_rss = true
 website_title = "Kamash Site"
 website_descr = "My personal website generated with Franklin."
-website_url = "https://kambrch.github.io/"
+website_url = "https://www.kambr.pl/"
 +++
 
 <!--

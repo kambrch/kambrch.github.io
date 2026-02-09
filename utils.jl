@@ -622,8 +622,8 @@ function hfun_blog_nav(_=nothing)
   end
   prev_post = idx !== nothing && idx > 1 ? posts[idx - 1] : nothing
   next_post = idx !== nothing && idx < length(posts) ? posts[idx + 1] : nothing
-  back_url_raw = pagevar("menu3", :fd_url)
-  back_href = "/menu3/"
+  back_url_raw = pagevar("blog", :fd_url)
+  back_href = "/blog/"
   if back_url_raw isa AbstractString
     cleaned = strip(String(back_url_raw))
     cleaned = replace(cleaned, r"index\.html$" => "")
