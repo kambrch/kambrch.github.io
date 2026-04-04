@@ -929,39 +929,28 @@ function hfun_cv_employment(_=nothing)
     isempty(CV_EMPLOYMENT) && return "<p>No employment history yet.</p>"
     items = sort(CV_EMPLOYMENT, by = job -> getfield_safe(job, :start_date, Date(1900, 1, 1)), rev = true)
     io = IOBuffer()
-    write(io, "<div class=\"cv-section-list\">")
+    write(io, "<div class=\"dark-zone\">")
+    write(io, "<span class=\"dark-zone__label\">Employment</span>")
+    write(io, "<div class=\"dark-zone__grid\">")
     for job in items
       start_date = getfield_safe(job, :start_date, Date(1900, 1, 1))
       end_date = getfield_safe(job, :end_date, nothing)
       period = format_date_range(start_date, end_date)
-      status = end_date === nothing ? "Present" : nothing
-      write(io, "<article class=\"cv-section-item\">")
-      write(
-        io,
-        "<header class=\"cv-section__header\">" *
-        "<span class=\"cv-section__period\">$period</span>" *
-        "</header>",
-      )
       role = html_escape(getfield_safe(job, :role, "Unknown Position"))
-      write(
-        io,
-        "<h3 class=\"cv-section__title\">$role</h3>",
-      )
-      organization = html_escape(getfield_safe(job, :organization, "Unknown Organization"))
-      info = organization
-      location = getfield_safe(job, :location, "")
-      if !isempty(location)
-        info *= " · " * html_escape(location)
+      organization = html_escape(getfield_safe(job, :organization, ""))
+      location = html_escape(getfield_safe(job, :location, ""))
+      sub_parts = filter(!isempty, [organization, location])
+      sub = join(sub_parts, " · ")
+      write(io, "<span class=\"dark-zone__year\">$(html_escape(period))</span>")
+      write(io, "<div>")
+      write(io, "<div class=\"dark-zone__role\">$role</div>")
+      if !isempty(sub)
+        write(io, "<div class=\"dark-zone__sub\">$sub</div>")
       end
-      if status !== nothing
-        info *= " · " * status
-      end
-      write(io, "<p class=\"cv-section__subtitle\">$info</p>")
-      highlights = getfield_safe(job, :highlights, String[])
-      render_highlights(io, highlights)
-      write(io, "</article>")
+      write(io, "</div>")
     end
-    write(io, "</div>")
+    write(io, "</div>")  # dark-zone__grid
+    write(io, "</div>")  # dark-zone
     return String(take!(io))
   catch e
     @error "Error in hfun_cv_employment" exception=(e, catch_backtrace())
@@ -973,33 +962,27 @@ function hfun_cv_education(_=nothing)
   isempty(CV_EDUCATION) && return ""
   items = sort(CV_EDUCATION, by = entry -> entry.start_date, rev = true)
   io = IOBuffer()
-  write(io, "<div class=\"cv-section-list\">")
+  write(io, "<div class=\"dark-zone dark-zone--secondary\">")
+  write(io, "<span class=\"dark-zone__label\">Education</span>")
+  write(io, "<div class=\"dark-zone__grid\">")
   for entry in items
     period = format_date_range(entry.start_date, entry.end_date)
-    status = entry.end_date === nothing ? "In progress" : nothing
-    write(io, "<article class=\"cv-section-item\">")
-    write(
-      io,
-      "<header class=\"cv-section__header\">" *
-      "<span class=\"cv-section__period\">$period</span>" *
-      "</header>",
-    )
-    write(
-      io,
-      "<h3 class=\"cv-section__title\">$(html_escape(entry.program))</h3>",
-    )
-    info = html_escape(entry.institution)
-    if !isempty(entry.location)
-      info *= " · " * html_escape(entry.location)
+    status = entry.end_date === nothing ? " · In progress" : ""
+    program = html_escape(entry.program)
+    institution = html_escape(entry.institution)
+    location = html_escape(entry.location)
+    sub_parts = filter(!isempty, [institution, location])
+    sub = join(sub_parts, " · ") * status
+    write(io, "<span class=\"dark-zone__year\">$(html_escape(period))</span>")
+    write(io, "<div>")
+    write(io, "<div class=\"dark-zone__role\">$program</div>")
+    if !isempty(sub)
+      write(io, "<div class=\"dark-zone__sub\">$sub</div>")
     end
-    if status !== nothing
-      info *= " · " * status
-    end
-    write(io, "<p class=\"cv-section__subtitle\">$info</p>")
-    render_highlights(io, entry.notes)
-    write(io, "</article>")
+    write(io, "</div>")
   end
-  write(io, "</div>")
+  write(io, "</div>")  # dark-zone__grid
+  write(io, "</div>")  # dark-zone
   return String(take!(io))
 end
 
