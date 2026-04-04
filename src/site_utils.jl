@@ -734,31 +734,31 @@ function hfun_blog_nav(_=nothing)
     prev_title = html_escape(prev_post.title)
     write(
       io,
-      "<a class=\"blog-nav__link\" href=\"$(html_escape(prev_post.url))\" " *
-      "aria-label=\"Previous: $prev_title\">")
-    write(io, "<span class=\"blog-nav__hint\">&larr; Previous</span>")
-    write(io, "<span class=\"blog-nav__title\">$prev_title</span>")
+      "<a class=\"accent-card\" href=\"$(html_escape(prev_post.url))\" " *
+      "aria-label=\"Previous: $prev_title\" style=\"display:flex;flex-direction:column;gap:0.2rem;\">")
+    write(io, "<span style=\"font-size:0.65rem;text-transform:uppercase;letter-spacing:0.08em;color:#aaa;\">&larr; Previous</span>")
+    write(io, "<span style=\"font-weight:600;font-size:0.85rem;color:#111;\">$prev_title</span>")
     write(io, "</a>")
   else
     write(
       io,
-      "<span class=\"blog-nav__link is-disabled\" role=\"text\">" *
-      "<span class=\"blog-nav__hint\">&larr; Previous</span>" *
-      "<span class=\"blog-nav__title\">Start of archive</span>" *
-      "</span>",
+      "<span class=\"accent-card\" style=\"opacity:0.4;cursor:default;pointer-events:none;display:flex;flex-direction:column;gap:0.2rem;\">",
     )
+    write(io, "<span style=\"font-size:0.65rem;text-transform:uppercase;letter-spacing:0.08em;color:#aaa;\">&larr; Previous</span>")
+    write(io, "<span style=\"font-weight:600;font-size:0.85rem;color:#aaa;\">Start of archive</span>")
+    write(io, "</span>")
   end
   write(io, "</div>")
 
   write(io, "<div class=\"blog-nav__slot blog-nav__slot--all\">")
   write(
     io,
-    "<a class=\"blog-nav__link blog-nav__link--all\" href=\"$(html_escape(back_href))\" " *
-    "aria-label=\"Browse all posts\">" *
-    "<span class=\"blog-nav__hint\">Archive</span>" *
-    "<span class=\"blog-nav__title\">$(html_escape(back_label))</span>" *
-    "</a>",
+    "<a class=\"accent-card\" href=\"$(html_escape(back_href))\" " *
+    "aria-label=\"Browse all posts\" style=\"display:flex;flex-direction:column;gap:0.2rem;align-items:center;text-align:center;\">",
   )
+  write(io, "<span style=\"font-size:0.65rem;text-transform:uppercase;letter-spacing:0.08em;color:#aaa;\">Archive</span>")
+  write(io, "<span style=\"font-weight:600;font-size:0.85rem;color:#111;\">All posts</span>")
+  write(io, "</a>")
   write(io, "</div>")
 
   write(io, "<div class=\"blog-nav__slot blog-nav__slot--next\">")
@@ -766,19 +766,19 @@ function hfun_blog_nav(_=nothing)
     next_title = html_escape(next_post.title)
     write(
       io,
-      "<a class=\"blog-nav__link\" href=\"$(html_escape(next_post.url))\" " *
-      "aria-label=\"Next: $next_title\">")
-    write(io, "<span class=\"blog-nav__hint\">Next &rarr;</span>")
-    write(io, "<span class=\"blog-nav__title\">$next_title</span>")
+      "<a class=\"accent-card\" href=\"$(html_escape(next_post.url))\" " *
+      "aria-label=\"Next: $next_title\" style=\"display:flex;flex-direction:column;gap:0.2rem;align-items:flex-end;text-align:right;\">")
+    write(io, "<span style=\"font-size:0.65rem;text-transform:uppercase;letter-spacing:0.08em;color:#aaa;\">Next &rarr;</span>")
+    write(io, "<span style=\"font-weight:600;font-size:0.85rem;color:#111;\">$next_title</span>")
     write(io, "</a>")
   else
     write(
       io,
-      "<span class=\"blog-nav__link is-disabled\" role=\"text\">" *
-      "<span class=\"blog-nav__hint\">Next &rarr;</span>" *
-      "<span class=\"blog-nav__title\">End of archive</span>" *
-      "</span>",
+      "<span class=\"accent-card\" style=\"opacity:0.4;cursor:default;pointer-events:none;display:flex;flex-direction:column;gap:0.2rem;align-items:flex-end;text-align:right;\">",
     )
+    write(io, "<span style=\"font-size:0.65rem;text-transform:uppercase;letter-spacing:0.08em;color:#aaa;\">Next &rarr;</span>")
+    write(io, "<span style=\"font-weight:600;font-size:0.85rem;color:#aaa;\">End of archive</span>")
+    write(io, "</span>")
   end
   write(io, "</div>")
 
