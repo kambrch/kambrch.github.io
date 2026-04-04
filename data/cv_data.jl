@@ -7,6 +7,7 @@ export CV_PUBLICATIONS,
   CV_EMPLOYMENT,
   CV_EDUCATION,
   CV_TEACHING,
+  CV_SKILLS,
   CV_DOWNLOADS
 
 const CV_PUBLICATIONS = [
@@ -201,6 +202,12 @@ const CV_DOWNLOADS = [
     updated = Date(2025, 11, 5),
     available = false,
   ),
+]
+
+const CV_SKILLS = [
+  (; label = "Physics / Lab", items = "Spectroscopy · Cryogenics · Optical setups · RF instrumentation"),
+  (; label = "Programming", items = "Julia · Python · C / embedded"),
+  (; label = "Tools", items = "SDR · Neovim · Linux · Franklin.jl"),
 ]
 
 end

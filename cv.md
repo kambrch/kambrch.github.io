@@ -34,3 +34,7 @@ Physicist, specialist in the interaction of light with nanostructures, and forme
 ## Teaching {{cv_anchor teaching "Teaching"}}
 
 {{cv_teaching}}
+
+## Skills {{cv_anchor skills "Skills"}}
+
+{{cv_skills}}

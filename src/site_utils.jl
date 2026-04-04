@@ -14,6 +14,7 @@ export blog_posts,
   hfun_cv_downloads,
   hfun_cv_publications,
   hfun_cv_teaching,
+  hfun_cv_skills,
   hfun_cv_timeline,
   hfun_cv_employment,
   hfun_cv_education,
@@ -898,6 +899,23 @@ function hfun_cv_teaching(_=nothing)
   end
   write(io, "</div>")  # compact-rows__grid
   write(io, "</div>")  # compact-rows
+  return String(take!(io))
+end
+
+function hfun_cv_skills(_=nothing)
+  isempty(CV_SKILLS) && return ""
+  io = IOBuffer()
+  write(io, "<div class=\"compact-rows\">")
+  write(io, "<div class=\"compact-rows__heading\">Skills</div>")
+  write(io, "<div class=\"compact-rows__grid\">")
+  for skill in CV_SKILLS
+    label = html_escape(skill.label)
+    items = html_escape(skill.items)
+    write(io, "<span class=\"compact-rows__key\">$label</span>")
+    write(io, "<span class=\"compact-rows__val\">$items</span>")
+  end
+  write(io, "</div>")
+  write(io, "</div>")
   return String(take!(io))
 end
 
