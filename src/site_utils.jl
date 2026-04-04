@@ -887,22 +887,17 @@ end
 function hfun_cv_teaching(_=nothing)
   isempty(CV_TEACHING) && return ""
   io = IOBuffer()
-  write(io, "<div class=\"cv-teaching\">")
+  write(io, "<div class=\"compact-rows\">")
+  write(io, "<div class=\"compact-rows__heading\">Teaching</div>")
+  write(io, "<div class=\"compact-rows__grid\">")
   for course in CV_TEACHING
-    write(io, "<div class=\"cv-teaching__item\">")
-    write(
-      io,
-      "<h3 class=\"cv-teaching__title\">$(html_escape(course.course))</h3>",
-    )
-    if !isempty(course.audience)
-      write(
-        io,
-        "<p class=\"cv-teaching__audience\">$(html_escape(course.audience))</p>",
-      )
-    end
-    write(io, "</div>")
+    name = html_escape(course.course)
+    audience = html_escape(course.audience)
+    write(io, "<span class=\"compact-rows__key\">ongoing</span>")
+    write(io, "<span class=\"compact-rows__val\">$name · $audience</span>")
   end
-  write(io, "</div>")
+  write(io, "</div>")  # compact-rows__grid
+  write(io, "</div>")  # compact-rows
   return String(take!(io))
 end
 
@@ -981,35 +976,20 @@ function hfun_cv_conferences(_=nothing)
   isempty(CV_CONFERENCES) && return ""
   items = sort(CV_CONFERENCES, by = event -> event.start_date, rev = true)
   io = IOBuffer()
-  write(io, "<div class=\"cv-section-list\">")
+  write(io, "<div class=\"compact-rows\">")
+  write(io, "<div class=\"compact-rows__heading\">Conferences &amp; Schools</div>")
+  write(io, "<div class=\"compact-rows__grid\">")
   for event in items
-    period = format_event_period(event.start_date, event.end_date)
-    write(io, "<article class=\"cv-section-item\">")
-    write(
-      io,
-      "<header class=\"cv-section__header\">" *
-      "<span class=\"cv-section__period\">$period</span>" *
-      "</header>",
-    )
-    write(
-      io,
-      "<h3 class=\"cv-section__title\">$(html_escape(event.name))</h3>",
-    )
-    parts = String[]
-    !isempty(event.role) && push!(parts, html_escape(event.role))
-    !isempty(event.location) && push!(parts, html_escape(event.location))
-    info = join(parts, " · ")
-    if !isempty(info)
-      write(io, "<p class=\"cv-section__subtitle\">$info</p>")
-    end
-    highlights = String[]
-    if !isempty(strip(event.topic))
-      push!(highlights, event.topic)
-    end
-    render_highlights(io, highlights)
-    write(io, "</article>")
+    year = string(Dates.year(event.start_date))
+    name = html_escape(event.name)
+    location = html_escape(event.location)
+    role = event.role
+    role_label = role == "Speaker" ? " <em>(speaker)</em>" : ""
+    write(io, "<span class=\"compact-rows__key\">$year</span>")
+    write(io, "<span class=\"compact-rows__val\">$name · $location$role_label</span>")
   end
-  write(io, "</div>")
+  write(io, "</div>")  # compact-rows__grid
+  write(io, "</div>")  # compact-rows
   return String(take!(io))
 end
 
