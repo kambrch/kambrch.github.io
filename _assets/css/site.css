@@ -963,6 +963,13 @@ html {
   color: #7a7a7a;
 }
 
+.blog-nav__label {
+  font-size: 0.65rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: #aaa;
+}
+
 .blog-nav__title {
   font-size: 0.95rem;
   font-weight: 600;
@@ -1525,6 +1532,12 @@ h3:hover .cv-anchor {
   font-size: 0.75rem;
   color: #777;
   margin-bottom: 0.6rem;
+}
+
+.post-header__tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.35rem;
 }
 
 .post-header__tag {
