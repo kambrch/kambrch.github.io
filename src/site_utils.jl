@@ -852,40 +852,31 @@ function hfun_cv_publications(_=nothing)
   try
     isempty(CV_PUBLICATIONS) && return "<p>No publications listed yet.</p>"
     io = IOBuffer()
-    write(io, "<div class=\"cv-publications\">")
     for pub in sort(CV_PUBLICATIONS, by = p -> getfield_safe(p, :year, 0), rev = true)
-      write(io, "<article class=\"cv-publications__item\">")
-      write(io, "<header class=\"cv-publications__header\">")
       title = html_escape(getfield_safe(pub, :title, "Untitled Publication"))
-      write(
-        io,
-        "<h3 class=\"cv-publications__title\">$title</h3>",
-      )
-      authors = html_escape(getfield_safe(pub, :authors, "Unknown Authors"))
-      venue = html_escape(getfield_safe(pub, :venue, "Unknown Venue"))
-      year = getfield_safe(pub, :year, "Unknown Year")
-      write(
-        io,
-        "<p class=\"cv-publications__meta\">$authors · $venue · $year</p>",
-      )
-      write(io, "</header>")
+      authors = html_escape(getfield_safe(pub, :authors, ""))
+      venue = html_escape(getfield_safe(pub, :venue, ""))
+      year = getfield_safe(pub, :year, "")
       summary = getfield_safe(pub, :summary, "")
-      if !isempty(strip(summary))
-        write(
-          io,
-          "<p class=\"cv-publications__summary\">$(html_escape(summary))</p>",
-        )
-      end
       doi = getfield_safe(pub, :doi, "")
+      meta_parts = filter(!isempty, [authors, venue, string(year)])
+      meta = join(meta_parts, " · ")
+      write(io, "<article class=\"accent-card\">")
+      write(io, "<div class=\"accent-card__title\">$title</div>")
+      if !isempty(meta)
+        write(io, "<div class=\"accent-card__meta\">$meta</div>")
+      end
+      if !isempty(strip(summary))
+        write(io, "<p class=\"accent-card__snippet\">$(html_escape(summary))</p>")
+      end
       if !isempty(doi)
         write(
           io,
-          "<p class=\"cv-publications__links\"><a href=\"$(html_escape(doi))\">DOI link</a></p>",
+          "<a href=\"$(html_escape(doi))\" style=\"font-size:0.8rem;color:#444;\">DOI link</a>",
         )
       end
       write(io, "</article>")
     end
-    write(io, "</div>")
     return String(take!(io))
   catch e
     @error "Error in hfun_cv_publications" exception=(e, catch_backtrace())
