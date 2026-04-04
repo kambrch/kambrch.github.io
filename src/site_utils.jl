@@ -518,20 +518,15 @@ function hfun_blog_index(_=nothing)
   total_posts = length(posts)
   summary_label = total_posts == 1 ? "1 post" : string(total_posts, " posts")
   latest_label = long_date_label(posts[1].date)
+
+  # Summary line
   write(io, "<div class=\"blog-summary\">")
-  write(
-    io,
-    "<span class=\"blog-summary__count\">$(html_escape(summary_label))</span>",
-  )
-  write(
-    io,
-    "<span class=\"blog-summary__sep\" aria-hidden=\"true\">&bull;</span>",
-  )
-  write(
-    io,
-    "<span class=\"blog-summary__latest\">Updated $(html_escape(latest_label))</span>",
-  )
+  write(io, "<span class=\"blog-summary__count\">$(html_escape(summary_label))</span>")
+  write(io, "<span class=\"blog-summary__sep\" aria-hidden=\"true\">&bull;</span>")
+  write(io, "<span class=\"blog-summary__latest\">Updated $(html_escape(latest_label))</span>")
   write(io, "</div>")
+
+  # Tag filters
   tag_counts = Dict{String, Int}()
   for post in posts
     for tag in post.tags
@@ -539,10 +534,7 @@ function hfun_blog_index(_=nothing)
     end
   end
   tags = all_blog_tags()
-  write(
-    io,
-    "<div class=\"blog-filters\" role=\"group\" aria-label=\"Filter posts by tag\">",
-  )
+  write(io, "<div class=\"blog-filters\" role=\"group\" aria-label=\"Filter posts by tag\">")
   write(
     io,
     "<button class=\"blog-filter__btn is-active\" data-filter=\"all\" " *
@@ -564,74 +556,83 @@ function hfun_blog_index(_=nothing)
     )
   end
   write(io, "</div>")
+
+  # Post list
   write(io, "<div class=\"blog-list\">")
-  for post in posts
+  for (i, post) in enumerate(posts)
     tag_slug_list = join(slugify_tag.(post.tags), " ")
     date_iso = Dates.format(post.date, dateformat"yyyy-mm-dd")
     date_display = long_date_label(post.date)
-    write(
-      io,
-      "<article class=\"blog-card\" data-tags=\"$(html_escape(tag_slug_list))\">",
-    )
-    write(
-      io,
-      "<div class=\"blog-card__meta\"><time class=\"blog-card__meta-item\" " *
-      "datetime=\"$date_iso\">$date_display</time>",
-    )
     reading_label = format_reading_time(post.reading_minutes)
-    if !isempty(reading_label)
+
+    if i == 1
+      # Featured (latest) post — dark zone
       write(
         io,
-        "<span class=\"blog-card__meta-item\">$(html_escape(reading_label))</span>",
+        "<article class=\"dark-zone blog-featured\" data-tags=\"$(html_escape(tag_slug_list))\">",
       )
-    end
-    write(io, "</div>")
-    write(
-      io,
-      "<h2 class=\"blog-card__title\"><a href=\"$(html_escape(post.url))\">" *
-      "$(html_escape(post.title))</a></h2>",
-    )
-    if !isempty(post.snippet)
+      write(io, "<span class=\"blog-featured__label\">Latest</span>")
       write(
         io,
-        "<p class=\"blog-card__snippet\">$(html_escape(post.snippet))</p>",
+        "<a class=\"blog-featured__title\" href=\"$(html_escape(post.url))\">" *
+        "$(html_escape(post.title))</a>",
       )
-    end
-    if !isempty(post.tags)
-      chips = join(
-        ["<span class=\"blog-card__tag\">$(html_escape(tag))</span>" for tag in post.tags],
-        " ",
+      if !isempty(post.snippet)
+        write(io, "<p class=\"blog-featured__snippet\">$(html_escape(post.snippet))</p>")
+      end
+      write(io, "<div class=\"blog-featured__footer\">")
+      if !isempty(post.tags)
+        write(io, "<div class=\"blog-featured__tags\">")
+        for tag in post.tags
+          write(io, "<span class=\"blog-featured__tag\">$(html_escape(tag))</span>")
+        end
+        write(io, "</div>")
+      end
+      date_str = isempty(reading_label) ? date_display : "$date_display · $reading_label"
+      write(io, "<span class=\"blog-featured__date\"><time datetime=\"$date_iso\">$(html_escape(date_str))</time></span>")
+      write(io, "</div>")  # footer
+      write(io, "</article>")
+    else
+      # Older posts — accent cards
+      write(
+        io,
+        "<article class=\"accent-card blog-card\" data-tags=\"$(html_escape(tag_slug_list))\">",
       )
-      write(io, "<div class=\"blog-card__tags\">$chips</div>")
+      meta = isempty(reading_label) ? date_display : "$date_display · $reading_label"
+      write(io, "<div class=\"accent-card__meta\"><time datetime=\"$date_iso\">$(html_escape(meta))</time></div>")
+      write(
+        io,
+        "<div class=\"accent-card__title\"><a href=\"$(html_escape(post.url))\">" *
+        "$(html_escape(post.title))</a></div>",
+      )
+      if !isempty(post.snippet)
+        write(io, "<p class=\"accent-card__snippet\">$(html_escape(post.snippet))</p>")
+      end
+      if !isempty(post.tags)
+        write(io, "<div class=\"accent-card__tags\">")
+        for tag in post.tags
+          write(io, "<span class=\"accent-card__tag\">$(html_escape(tag))</span>")
+        end
+        write(io, "</div>")
+      end
+      write(io, "</article>")
     end
-    write(
-      io,
-      "<a class=\"blog-card__cta\" href=\"$(html_escape(post.url))\" " *
-      "aria-label=\"Read $(html_escape(post.title))\">Read more &rarr;</a>",
-    )
-    write(io, "</article>")
   end
-  write(io, "</div>")
+  write(io, "</div>")  # blog-list
+
+  # Filter script (unchanged)
   write(io, """
 <script>
 document.addEventListener("DOMContentLoaded", function () {
   const buttons = Array.from(document.querySelectorAll(".blog-filter__btn"));
-  const cards = Array.from(document.querySelectorAll(".blog-card"));
-  if (buttons.length === 0 || cards.length === 0) {
-    return;
-  }
+  const cards = Array.from(document.querySelectorAll(".blog-list article"));
+  if (buttons.length === 0 || cards.length === 0) { return; }
   function applyFilter(target) {
     cards.forEach(function (card) {
-      if (target === "all") {
-        card.classList.remove("is-hidden");
-        return;
-      }
+      if (target === "all") { card.classList.remove("is-hidden"); return; }
       var tags = (card.dataset.tags || "").split(/\\s+/).filter(Boolean);
-      if (tags.includes(target)) {
-        card.classList.remove("is-hidden");
-      } else {
-        card.classList.add("is-hidden");
-      }
+      if (tags.includes(target)) { card.classList.remove("is-hidden"); }
+      else { card.classList.add("is-hidden"); }
     });
   }
   function setActiveButton(activeButton) {
@@ -642,33 +643,20 @@ document.addEventListener("DOMContentLoaded", function () {
     });
   }
   function activateFilter(target) {
-    var button = buttons.find(function (btn) {
-      return btn.dataset.filter === target;
-    });
-    if (!button) {
-      return;
-    }
+    var button = buttons.find(function (btn) { return btn.dataset.filter === target; });
+    if (!button) { return; }
     setActiveButton(button);
     applyFilter(target);
-    if (target === "all") {
-      history.replaceState(null, "", window.location.pathname);
-    } else {
-      history.replaceState(null, "", window.location.pathname + "#tag=" + target);
-    }
+    if (target === "all") { history.replaceState(null, "", window.location.pathname); }
+    else { history.replaceState(null, "", window.location.pathname + "#tag=" + target); }
   }
   buttons.forEach(function (button) {
-    button.addEventListener("click", function () {
-      activateFilter(button.dataset.filter);
-    });
+    button.addEventListener("click", function () { activateFilter(button.dataset.filter); });
   });
   var initialTarget = "all";
   var hashMatch = window.location.hash.match(/^#tag=([\\w-]+)/);
-  if (hashMatch && hashMatch[1]) {
-    initialTarget = hashMatch[1];
-  }
-  if (!buttons.some(function (btn) { return btn.dataset.filter === initialTarget; })) {
-    initialTarget = "all";
-  }
+  if (hashMatch && hashMatch[1]) { initialTarget = hashMatch[1]; }
+  if (!buttons.some(function (btn) { return btn.dataset.filter === initialTarget; })) { initialTarget = "all"; }
   activateFilter(initialTarget);
 });
 </script>
