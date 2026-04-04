@@ -9,6 +9,7 @@ export blog_posts,
   all_blog_tags,
   hfun_blog_index,
   hfun_blog_nav,
+  hfun_post_header,
   hfun_canonical_url,
   hfun_cv_metrics,
   hfun_cv_downloads,
@@ -782,6 +783,74 @@ function hfun_blog_nav(_=nothing)
   write(io, "</div>")
 
   write(io, "</nav>")
+  return String(take!(io))
+end
+
+"""
+    hfun_post_header()
+
+Render a dark-zone header for a blog post. Reads title, date, tags, and
+reading time from the post cache. Use as `{{post_header}}` at the top of
+each blog post body (after frontmatter, before prose).
+"""
+function hfun_post_header(_=nothing)
+  rpath_val = Franklin.locvar(:fd_rpath)
+  rpath_val isa AbstractString || return ""
+  rpath = String(rpath_val)
+
+  # Look up post in cache for reading_minutes
+  posts = blog_posts()
+  post = nothing
+  path_id = normalize_identifier(rpath)
+  for p in posts
+    if p.rpath == rpath || p.rpath == path_id || p.slug == path_id
+      post = p
+      break
+    end
+  end
+
+  # Fallback: read title/date/tags from Franklin page variables
+  title_val = Franklin.locvar(:title)
+  title = title_val isa AbstractString && !isempty(strip(title_val)) ?
+    String(title_val) : (post !== nothing ? post.title : "Untitled")
+
+  date_val = Franklin.locvar(:published)
+  if isnothing(date_val)
+    date_val = Franklin.locvar(:date)
+  end
+  date = if post !== nothing
+    post.date
+  elseif date_val isa Date
+    date_val
+  else
+    nothing
+  end
+
+  tags = post !== nothing ? post.tags : normalize_tags(Franklin.locvar(:tags))
+  reading_minutes = post !== nothing ? post.reading_minutes : 0
+
+  io = IOBuffer()
+  write(io, "<div class=\"post-header\">")
+  write(io, "<h1 class=\"post-header__title\">$(html_escape(title))</h1>")
+  write(io, "<div class=\"post-header__meta\">")
+  if date !== nothing
+    date_iso = Dates.format(date, dateformat"yyyy-mm-dd")
+    date_display = long_date_label(date)
+    write(io, "<time datetime=\"$date_iso\">$(html_escape(date_display))</time>")
+  end
+  reading_label = format_reading_time(reading_minutes)
+  if !isempty(reading_label)
+    write(io, "<span>$(html_escape(reading_label))</span>")
+  end
+  write(io, "</div>")  # meta
+  if !isempty(tags)
+    write(io, "<div style=\"display:flex;flex-wrap:wrap;gap:0.35rem;\">")
+    for tag in tags
+      write(io, "<span class=\"post-header__tag\">$(html_escape(tag))</span>")
+    end
+    write(io, "</div>")
+  end
+  write(io, "</div>")  # post-header
   return String(take!(io))
 end
 

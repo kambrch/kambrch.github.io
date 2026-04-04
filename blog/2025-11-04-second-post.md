@@ -3,7 +3,7 @@
 @def tags = ["franklin", "meta"]
 @def rss = "Implementation notes on the Franklin helpers that drive the blog index and navigation."
 
-## How the Blog Engine Works
+{{post_header}}
 
 Wrapped up the first iteration of a lightweight blog engine inside this Franklin.jl site.
 Leaving notes here so I remember how it’s wired together when I inevitably forget six months from now.
