@@ -745,7 +745,7 @@ function hfun_blog_nav(_=nothing)
       "<a class=\"accent-card\" href=\"$(html_escape(prev_post.url))\" " *
       "aria-label=\"Previous: $prev_title\" style=\"display:flex;flex-direction:column;gap:0.2rem;\">")
     write(io, "<span class=\"blog-nav__label\">&larr; Previous</span>")
-    write(io, "<span style=\"font-weight:600;font-size:0.85rem;color:#111;\">$prev_title</span>")
+    write(io, "<span class=\"blog-nav__title\">$prev_title</span>")
     write(io, "</a>")
   else
     write(
@@ -753,7 +753,7 @@ function hfun_blog_nav(_=nothing)
       "<span class=\"accent-card\" style=\"opacity:0.4;cursor:default;pointer-events:none;display:flex;flex-direction:column;gap:0.2rem;\">",
     )
     write(io, "<span class=\"blog-nav__label\">&larr; Previous</span>")
-    write(io, "<span style=\"font-weight:600;font-size:0.85rem;color:#aaa;\">Start of archive</span>")
+    write(io, "<span class=\"blog-nav__title\">Start of archive</span>")
     write(io, "</span>")
   end
   write(io, "</div>")
@@ -765,7 +765,7 @@ function hfun_blog_nav(_=nothing)
     "aria-label=\"Browse all posts\" style=\"display:flex;flex-direction:column;gap:0.2rem;align-items:center;text-align:center;\">",
   )
   write(io, "<span class=\"blog-nav__label\">Archive</span>")
-  write(io, "<span style=\"font-weight:600;font-size:0.85rem;color:#111;\">All posts</span>")
+  write(io, "<span class=\"blog-nav__title\">All posts</span>")
   write(io, "</a>")
   write(io, "</div>")
 
@@ -777,7 +777,7 @@ function hfun_blog_nav(_=nothing)
       "<a class=\"accent-card\" href=\"$(html_escape(next_post.url))\" " *
       "aria-label=\"Next: $next_title\" style=\"display:flex;flex-direction:column;gap:0.2rem;align-items:flex-end;text-align:right;\">")
     write(io, "<span class=\"blog-nav__label\">Next &rarr;</span>")
-    write(io, "<span style=\"font-weight:600;font-size:0.85rem;color:#111;\">$next_title</span>")
+    write(io, "<span class=\"blog-nav__title\">$next_title</span>")
     write(io, "</a>")
   else
     write(
@@ -785,7 +785,7 @@ function hfun_blog_nav(_=nothing)
       "<span class=\"accent-card\" style=\"opacity:0.4;cursor:default;pointer-events:none;display:flex;flex-direction:column;gap:0.2rem;align-items:flex-end;text-align:right;\">",
     )
     write(io, "<span class=\"blog-nav__label\">Next &rarr;</span>")
-    write(io, "<span style=\"font-weight:600;font-size:0.85rem;color:#aaa;\">End of archive</span>")
+    write(io, "<span class=\"blog-nav__title\">End of archive</span>")
     write(io, "</span>")
   end
   write(io, "</div>")
