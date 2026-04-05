@@ -46,12 +46,20 @@ using .CVData
 
 @eval Franklin begin
   function hfun_img(args)
+    _esc(s) = begin
+      s = replace(String(s), "&" => "&amp;")
+      s = replace(s, "<" => "&lt;")
+      s = replace(s, ">" => "&gt;")
+      s = replace(s, "\"" => "&quot;")
+      replace(s, "'" => "&#39;")
+    end
     path = args[1]
-    alt = length(args) ≥ 2 ? args[2] : ""
+    alt = _esc(length(args) ≥ 2 ? args[2] : "")
     width = length(args) ≥ 3 ? args[3] : ""
     align = length(args) ≥ 4 ? args[4] : "center"
     class = length(args) ≥ 5 ? args[5] : ""
     class = occursin("framed", class) ? replace(class, "bordered" => "") : class
+    class = _esc(class)
 
     resolved = "/" * path
 
@@ -68,7 +76,7 @@ using .CVData
         candidate_local = "$(source_base_path)-$(w).$(ext)"
         if isfile(candidate_local)
           candidate_url = "$(base_path)-$(w).$(ext)"
-          push!(variants, "$candidate_url $(w)w")
+          push!(variants, "$(_esc(candidate_url)) $(w)w")
         end
       end
       return join(variants, ", ")
@@ -78,7 +86,7 @@ using .CVData
     webp_srcset = responsive_srcset("webp")
     fallback_srcset = responsive_srcset(original_ext)
     sizes = "(max-width: 768px) 100vw, 600px"
-    style_width = isempty(strip(String(width))) ? "" : "width:$(width); "
+    style_width = isempty(strip(String(width))) ? "" : "width:$(_esc(String(width))); "
     style_attr = "style=\"$(style_width)max-width:100%; height:auto;\""
 
     align_style = align == "left"  ? "float:left;" :
@@ -104,7 +112,7 @@ using .CVData
       <div class="framed" style="$(align_style)">
         <picture>
           $(String(take!(picture_sources)))
-          <img src="$(resolved)" alt="$(alt)"
+          <img src="$(_esc(resolved))" alt="$(alt)"
                class="$(class)"
                loading="lazy"
                $(fallback_attr)
@@ -116,7 +124,7 @@ using .CVData
       fallback_attr = isempty(fallback_srcset) ? "" : "srcset=\"$(fallback_srcset)\" sizes=\"$(sizes)\""
       return """
       <div class="framed" style="$(align_style)">
-        <img src="$(resolved)" alt="$(alt)"
+        <img src="$(_esc(resolved))" alt="$(alt)"
              class="$(class)"
              loading="lazy"
              $(fallback_attr)

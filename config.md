@@ -6,7 +6,7 @@ author = "Kamil 'Kamash' Bruchal"
 mintoclevel = 2
 
 schema_job_title = "Physicist"
-schema_url = "https://kambr.pl"
+schema_url = "https://www.kambr.pl"
 schema_image = "https://kambr.pl/assets/img/kamash_komodka.jpg"
 schema_email = "mailto:kambr@kambr.pl"
 schema_address_locality = "Wrocław"
@@ -19,6 +19,7 @@ schema_affiliations_json = """[
 ]"""
 schema_sameas_json = """[
   "https://github.com/kambrch",
+  "https://www.linkedin.com/in/kamil-bruchal",
   "https://www.qrz.com/db/SP6WRN",
   "https://phobia.pwr.edu.pl/kamil-bruchal",
   "https://iam.pwr.edu.pl/people/kamil-bruchal",
@@ -32,7 +33,7 @@ ignore = ["node_modules/", ".venv/"]
 ## RSS (the website_{title, descr, url} must be defined to get RSS)
 generate_rss = true
 website_title = "Kamash Site"
-website_descr = "My personal website generated with Franklin."
+website_descr = "Physicist, Julia developer, and hardware hacker based in Wrocław."
 website_url = "https://www.kambr.pl/"
 +++
 
