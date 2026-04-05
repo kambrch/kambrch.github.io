@@ -14,7 +14,7 @@
     <link> https://www.kambr.pl/ </link>
     <description>
       
-      <![CDATA[  My personal website generated with Franklin.  ]]>
+      <![CDATA[  Physicist, Julia developer, and hardware hacker based in Wrocław.  ]]>
       
     </description>
     <atom:link
@@ -30,7 +30,7 @@
   <link> https://www.kambr.pl/projects/index.html </link>
   <guid> https://www.kambr.pl/projects/index.html </guid>
   <description>
-    <![CDATA[  Description of personal projects.  ]]>
+    <![CDATA[  Personal projects by Kamil Bruchal.  ]]>
   </description>  
     
   <pubDate>Mon, 03 Nov 2025 00:00:00 +0000</pubDate>  
