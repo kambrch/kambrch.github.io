@@ -44,6 +44,9 @@ const FileRecord = NamedTuple{(:entry, :filepath, :statinfo), Tuple{String, Stri
 include("../data/cv_data.jl")
 using .CVData
 
+# hfun_img is injected directly into the Franklin module so that Franklin's
+# template engine can resolve {{img ...}} without going through SiteUtils.
+# It cannot be listed in the SiteUtils export block for the same reason.
 @eval Franklin begin
   function hfun_img(args)
     _esc(s) = begin
@@ -158,7 +161,7 @@ normalize_site_url(url::AbstractString) = begin
 end
 
 function hfun_canonical_url()
-  page_url = Franklin.locvar("fd_full_url")
+  page_url = Franklin.locvar(:fd_full_url)
   if page_url isa String && !isempty(strip(page_url))
     return html_escape(normalize_site_url(page_url))
   end
@@ -269,6 +272,14 @@ function count_words(text::AbstractString)
   return length(split(stripped, r"\s+", keepempty = false))
 end
 
+function extract_frontmatter_title(filepath)
+  for line in eachline(filepath)
+    m = match(r"^@def\s+title\s*=\s*\"(.+)\"", line)
+    m !== nothing && return String(m[1])
+  end
+  return nothing
+end
+
 function extract_post_summary(filepath)
   content = read(filepath, String)
   lines = split(content, '\n')
@@ -277,6 +288,7 @@ function extract_post_summary(filepath)
   for line in lines
     stripped = strip(line)
     startswith(stripped, "@def") && continue
+    startswith(stripped, "{{") && continue
     if !isempty(stripped) && !startswith(stripped, "#")
       push!(body_tokens, stripped)
     end
@@ -331,8 +343,10 @@ function compute_blog_posts()
       title = if raw_title isa AbstractString && !isempty(strip(raw_title))
         String(raw_title)
       else
-        words = split(replace(slug, '-' => ' '))
-        join(uppercasefirst.(words), " ")
+        something(extract_frontmatter_title(record.filepath), let
+          words = split(replace(slug, '-' => ' '))
+          join(uppercasefirst.(words), " ")
+        end)
       end
       tags = normalize_tags(pagevar(rpath, :tags))
       date_val = pagevar(rpath, :published)

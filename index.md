@@ -1,6 +1,7 @@
 @def title = "Kamaś's Home"
 @def tags = ["about me"]
 
+~~~
 <div class="dark-zone" style="margin-top:1rem;">
   <span class="dark-zone__label">About</span>
   <div style="font-weight:700;font-size:1.05rem;color:#fff;margin-bottom:0.35rem;">Kamil Bruchal <span style="font-weight:400;color:#777;font-size:0.9rem;">· Kamaś · Kambr</span></div>
@@ -51,5 +52,6 @@
     <span class="compact-rows__val">RF · SDR · Embedded · Electronics hacking</span>
   </div>
 </div>
+~~~
 
 {{img assets/img/kamash_komodka.jpg "Kamash i Komodka" "600px" "center" "rounded soft shadow framed"}}

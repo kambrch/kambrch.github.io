@@ -1,6 +1,7 @@
 @def title = "KAMSOFT - Data Science, Data Engineering & Scientific Computing Consulting"
 @def tags = ["business", "data-engineering", "data-science", "scientific-computing", "software-development"]
 
+~~~
 <div class="dark-zone" style="margin-top:1rem;">
   <span class="dark-zone__label">KAMSOFT</span>
   <div style="font-weight:700;font-size:1.1rem;color:#fff;margin-bottom:0.5rem;">Data Science · Data Engineering · Scientific Computing</div>
@@ -54,3 +55,4 @@
   <div style="font-size:0.85rem;color:#aaa;margin-bottom:0.5rem;">If your data, models, or compute setup is becoming a bottleneck</div>
   <a href="mailto:kamsoft@kambr.pl" style="color:#fff;font-weight:700;font-size:1rem;">kamsoft@kambr.pl</a>
 </div>
+~~~

@@ -5,6 +5,7 @@ rss = "Personal projects by Kamil Bruchal."
 tags = ["projects"]
 +++
 
+~~~
 <div class="dark-zone" style="margin-top:1rem;">
   <span class="dark-zone__label">Projects</span>
   <div style="font-weight:700;font-size:1.05rem;color:#fff;margin-bottom:0.3rem;">Things I've built</div>
@@ -32,3 +33,4 @@ tags = ["projects"]
     <span class="compact-rows__val">More coming soon.</span>
   </div>
 </div>
+~~~
