@@ -879,7 +879,8 @@ html {
   font-size: 0.8rem;
 }
 
-.blog-card.is-hidden {
+.blog-card.is-hidden,
+.blog-featured.is-hidden {
   display: none;
 }
 
@@ -1464,6 +1465,11 @@ h3:hover .cv-anchor {
   border-radius: 999px;
   padding: 0.1rem 0.45rem;
   font-size: 0.7rem;
+  text-decoration: none;
+}
+.accent-card__tag:hover {
+  background: #e0e0e0;
+  color: #333;
 }
 
 /* ==================================================================
@@ -1605,6 +1611,11 @@ h3:hover .cv-anchor {
   border-radius: 999px;
   padding: 0.15rem 0.5rem;
   font-size: 0.68rem;
+  text-decoration: none;
+}
+.blog-featured__tag:hover {
+  background: #3a3a3a;
+  color: #ddd;
 }
 
 .blog-featured__date {
