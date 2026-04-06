@@ -42,15 +42,6 @@
   </div>
 </div>
 
-<div class="compact-rows">
-  <div class="compact-rows__heading">Engagement modes</div>
-  <div class="compact-rows__grid">
-    <span class="compact-rows__key">Audit</span><span class="compact-rows__val">Identify failure modes, bottlenecks, and a realistic roadmap</span>
-    <span class="compact-rows__key">Build</span><span class="compact-rows__val">Implement or refactor the system, with tests and documentation</span>
-    <span class="compact-rows__key">Support</span><span class="compact-rows__val">Short-term help for a specific hard problem — performance, correctness, migration</span>
-  </div>
-</div>
-
 <div class="dark-zone" style="margin-top:1.5rem;text-align:center;">
   <div style="font-size:0.85rem;color:#aaa;margin-bottom:0.5rem;">If your data, models, or compute setup is becoming a bottleneck</div>
   <a href="mailto:kamsoft@kambr.pl" style="color:#fff;font-weight:700;font-size:1rem;">kamsoft@kambr.pl</a>

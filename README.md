@@ -7,22 +7,26 @@ This is the source code for my personal website built with [Franklin.jl](https:/
 To run this site locally, you'll need to have [Julia](https://julialang.org/) installed on your system.
 
 1. Clone this repository:
+
    ```bash
    git clone https://github.com/kambrch/kambrch.github.io.git
    cd kambrch.github.io
    ```
 
 2. Install the required Julia packages:
+
    ```bash
    julia --project=@. -e 'import Pkg; Pkg.instantiate();'
    ```
 
 3. Install build dependencies used by Franklin optimizations (minifier):
+
    ```bash
    python3 -m pip install -r requirements.txt
    ```
 
 4. Serve the site locally:
+
    ```bash
    julia --project=@. -e 'using Franklin; serve()'
    ```
@@ -39,6 +43,7 @@ julia --project=@. -e 'using Franklin; optimize()'
 ```
 
 If you want code-block prerendering during optimize, also install highlight.js once:
+
 ```bash
 julia --project=@. -e 'using NodeJS; run(`$(npm_cmd()) install highlight.js`)'
 ```
@@ -77,11 +82,13 @@ For optimal performance, all images should be optimized before adding them to th
 - Consider lazy loading for images below the fold
 
 Example of including an optimized image in a page:
+
 ```html
 {{img assets/img/example.jpg "Alt text" "600px" "center" "rounded soft shadow framed"}}
 ```
 
 Generate responsive image variants (480/800/1200 widths by default):
+
 ```bash
 ./scripts/optimize-images.sh
 ```
