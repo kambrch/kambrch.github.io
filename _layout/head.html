@@ -26,6 +26,8 @@
   <meta property="twitter:description" content="{{isdef website_descr}}{{fill website_descr}}{{else}}Personal website of Kamil Bruchal, physicist and Julia developer{{end}}">
   <meta property="twitter:image" content="{{fill schema_image}}">
 
+  <link rel="alternate" type="application/rss+xml" title="{{fill website_title}}" href="/feed.xml">
+
   {{if hasmath}} {{insert head_katex.html }}     {{end}}
   {{if hascode}} {{insert head_highlight.html }}   {{end}}
   {{insert style.html}}

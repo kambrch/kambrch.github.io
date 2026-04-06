@@ -280,6 +280,20 @@ function extract_frontmatter_title(filepath)
   return nothing
 end
 
+function extract_frontmatter_tags(filepath)
+  for line in eachline(filepath)
+    m = match(r"^@def\s+tags\s*=\s*\[(.+)\]", line)
+    m === nothing && continue
+    tags = String[]
+    for part in split(m[1], ',')
+      s = strip(part, [' ', '"', '\''])
+      isempty(s) || push!(tags, String(s))
+    end
+    return tags
+  end
+  return String[]
+end
+
 function extract_post_summary(filepath)
   content = read(filepath, String)
   lines = split(content, '\n')
@@ -348,7 +362,12 @@ function compute_blog_posts()
           join(uppercasefirst.(words), " ")
         end)
       end
-      tags = normalize_tags(pagevar(rpath, :tags))
+      raw_tags = pagevar(rpath, :tags)
+      tags = if raw_tags !== nothing
+        normalize_tags(raw_tags)
+      else
+        extract_frontmatter_tags(record.filepath)
+      end
       date_val = pagevar(rpath, :published)
       if isnothing(date_val)
         date_val = pagevar(rpath, :date)
@@ -607,7 +626,8 @@ function hfun_blog_index(_=nothing)
       if !isempty(post.tags)
         write(io, "<div class=\"blog-featured__tags\">")
         for tag in post.tags
-          write(io, "<span class=\"blog-featured__tag\">$(html_escape(tag))</span>")
+          tag_slug = slugify_tag(tag)
+          write(io, "<a class=\"blog-featured__tag\" href=\"/tag/$(html_escape(tag_slug))/\">$(html_escape(tag))</a>")
         end
         write(io, "</div>")
       end
@@ -634,7 +654,8 @@ function hfun_blog_index(_=nothing)
       if !isempty(post.tags)
         write(io, "<div class=\"accent-card__tags\">")
         for tag in post.tags
-          write(io, "<span class=\"accent-card__tag\">$(html_escape(tag))</span>")
+          tag_slug = slugify_tag(tag)
+          write(io, "<a class=\"accent-card__tag\" href=\"/tag/$(html_escape(tag_slug))/\">$(html_escape(tag))</a>")
         end
         write(io, "</div>")
       end
