@@ -32,27 +32,9 @@
   {{if hascode}} {{insert head_highlight.html }}   {{end}}
   {{insert style.html}}
   {{isdef title}} <title>{{fill title}}</title>  {{end}}
-  {{isdef schema_job_title}}
-  <script type="application/ld+json">
-  {
-    "@context": "https://schema.org",
-    "@type": "Person",
-    "name": "{{fill author}}",
-    "alternateName": {{fill schema_alternate_names_json}},
-    "jobTitle": "{{fill schema_job_title}}",
-    "affiliation": {{fill schema_affiliations_json}},
-    "url": "{{fill schema_url}}",
-    "image": "{{fill schema_image}}",
-    "email": "{{fill schema_email}}",
-    "sameAs": {{fill schema_sameas_json}},
-    "address": {
-      "@type": "PostalAddress",
-      "addressLocality": "{{fill schema_address_locality}}",
-      "addressCountry": "{{fill schema_address_country}}"
-    }
-  }
-  </script>
-  {{end}}
+  <!-- Built in Julia rather than inline: Franklin does not expand {{...}}
+       inside <script> tags, so an inline block ships literal placeholders. -->
+  {{schema_jsonld}}
 </head>
 <body>
 {{insert sidebar.html}}

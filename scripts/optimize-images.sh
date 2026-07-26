@@ -25,9 +25,14 @@ command -v avifenc >/dev/null 2>&1 && has_avifenc=1
 echo "Optimizing images in: $INPUT_DIR"
 echo "Widths: ${WIDTHS[*]}"
 
-find "$INPUT_DIR" -type f \( -iname '*.jpg' -o -iname '*.jpeg' -o -iname '*.png' \) | while read -r file; do
+# Fed by process substitution rather than a pipe: a pipeline would run this
+# loop in a subshell, where `set -e` cannot abort the script and an encoder
+# failure would still exit 0. -print0 also survives filenames with spaces.
+while IFS= read -r -d '' file; do
   filename="$(basename "$file")"
-  if [[ "$filename" =~ -[0-9]+\.(jpg|jpeg|png)$ ]]; then
+  # Skip our own derivatives only. A bare -[0-9]+ also matched legitimate
+  # sources such as board-rev2.jpg, silently leaving them unoptimized.
+  if [[ "$filename" =~ -(480|800|1200)\.(jpg|jpeg|png)$ ]]; then
     continue
   fi
 
@@ -54,15 +59,19 @@ find "$INPUT_DIR" -type f \( -iname '*.jpg' -o -iname '*.jpeg' -o -iname '*.png'
       magick "$tmp" -strip -quality "$WEBP_QUALITY" "$webp_out"
     fi
 
+    # No `|| true` here: silencing both branches is why zero .avif files were
+    # ever produced while the script still reported success. `--quiet` is not an
+    # avifenc option (it exits 2), and --min/--max are deprecated in favour of
+    # -q 0..100 -- both failures were invisible behind the old `|| true`.
     avif_out="${base}-${width}.avif"
     if [ "$has_avifenc" -eq 1 ]; then
-      avifenc --quiet --min 20 --max "$AVIF_QUALITY" "$tmp" "$avif_out" >/dev/null 2>&1 || true
+      avifenc -q "$AVIF_QUALITY" "$tmp" "$avif_out" >/dev/null
     else
-      magick "$tmp" -strip -quality "$AVIF_QUALITY" "$avif_out" >/dev/null 2>&1 || true
+      magick "$tmp" -strip -quality "$AVIF_QUALITY" "$avif_out"
     fi
 
     rm -f "$tmp"
   done
-done
+done < <(find "$INPUT_DIR" -type f \( -iname '*.jpg' -o -iname '*.jpeg' -o -iname '*.png' \) -print0)
 
 echo "Done."

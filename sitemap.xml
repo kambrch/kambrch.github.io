@@ -1,5 +1,0 @@
-+++
-@def title = "Sitemap"
-+++
-
-{{sitemap_xml}}

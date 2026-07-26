@@ -59,6 +59,10 @@ jobs:
             optimize(prerender=true)'
     - name: Normalize URLs
       run: ./scripts/normalize-generated-urls.sh __site
+    # Gate the deploy on the build assertions: no build-time sources published,
+    # JSON-LD parses, sitemap well-formed, no unresolved {{...}} calls.
+    - name: Verify build
+      run: ./scripts/verify-build.sh __site
     - name: Deploy
       uses: JamesIves/github-pages-deploy-action@v4
       with:

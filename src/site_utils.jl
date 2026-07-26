@@ -11,6 +11,7 @@ export blog_posts,
   hfun_blog_nav,
   hfun_post_header,
   hfun_canonical_url,
+  hfun_schema_jsonld,
   hfun_rss_link,
   hfun_cv_metrics,
   hfun_cv_downloads,
@@ -64,6 +65,62 @@ using .CVData
     class = length(args) ≥ 5 ? args[5] : ""
     class = occursin("framed", class) ? replace(class, "bordered" => "") : class
     class = _esc(class)
+    # 6th arg opts an above-the-fold image out of lazy loading; lazy stays the
+    # default because every current caller is below the fold.
+    eager = length(args) ≥ 6 && lowercase(strip(String(args[6]))) in ("eager", "true")
+
+    # Intrinsic pixel size of the source, read straight from the file header so
+    # the <img> can reserve layout space (avoids cumulative layout shift).
+    # Returns nothing when the format is unknown or the file is unreadable, in
+    # which case the attributes are simply omitted.
+    function _intrinsic_size(file::String)
+      isfile(file) || return nothing
+      try
+        open(file, "r") do io
+          magic = read(io, 8)
+          length(magic) < 8 && return nothing
+          # PNG: IHDR width/height are the 8 bytes at offset 16.
+          if magic == UInt8[0x89, 0x50, 0x4e, 0x47, 0x0d, 0x0a, 0x1a, 0x0a]
+            seek(io, 16)
+            dims = read(io, 8)
+            length(dims) < 8 && return nothing
+            w = Int(dims[1]) << 24 | Int(dims[2]) << 16 | Int(dims[3]) << 8 | Int(dims[4])
+            h = Int(dims[5]) << 24 | Int(dims[6]) << 16 | Int(dims[7]) << 8 | Int(dims[8])
+            return (w, h)
+          end
+          # JPEG: walk the marker chain to the first start-of-frame segment.
+          if magic[1] == 0xff && magic[2] == 0xd8
+            seek(io, 2)
+            while !eof(io)
+              read(io, UInt8) == 0xff || continue
+              marker = read(io, UInt8)
+              while marker == 0xff && !eof(io)
+                marker = read(io, UInt8)
+              end
+              # Standalone markers carry no length field.
+              (marker == 0xd8 || marker == 0xd9 || (0xd0 ≤ marker ≤ 0xd7)) && continue
+              eof(io) && break
+              lenbytes = read(io, 2)
+              length(lenbytes) < 2 && break
+              seglen = Int(lenbytes[1]) << 8 | Int(lenbytes[2])
+              isSOF = (0xc0 ≤ marker ≤ 0xcf) && marker ∉ (0xc4, 0xc8, 0xcc)
+              if isSOF
+                sof = read(io, 5)
+                length(sof) < 5 && break
+                h = Int(sof[2]) << 8 | Int(sof[3])
+                w = Int(sof[4]) << 8 | Int(sof[5])
+                return (w, h)
+              end
+              seglen < 2 && break
+              skip(io, seglen - 2)
+            end
+          end
+          return nothing
+        end
+      catch
+        return nothing
+      end
+    end
 
     resolved = "/" * path
 
@@ -89,9 +146,16 @@ using .CVData
     avif_srcset = responsive_srcset("avif")
     webp_srcset = responsive_srcset("webp")
     fallback_srcset = responsive_srcset(original_ext)
-    sizes = "(max-width: 768px) 100vw, 600px"
+    # 720px is the content column (.franklin-content max-width: 45rem in
+    # _assets/css/site.css); a smaller hint makes the browser pick an
+    # undersized srcset candidate and upscale it.
+    sizes = "(max-width: 768px) 100vw, 720px"
     style_width = isempty(strip(String(width))) ? "" : "width:$(_esc(String(width))); "
     style_attr = "style=\"$(style_width)max-width:100%; height:auto;\""
+    loading_attr = eager ? "loading=\"eager\" fetchpriority=\"high\"" : "loading=\"lazy\""
+
+    intrinsic = _intrinsic_size(source_path)
+    dimension_attr = intrinsic === nothing ? "" : "width=\"$(intrinsic[1])\" height=\"$(intrinsic[2])\""
 
     align_style = align == "left"  ? "float:left;" :
                   align == "right" ? "float:right;" :
@@ -118,7 +182,8 @@ using .CVData
           $(String(take!(picture_sources)))
           <img src="$(_esc(resolved))" alt="$(alt)"
                class="$(class)"
-               loading="lazy"
+               $(loading_attr)
+               $(dimension_attr)
                $(fallback_attr)
                $(style_attr)>
         </picture>
@@ -130,7 +195,8 @@ using .CVData
       <div class="framed" style="$(align_style)">
         <img src="$(_esc(resolved))" alt="$(alt)"
              class="$(class)"
-             loading="lazy"
+             $(loading_attr)
+             $(dimension_attr)
              $(fallback_attr)
              $(style_attr)>
       </div>
@@ -159,6 +225,76 @@ normalize_site_url(url::AbstractString) = begin
   normalized = strip(String(url))
   normalized = replace(normalized, r"/index\.html$" => "/")
   return normalized
+end
+
+"""
+    json_string_escape(s) -> String
+
+Escape a value for use inside a JSON string literal. Also breaks up `</`, so a
+value containing `</script>` cannot terminate the surrounding script element.
+"""
+function json_string_escape(s::AbstractString)
+  out = replace(String(s), "\\" => "\\\\")
+  out = replace(out, "\"" => "\\\"")
+  out = replace(out, "\n" => "\\n")
+  out = replace(out, "\r" => "\\r")
+  out = replace(out, "\t" => "\\t")
+  return replace(out, "</" => "<\\/")
+end
+
+"""
+    hfun_schema_jsonld()
+
+Emit the JSON-LD Person block as a complete `<script>` element.
+
+This exists because Franklin does not expand `{{...}}` inside `<script>` tags:
+the block previously lived inline in `_layout/head.html` and shipped literal
+`{{fill author}}` placeholders to every page, so the structured data was invalid
+everywhere. Building the element here keeps interpolation outside the script
+context, where Franklin does resolve it.
+
+Returns an empty string when `schema_job_title` is undefined, matching the
+`{{isdef schema_job_title}}` guard the template used to carry.
+"""
+function hfun_schema_jsonld()
+  gv(name) = begin
+    value = Franklin.globvar(name)
+    value isa AbstractString ? strip(value) : ""
+  end
+
+  job_title = gv("schema_job_title")
+  isempty(job_title) && return ""
+
+  # These three are authored as raw JSON literals in config.md, so they are
+  # inserted verbatim rather than quoted -- but only if they actually parse as
+  # JSON-ish, to avoid emitting a broken document.
+  raw_json(name, fallback) = begin
+    value = gv(name)
+    isempty(value) && return fallback
+    (startswith(value, "[") || startswith(value, "{")) ? value : fallback
+  end
+
+  io = IOBuffer()
+  write(io, "<script type=\"application/ld+json\">\n")
+  write(io, "{\n")
+  write(io, "  \"@context\": \"https://schema.org\",\n")
+  write(io, "  \"@type\": \"Person\",\n")
+  write(io, "  \"name\": \"$(json_string_escape(gv("author")))\",\n")
+  write(io, "  \"alternateName\": $(raw_json("schema_alternate_names_json", "[]")),\n")
+  write(io, "  \"jobTitle\": \"$(json_string_escape(job_title))\",\n")
+  write(io, "  \"affiliation\": $(raw_json("schema_affiliations_json", "[]")),\n")
+  write(io, "  \"url\": \"$(json_string_escape(gv("schema_url")))\",\n")
+  write(io, "  \"image\": \"$(json_string_escape(gv("schema_image")))\",\n")
+  write(io, "  \"email\": \"$(json_string_escape(gv("schema_email")))\",\n")
+  write(io, "  \"sameAs\": $(raw_json("schema_sameas_json", "[]")),\n")
+  write(io, "  \"address\": {\n")
+  write(io, "    \"@type\": \"PostalAddress\",\n")
+  write(io, "    \"addressLocality\": \"$(json_string_escape(gv("schema_address_locality")))\",\n")
+  write(io, "    \"addressCountry\": \"$(json_string_escape(gv("schema_address_country")))\"\n")
+  write(io, "  }\n")
+  write(io, "}\n")
+  write(io, "</script>")
+  return String(take!(io))
 end
 
 function hfun_canonical_url()
@@ -269,20 +405,28 @@ function parse_post_date(date_val, slug, statinfo)
   elseif date_val isa AbstractString && !isempty(strip(date_val))
     try
       return Date(date_val)
-    catch
+    catch e
+      @warn "Unparseable `date` in frontmatter; falling back to the slug" slug date=date_val exception=e
     end
   elseif date_val isa Tuple && length(date_val) == 3
     try
       return Date(date_val...)
-    catch
+    catch e
+      @warn "Invalid `date` tuple in frontmatter; falling back to the slug" slug date=date_val exception=e
     end
   end
   if (m = match(r"^(\d{4})-(\d{2})-(\d{2})", slug)) !== nothing
-    y = parse(Int, m.captures[1])
-    mth = parse(Int, m.captures[2])
-    d = parse(Int, m.captures[3])
-    return Date(y, mth, d)
+    try
+      y = parse(Int, m.captures[1])
+      mth = parse(Int, m.captures[2])
+      d = parse(Int, m.captures[3])
+      return Date(y, mth, d)
+    catch e
+      # e.g. 2026-13-40 — matches the pattern but is not a real date.
+      @warn "Slug date is not a valid calendar date; falling back to file mtime" slug exception=e
+    end
   end
+  @warn "No usable post date; using the file's mtime, which changes on every edit" slug
   return Date(Dates.unix2datetime(statinfo.mtime))
 end
 
@@ -297,6 +441,7 @@ function extract_frontmatter_title(filepath)
     m = match(r"^@def\s+title\s*=\s*\"(.+)\"", line)
     m !== nothing && return String(m[1])
   end
+  @warn "No `@def title` found; the post will fall back to its slug" file=filepath
   return nothing
 end
 
@@ -355,7 +500,9 @@ function compute_blog_posts()
       filepath = joinpath(blog_dir, entry)
       statinfo = stat(filepath)
       push!(file_records, (; entry, filepath, statinfo))
-      push!(signature_parts, string(statinfo.mtime))
+      # Filename must be part of the signature: count+mtimes alone collide when
+      # a post is renamed without its mtime changing, serving a stale cache.
+      push!(signature_parts, string(entry, ":", statinfo.mtime))
     end
   catch e
     @error "Error reading blog directory" exception=(e, catch_backtrace())
@@ -1262,57 +1409,6 @@ function hfun_cv_anchor(args)
     "aria-label=\"Link to $(html_escape(title)) section\">#</a>",
   )
   return String(take!(write_buffer))
-end
-
-"""
-    hfun_sitemap_xml()
-
-Generate a sitemap.xml for search engines.
-"""
-function hfun_sitemap_xml()
-  io = IOBuffer()
-  write(io, """<?xml version="1.0" encoding="UTF-8"?>
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">""")
-  
-  # Define the main pages to include in the sitemap
-  pages = [
-    (; loc = "/", priority = "1.0", changefreq = "weekly"),
-    (; loc = "/projects/", priority = "0.8", changefreq = "monthly"),
-    (; loc = "/cv/", priority = "0.8", changefreq = "monthly"),
-    (; loc = "/blog/", priority = "0.9", changefreq = "weekly"),
-    (; loc = "/kamsoft/", priority = "0.7", changefreq = "monthly"),
-  ]
-  
-  for page in pages
-    write(io, """
-  <url>
-    <loc>{{fill website_url}}$(lstrip(page.loc, '/'))</loc>
-    <lastmod>$(Dates.format(Dates.now(), "yyyy-mm-dd"))</lastmod>
-    <changefreq>$(page.changefreq)</changefreq>
-    <priority>$(page.priority)</priority>
-  </url>""")
-  end
-  
-  # Add blog posts to sitemap if they exist
-  try
-    blog_posts = compute_blog_posts()
-    for post in blog_posts
-      write(io, """
-  <url>
-    <loc>{{fill website_url}}$(lstrip(post.url, '/'))</loc>
-    <lastmod>$(Dates.format(post.date, "yyyy-mm-dd"))</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>""")
-    end
-  catch
-    # If there's an error getting blog posts, continue anyway
-  end
-  
-  write(io, """
-</urlset>""")
-  
-  return String(take!(io))
 end
 
 end # module SiteUtils

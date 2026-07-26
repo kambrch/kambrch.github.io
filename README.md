@@ -94,7 +94,17 @@ Generate responsive image variants (480/800/1200 widths by default):
 ```
 
 The `{{img ...}}` helper will automatically pick up generated `*.avif`, `*.webp`, and
-same-format responsive variants when present.
+same-format responsive variants when present. It also reads the source file's intrinsic
+pixel size and emits `width`/`height`, so the browser reserves layout space and the image
+does not shift the page as it loads.
+
+Images are lazy-loaded by default. Pass a sixth argument to opt an above-the-fold image
+out — this sets `loading="eager"` and `fetchpriority="high"`, which matters for the
+largest element visible on first paint:
+
+```html
+{{img assets/img/hero.jpg "Alt text" "600px" "center" "framed" "eager"}}
+```
 
 ## Deployment
 

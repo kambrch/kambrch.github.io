@@ -32,6 +32,9 @@ base_url = "https://www.kambr.pl/"
 ## published even when git never sees them, so build metadata, tooling and
 ## private notes must be excluded here explicitly
 ignore = ["node_modules/", ".venv/", "docs/", "scripts/",
+          # data/ holds build-time Julia sources, not site content; it was
+          # being served verbatim at /data/cv_data.jl
+          "data/",
           # hidden dirs are copied too: .julia_depot alone is ~87 MB locally
           ".claude/", ".superpowers/", ".julia_depot/",
           "README.md", "Project.toml", "Manifest.toml", "requirements.txt",
