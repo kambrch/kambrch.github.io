@@ -2,6 +2,7 @@
 @def published = Date(2026, 4, 5)
 @def tags = ["LLM", "tools", "coding"]
 @def rss = "Notes on sgrep — a local semantic search tool that stays grep-shaped: one binary, no daemon, composable output."
+@def rss_pubdate = Date(2026, 4, 5)
 
 {{post_header}}
 

@@ -2,6 +2,7 @@
 @def published = Date(2025, 11, 4)
 @def tags = ["franklin", "meta"]
 @def rss = "Implementation notes on the Franklin helpers that drive the blog index and navigation."
+@def rss_pubdate = Date(2025, 11, 4)
 
 {{post_header}}
 

@@ -2,6 +2,7 @@
 @def published = Date(2025, 11, 4)
 @def tags = ["meta", "personal"]
 @def rss = "Why I started a personal lab/REPL blog and what I plan to jot down here."
+@def rss_pubdate = Date(2025, 11, 4)
 
 {{post_header}}
 

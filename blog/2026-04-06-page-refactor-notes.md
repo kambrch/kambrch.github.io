@@ -2,6 +2,7 @@
 @def published = Date(2026, 4, 6)
 @def tags = ["franklin", "meta"]
 @def rss = "Notes on the visual language refactor for my webpage."
+@def rss_pubdate = Date(2026, 4, 6)
 
 {{post_header}}
 

@@ -18,7 +18,7 @@ jobs:
     - name: Install python
       uses: actions/setup-python@v5
       with:
-        python-version: '3.8'
+        python-version: '3.12'
     - name: Install python dependencies
       run: |
         python -m pip install --upgrade pip
@@ -27,9 +27,22 @@ jobs:
     # packages such as PyPlot.
     # - run: pip install matplotlib
     - name: Install Julia
-      uses: julia-actions/setup-julia@v1
+      uses: julia-actions/setup-julia@v2
       with:
         version: '1' # Latest stable Julia release.
+    # Caches ~/.julia (packages + precompiled artifacts). Without it every
+    # push pays a full precompilation of Franklin and its dependencies.
+    - name: Cache Julia depot
+      uses: julia-actions/cache@v2
+    # Franklin's own incremental build cache: unchanged pages are not
+    # re-rendered (and evaluated code blocks are not re-run).
+    - name: Cache Franklin build
+      uses: actions/cache@v4
+      with:
+        path: __cache
+        key: franklin-cache-${{ github.sha }}
+        restore-keys: |
+          franklin-cache-
     # NOTE
     #   The steps below ensure that NodeJS and Franklin are loaded then it
     #   installs highlight.js which is needed for the prerendering step
@@ -43,7 +56,7 @@ jobs:
             using Pkg; Pkg.instantiate();
             using NodeJS; run(`$(npm_cmd()) install highlight.js`);
             using Franklin;
-            optimize()'
+            optimize(prerender=true)'
     - name: Normalize URLs
       run: ./scripts/normalize-generated-urls.sh __site
     - name: Deploy

@@ -20,8 +20,10 @@ defining your own `rss_enclosures` variable with a list of string and use that.
   <title>
     <![CDATA[  {{fd2rss rss_title}}  ]]>
   </title>
-  <link> {{fd_full_url}} </link>
-  <guid> {{fd_full_url}} </guid>
+  <!-- rss_link: fd_full_url can be empty for pages converted via pagevar,
+       see hfun_rss_link in src/site_utils.jl -->
+  <link> {{rss_link}} </link>
+  <guid> {{rss_link}} </guid>
   <description>
     <![CDATA[  {{fd2rss rss_description}}  ]]>
   </description>

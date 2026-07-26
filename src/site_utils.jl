@@ -11,6 +11,7 @@ export blog_posts,
   hfun_blog_nav,
   hfun_post_header,
   hfun_canonical_url,
+  hfun_rss_link,
   hfun_cv_metrics,
   hfun_cv_downloads,
   hfun_cv_publications,
@@ -171,6 +172,25 @@ function hfun_canonical_url()
     return html_escape(endswith(url, "/") ? url : url * "/")
   end
   return ""
+end
+
+# Franklin fills `fd_full_url` in `write_page`, right before it queues the RSS
+# item. Pages whose conversion was triggered by another page's `pagevar` call
+# can reach that point with the variable still empty, which emits an empty
+# `<link>` in feed.xml. Rebuild the URL from `fd_rpath` instead, which is
+# always set, and keep `fd_full_url` only as a fallback.
+function hfun_rss_link()
+  site_url = Franklin.globvar("website_url")
+  base = site_url isa String ? String(strip(site_url)) : ""
+  rpath = Franklin.locvar(:fd_rpath)
+  if !isempty(base) && rpath isa String && !isempty(strip(rpath))
+    endswith(base, "/") || (base *= "/")
+    slug = replace(strip(String(rpath), '/'), r"\.(md|html)$" => "")
+    slug = replace(slug, r"(^|/)index$" => "")
+    slug = strip(slug, '/')
+    return html_escape(isempty(slug) ? base : base * slug * "/")
+  end
+  return hfun_canonical_url()
 end
 
 function normalize_identifier(value::AbstractString)
