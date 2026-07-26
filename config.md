@@ -32,8 +32,11 @@ base_url = "https://www.kambr.pl/"
 ## published even when git never sees them, so build metadata, tooling and
 ## private notes must be excluded here explicitly
 ignore = ["node_modules/", ".venv/", "docs/", "scripts/",
+          # hidden dirs are copied too: .julia_depot alone is ~87 MB locally
+          ".claude/", ".superpowers/", ".julia_depot/",
           "README.md", "Project.toml", "Manifest.toml", "requirements.txt",
           "package.json", "package-lock.json",
+          ".markdownlint.json", ".markdownlint-cli2.yaml", ".gitlab-ci.yml",
           # assistant / notes files, mirrors ~/.gitignore_global
           "CLAUDE.md", "AGENTS.md", "notes.md", "Notes.md",
           "private/", ".private/", "reports/", "logs/", "tmp/"]
