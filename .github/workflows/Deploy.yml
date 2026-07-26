@@ -65,3 +65,6 @@ jobs:
         token: ${{ secrets.GITHUB_TOKEN }}
         branch: gh-pages
         folder: __site
+        # Force-push a single commit: gh-pages is fully regenerable from main,
+        # and this keeps stale build artefacts out of its history for good.
+        single-commit: true

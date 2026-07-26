@@ -28,9 +28,15 @@ schema_sameas_json = """[
 
 base_url = "https://www.kambr.pl/"
 
-ignore = ["node_modules/", ".venv/", "docs/", "scripts/", "CLAUDE.md",
+## Franklin does not read .gitignore — files left in the working tree get
+## published even when git never sees them, so build metadata, tooling and
+## private notes must be excluded here explicitly
+ignore = ["node_modules/", ".venv/", "docs/", "scripts/",
           "README.md", "Project.toml", "Manifest.toml", "requirements.txt",
-          "package.json", "package-lock.json"]
+          "package.json", "package-lock.json",
+          # assistant / notes files, mirrors ~/.gitignore_global
+          "CLAUDE.md", "AGENTS.md", "notes.md", "Notes.md",
+          "private/", ".private/", "reports/", "logs/", "tmp/"]
 
 ## RSS (the website_{title, descr, url} must be defined to get RSS)
 generate_rss = true
