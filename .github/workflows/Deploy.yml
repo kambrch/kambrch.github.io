@@ -11,12 +11,12 @@ jobs:
       contents: write
     steps:
     - name: Checkout
-      uses: actions/checkout@v4
+      uses: actions/checkout@v7
       with:
         persist-credentials: false
     # NOTE: Python is necessary for the pre-rendering (minification) step
     - name: Install python
-      uses: actions/setup-python@v5
+      uses: actions/setup-python@v7
       with:
         python-version: '3.12'
     - name: Install python dependencies
@@ -27,17 +27,17 @@ jobs:
     # packages such as PyPlot.
     # - run: pip install matplotlib
     - name: Install Julia
-      uses: julia-actions/setup-julia@v2
+      uses: julia-actions/setup-julia@v3
       with:
         version: '1' # Latest stable Julia release.
     # Caches ~/.julia (packages + precompiled artifacts). Without it every
     # push pays a full precompilation of Franklin and its dependencies.
     - name: Cache Julia depot
-      uses: julia-actions/cache@v2
+      uses: julia-actions/cache@v3
     # Franklin's own incremental build cache: unchanged pages are not
     # re-rendered (and evaluated code blocks are not re-run).
     - name: Cache Franklin build
-      uses: actions/cache@v4
+      uses: actions/cache@v6
       with:
         path: __cache
         key: franklin-cache-${{ github.sha }}
@@ -60,7 +60,7 @@ jobs:
     - name: Normalize URLs
       run: ./scripts/normalize-generated-urls.sh __site
     - name: Deploy
-      uses: JamesIves/github-pages-deploy-action@releases/v4
+      uses: JamesIves/github-pages-deploy-action@v4
       with:
         token: ${{ secrets.GITHUB_TOKEN }}
         branch: gh-pages
