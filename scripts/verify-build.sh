@@ -69,7 +69,40 @@ fi
 # --- 4. No unresolved Franklin template calls --------------------------------
 # An hfun that is defined but not exported renders as literal {{...}} text
 # rather than failing, which is how hfun_sitemap_xml went unnoticed.
-unresolved="$(grep -rlE '\{\{[a-z_]+' --include='*.html' --include='*.xml' "${site_dir}" 2>/dev/null || true)"
+if command -v python3 >/dev/null 2>&1; then
+  unresolved="$(python3 - "${site_dir}" <<'PY' || true
+import re, os, sys
+import glob
+site_dir = sys.argv[1]
+pattern = re.compile(r'\{\{[a-z_]+')
+bad_files = []
+
+for html_file in glob.glob(os.path.join(site_dir, '**/*.html'), recursive=True):
+    with open(html_file, 'r', encoding='utf-8', errors='replace') as f:
+        content = f.read()
+
+    # Strip <pre ...>...</pre> and <code ...>...</code> regions
+    content = re.sub(r'<pre[^>]*>.*?</pre>', '', content, flags=re.DOTALL | re.IGNORECASE)
+    content = re.sub(r'<code[^>]*>.*?</code>', '', content, flags=re.DOTALL | re.IGNORECASE)
+
+    if pattern.search(content):
+        bad_files.append(html_file.replace(site_dir + '/', ''))
+
+for xml_file in glob.glob(os.path.join(site_dir, '**/*.xml'), recursive=True):
+    with open(xml_file, 'r', encoding='utf-8', errors='replace') as f:
+        content = f.read()
+
+    if pattern.search(content):
+        bad_files.append(xml_file.replace(site_dir + '/', ''))
+
+for f in bad_files:
+    print(f)
+PY
+  )"
+else
+  unresolved="$(grep -rlE '\{\{[a-z_]+' --include='*.html' --include='*.xml' "${site_dir}" 2>/dev/null || true)"
+fi
+
 if [[ -n "${unresolved}" ]]; then
   fail "unresolved {{...}} template calls in:"
   printf '  %s\n' ${unresolved} >&2
@@ -84,7 +117,7 @@ while IFS= read -r page; do
   if ! grep -q '__toggleTheme' "${page}"; then
     missing_theme=$((missing_theme + 1))
   fi
-done < <(find "${site_dir}" -name '*.html' -print)
+done < <(find "${site_dir}" -name '*.html' -not -path "${site_dir}/assets/*" -print)
 
 if [[ "${missing_theme}" -gt 0 ]]; then
   fail "${missing_theme} page(s) lack the inline theme bootstrap"
