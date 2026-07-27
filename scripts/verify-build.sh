@@ -142,13 +142,29 @@ css = re.sub(r'@media\s*\(prefers-color-scheme:\s*dark\)\s*\{(?:[^{}]|\{[^}]*\})
 # dark-theme override. If you find yourself wanting to add an exemption,
 # add a token instead — an exemption list is how the theme rots.
 hits = re.findall(r'#[0-9a-fA-F]{3,8}\b', css)
+
+# Named CSS colours leak the theme just as badly as hex, and are easier to
+# miss: `border: 1px solid lightgrey` looked harmless and shipped a bright
+# rule onto the dark theme, while `solid black` was invisible on it. Only
+# inspect colour-bearing properties, so `white-space: normal` is not a hit.
+NAMED = (r'\b(?:white|black|silver|gray|grey|lightgray|lightgrey|darkgray|'
+         r'darkgrey|gainsboro|whitesmoke|ivory|snow|beige|navy|teal|olive|'
+         r'maroon|aqua|fuchsia|lime|red|blue|green|yellow|orange|purple|'
+         r'pink|brown|gold|tan|cyan|magenta)\b')
+for prop in re.finditer(r'(?:^|[;{])\s*(?:color|background|background-color|'
+                        r'border[a-z-]*|outline[a-z-]*|fill|stroke|'
+                        r'text-decoration-color|box-shadow)\s*:([^;}]*)', css):
+    for name in re.findall(NAMED, prop.group(1), re.I):
+        hits.append(name)
+
 print("\n".join(sorted(set(hits))))
 PY
 )"
   if [[ -n "${stray}" ]]; then
-    fail "hex colour literals outside token blocks in site.css:"
+    fail "colour literals outside token blocks in site.css:"
     printf '  %s\n' ${stray} >&2
     echo "  -> replace with var(--paper|--wash|--line|--ink|--muted|--accent|...)" >&2
+    echo "  -> named colours (lightgrey, black, white) leak too: they do not invert" >&2
   fi
 fi
 
