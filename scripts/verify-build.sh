@@ -136,7 +136,11 @@ css = open(sys.argv[1], encoding="utf-8", errors="replace").read()
 # Remove the token declaration blocks, then look for what survives.
 css = re.sub(r':root(?:\[data-theme="[a-z]+"\])?\s*\{[^}]*\}', '', css)
 css = re.sub(r'@media\s*\(prefers-color-scheme:\s*dark\)\s*\{(?:[^{}]|\{[^}]*\})*\}', '', css)
-css = re.sub(r'\.dark-zone[^{]*\{[^}]*\}', '', css)
+# NOTE: .dark-zone used to be exempted here because it hardcoded its text
+# colours. It no longer needs an exemption: content on permanently-dark
+# surfaces now uses the --on-raised-* tokens, declared once in :root with no
+# dark-theme override. If you find yourself wanting to add an exemption,
+# add a token instead — an exemption list is how the theme rots.
 hits = re.findall(r'#[0-9a-fA-F]{3,8}\b', css)
 print("\n".join(sorted(set(hits))))
 PY

@@ -14,6 +14,19 @@
   --code-bg: #f2ebdd;
   --code-ink: #3a352e;
 
+  /* --- Content ON a raised (permanently dark) surface -------------------
+     --surface-raised is a dark slab in BOTH themes, so anything sitting on
+     it must NOT use --ink/--paper/--muted: those invert, and the text would
+     go near-black on a near-black slab (or, in light mode, dark-on-dark and
+     vanish entirely).
+     These five deliberately have NO dark-theme override — that is the whole
+     point. Used by .site-header, .dark-zone and .hero. */
+  --on-raised: #f2ebdf;
+  --on-raised-strong: #ffffff;
+  --on-raised-muted: #a1968a;
+  --on-raised-body: #c9bfb2;
+  --on-raised-line: #3a332b;
+
   /* Retained for compatibility with rules not yet migrated (Task 2). */
   --block-background: var(--wash);
   --output-background: var(--paper);
@@ -735,7 +748,7 @@ tbody tr:nth-child(odd) th {
 .site-header__brand {
   font-family: var(--font-display);
   font-size: 1.15rem;
-  color: var(--ink);
+  color: var(--on-raised);
   text-decoration: none;
 }
 .site-header__nav {
@@ -745,12 +758,12 @@ tbody tr:nth-child(odd) th {
 }
 .site-header__link {
   font-size: 0.8rem;
-  color: var(--muted);
+  color: var(--on-raised-muted);
   text-decoration: none;
   padding-bottom: 2px;
   border-bottom: 2px solid transparent;
 }
-.site-header__link:hover { color: var(--ink); }
+.site-header__link:hover { color: var(--on-raised); }
 .site-header__link.is-active {
   color: var(--accent);
   border-bottom-color: var(--accent);
@@ -759,13 +772,13 @@ tbody tr:nth-child(odd) th {
   background: none;
   border: 1px solid var(--line);
   border-radius: 999px;
-  color: var(--muted);
+  color: var(--on-raised-muted);
   cursor: pointer;
   font-size: 0.85rem;
   line-height: 1;
   padding: 0.3rem 0.55rem;
 }
-.site-header__theme:hover { color: var(--ink); border-color: var(--muted); }
+.site-header__theme:hover { color: var(--on-raised); border-color: var(--on-raised-muted); }
 
 .content.container {
   max-width: 68rem;
@@ -1439,10 +1452,11 @@ h3:hover .cv-anchor {
 ================================================================== */
 
 .dark-zone {
-  /* Fixed literals, not tokens: this surface is dark in both themes.
-     See Task 2 Step 4 — the assertion in Step 2 exempts .dark-zone rules. */
+  /* This surface is dark in BOTH themes, so its contents use the
+     --on-raised-* tokens, which deliberately have no dark-theme override.
+     Using --ink/--paper here would invert the text into the background. */
   background: var(--surface-raised);
-  color: #f2ebdf;
+  color: var(--on-raised);
   border-radius: 10px;
   padding: 1.2rem 1.4rem;
   margin-bottom: 1rem;
@@ -1466,43 +1480,43 @@ h3:hover .cv-anchor {
 }
 .dark-zone__year {
   font-size: 0.7rem;
-  color: #a1968a;
+  color: var(--on-raised-muted);
   font-variant-numeric: tabular-nums;
 }
 .dark-zone__role {
   font-weight: 700;
   font-size: 0.88rem;
-  color: #f2ebdf;
+  color: var(--on-raised);
 }
 .dark-zone__sub {
   font-size: 0.72rem;
-  color: #a1968a;
+  color: var(--on-raised-muted);
   margin-top: 0.1rem;
 }
 .dark-zone__name {
   font-weight: 700;
   font-size: 1.05rem;
-  color: #ffffff;
+  color: var(--on-raised-strong);
   margin-bottom: 0.35rem;
 }
 .dark-zone__alias {
   font-weight: 400;
   font-size: 0.9rem;
-  color: #a1968a;
+  color: var(--on-raised-muted);
 }
 .dark-zone__tagline {
   font-size: 0.82rem;
-  color: #a1968a;
+  color: var(--on-raised-muted);
   margin-bottom: 0.8rem;
   line-height: 1.5;
 }
 .dark-zone__body {
   font-size: 0.85rem;
-  color: #c9bfb2;
+  color: var(--on-raised-body);
 }
 .dark-zone__quote {
   font-size: 0.85rem;
-  color: #a1968a;
+  color: var(--on-raised-muted);
   font-style: italic;
   line-height: 1.55;
 }
@@ -1511,7 +1525,7 @@ h3:hover .cv-anchor {
   font-size: 0.85rem;
 }
 .dark-zone__cta {
-  color: #ffffff;
+  color: var(--on-raised-strong);
   font-weight: 700;
   font-size: 1rem;
   text-decoration: none;
