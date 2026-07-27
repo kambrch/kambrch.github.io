@@ -1448,6 +1448,54 @@ h3:hover .cv-anchor {
 }
 
 /* ==================================================================
+    VISUAL LANGUAGE — HERO
+================================================================== */
+
+.hero {
+  background: var(--surface-raised);
+  color: var(--on-raised);
+  border-radius: 10px;
+  padding: 3rem 2.2rem 2.4rem;
+  margin-bottom: 1rem;
+}
+.hero__kicker {
+  font-size: 0.6rem;
+  text-transform: uppercase;
+  letter-spacing: 0.18em;
+  color: var(--on-raised-muted);
+  margin: 0 0 1rem;
+}
+.hero__title {
+  font-family: var(--font-display);
+  font-weight: 400;
+  font-size: clamp(2.4rem, 7vw, 3.6rem);
+  line-height: 1.02;
+  margin: 0 0 0.8rem;
+  color: var(--on-raised-strong);
+}
+.hero__accent { color: var(--accent); }
+.hero__lede {
+  font-size: 0.95rem;
+  line-height: 1.65;
+  color: var(--on-raised-body);
+  max-width: 46ch;
+  margin: 0;
+}
+.hero__chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+  margin-top: 1.2rem;
+}
+.hero__chip {
+  font-size: 0.7rem;
+  padding: 0.2rem 0.65rem;
+  border-radius: 999px;
+  border: 1px solid var(--on-raised-line);
+  color: var(--on-raised-muted);
+}
+
+/* ==================================================================
     VISUAL LANGUAGE — TIER 1: DARK ZONE
 ================================================================== */
 

@@ -2,7 +2,18 @@
 @def tags = ["about me"]
 
 ~~~
-<div class="dark-zone" style="margin-top:1rem;">
+<section class="hero">
+  <p class="hero__kicker">Wrocław, Poland</p>
+  <h1 class="hero__title">Physicist.<br><span class="hero__accent">Julia developer.</span></h1>
+  <p class="hero__lede">PhD researcher in optical refrigeration of rare-earth microcrystals — and the person who writes the code that makes sense of the data. Amateur chemist, hacker, SP6WRN.</p>
+  <div class="hero__chips">
+    <span class="hero__chip">Physics</span>
+    <span class="hero__chip">Julia</span>
+    <span class="hero__chip">Hardware</span>
+  </div>
+</section>
+
+<div class="dark-zone dark-zone--secondary" style="margin-top:1rem;">
   <span class="dark-zone__label">About</span>
   <div class="dark-zone__name">Kamil Bruchal <span class="dark-zone__alias">· Kamaś · Kambr</span></div>
   <div class="dark-zone__tagline">Physicist · Julia developer · Amateur chemist · Hacker · Based in Wrocław, Poland</div>
