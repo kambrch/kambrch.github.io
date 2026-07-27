@@ -1,0 +1,1863 @@
+/* ==================================================================
+    VARIABLES
+================================================================== */
+
+:root {
+  --paper: #faf6ef;
+  --wash: #efe8db;
+  --line: #ddd3c2;
+  --ink: #22201d;
+  --muted: #6b6157;
+  /* Darkened from #c8873c, which measured 2.79:1 on --paper — well under the
+     WCAG AA 4.5:1 required for body text, and this is the link colour. Same
+     32deg hue at higher saturation, so it still reads as burnt amber rather
+     than brown. Now 5.20:1 on --paper and 4.59:1 on --wash. */
+  --accent: #935b1a;
+  --surface-raised: #22201d;
+  --surface-raised-2: #2e2b26;
+  --code-bg: #f2ebdd;
+  --code-ink: #3a352e;
+
+  /* --- Content ON a raised (permanently dark) surface -------------------
+     --surface-raised is a dark slab in BOTH themes, so anything sitting on
+     it must NOT use --ink/--paper/--muted: those invert, and the text would
+     go near-black on a near-black slab (or, in light mode, dark-on-dark and
+     vanish entirely).
+     These five deliberately have NO dark-theme override — that is the whole
+     point. Used by .site-header, .dark-zone and .hero. */
+  --on-raised: #f2ebdf;
+  --on-raised-strong: #ffffff;
+  --on-raised-muted: #a1968a;
+  --on-raised-body: #c9bfb2;
+  --on-raised-line: #3a332b;
+  /* The accent needs two values for the same reason the text does. A single
+     amber cannot clear 4.5:1 against BOTH the light paper and a dark slab —
+     darkening it for one drives the other below AA. This is the slab variant:
+     7.32:1 on --surface-raised light, 8.68:1 dark, 6.35:1 on the secondary. */
+  --accent-on-raised: #e0a252;
+
+  /* Retained for compatibility with rules not yet migrated (Task 2). */
+  --block-background: var(--wash);
+  --output-background: var(--paper);
+  --text-color: var(--ink);
+  --small: 14px;
+  --normal: 19px;
+}
+
+:root[data-theme="dark"] {
+  --paper: #1a1714;
+  --wash: #241f1a;
+  --line: #3a332b;
+  --ink: #f2ebdf;
+  --muted: #a1968a;
+  --accent: #e0a252;
+  --surface-raised: #100e0c;
+  --surface-raised-2: #1c1916;
+  --code-bg: #100e0c;
+  --code-ink: #ddd3c2;
+}
+
+/* OS preference applies only when the reader has not chosen explicitly.
+   :not([data-theme="light"]) lets an explicit light choice win over a dark OS. */
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --paper: #1a1714;
+    --wash: #241f1a;
+    --line: #3a332b;
+    --ink: #f2ebdf;
+    --muted: #a1968a;
+    --accent: #e0a252;
+    --surface-raised: #100e0c;
+    --surface-raised-2: #1c1916;
+    --code-bg: #100e0c;
+    --code-ink: #ddd3c2;
+  }
+}
+
+@font-face {
+  font-family: "Instrument Serif";
+  src: url("/assets/fonts/instrument-serif-400.woff2") format("woff2");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Instrument Serif";
+  src: url("/assets/fonts/instrument-serif-400-italic.woff2") format("woff2");
+  font-weight: 400;
+  font-style: italic;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Source Sans 3";
+  src: url("/assets/fonts/source-sans-3-400.woff2") format("woff2");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Source Sans 3";
+  src: url("/assets/fonts/source-sans-3-600.woff2") format("woff2");
+  font-weight: 600;
+  font-style: normal;
+  font-display: swap;
+}
+
+:root {
+  --font-display: "Instrument Serif", Georgia, serif;
+  --font-body: "Source Sans 3", system-ui, -apple-system, sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, SFMono-Regular, monospace;
+}
+
+/* The single place the root element is styled. Keep it that way: every visual
+   defect in this refresh that survived the build assertions was a later rule
+   quietly outranking an earlier one. */
+html {
+  font-family: var(--font-body);
+  font-size: 18px;
+  line-height: 1.65;
+  background: var(--paper);
+  color: var(--ink);
+}
+
+/* Instrument Serif ships no bold. Headings take hierarchy from scale and
+   italic; never set font-weight above 400 on the display face. */
+h1, h2, h3 {
+  font-family: var(--font-display);
+  font-weight: 400;
+  letter-spacing: -0.01em;
+  line-height: 1.1;
+}
+h1 { font-size: 2.6rem; margin: 0 0 0.6rem; }
+h2 { font-size: 1.6rem; margin: 2rem 0 0.7rem; }
+h3 { font-size: 1.25rem; margin: 1.6rem 0 0.5rem; }
+
+/* Anything needing strength at small size uses the body face at 600. */
+h4, h5, h6, th, .accent-card__title, .dark-zone__role {
+  font-family: var(--font-body);
+  font-weight: 600;
+}
+
+code, pre, time, .compact-rows__key, .dark-zone__year {
+  font-family: var(--font-mono);
+}
+
+.franklin-content {
+  max-width: 64ch;
+}
+
+body {
+  background: var(--paper);
+}
+
+/* ==================================================================
+    DEFAULT FONT AND LAYOUT
+================================================================== */
+
+/* Root size and colour are set once, with the type scale near the top of this
+   file. This rule used to set font-size: var(--normal) (19px) and override the
+   designed 18px. --normal/--text-color remain only as compatibility aliases. */
+
+/* ==================================================================
+    ACCESSIBILITY
+================================================================== */
+
+.skip-link {
+  position: absolute;
+  top: -40px;
+  left: 6px;
+  background: var(--ink);
+  color: var(--paper);
+  padding: 8px;
+  z-index: 1000;
+  text-decoration: none;
+  border-radius: 4px;
+  transition: top 0.3s;
+  font-size: 14px;
+}
+
+.skip-link:focus {
+  top: 6px;
+}
+
+/* ==================================================================
+    BASIC GRID FOR PROFILE PIC
+================================================================== */
+
+.franklin-content .row {
+  display: block;
+}
+
+.franklin-content .left {
+  float: left;
+  margin-right: 15px;
+}
+
+.franklin-content .right {
+  float: right;
+}
+
+.franklin-content .container img {
+  width: auto;
+  padding-left: 0;
+  border-radius: 10px;
+}
+
+.franklin-content .footnote {
+  position: relative;
+  top: -0.5em;
+  font-size: 70%;
+}
+
+/* ==================================================================
+    FOOT / COPYRIGHT
+================================================================== */
+
+.franklin-content .page-foot a {
+  text-decoration: none;
+  color: var(--muted);
+  text-decoration: underline;
+}
+
+.page-foot {
+  font-size: 80%;
+  color: var(--muted);
+  text-align: center;
+  margin-top: 6em;
+  border-top: 1px solid var(--line);
+  padding-top: 2em;
+  margin-bottom: 4em;
+}
+
+/* ==================================================================
+    TEXT GEOMETRY
+================================================================== */
+
+.franklin-toc li {
+  /* Avoid clickable elements being too close together. */
+  margin: 0.6rem 0;
+}
+
+/* Hyde offset content to clear the fixed left sidebar, which no longer exists.
+   Under the centred column those asymmetric paddings (8% / 5%) pushed the text
+   visibly off-centre, and line-height:1.35 fought the 1.65 set on html. */
+.franklin-content {
+  position: relative;
+  padding-left: 1.5rem;
+  padding-right: 1.5rem;
+}
+
+@media (min-width: 940px) {
+  .franklin-content {
+    width: 100%;
+    margin-left: auto;
+    margin-right: auto;
+  }
+}
+
+@media (max-width: 768px) {
+  .franklin-content {
+    padding-left: 1rem;
+    padding-right: 1rem;
+  }
+}
+
+/* ==================================================================
+    TITLES
+================================================================== */
+
+/* Hyde shipped fixed 24/22/20px here. Those selectors are more specific than
+   the bare `h1, h2, h3` type scale above, so they silently overrode it and
+   the display face never reached page content. Sizes now come from the scale;
+   do not reintroduce a font-size here. */
+
+.franklin-content h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  text-align: left;
+}
+
+.franklin-content h1 {
+  padding-bottom: 0.5em;
+  border-bottom: 1px solid var(--line);
+  margin-top: 1.5em;
+  margin-bottom: 1em;
+}
+
+.franklin-content h2 {
+  padding-bottom: 0.3em;
+  border-bottom: 1px solid var(--line);
+  margin-top: 2em;
+  margin-bottom: 1em;
+}
+
+.franklin-content h1 a { color: inherit; }
+.franklin-content h1 a:hover { text-decoration: none; }
+.franklin-content h2 a { color: inherit; }
+.franklin-content h2 a:hover { text-decoration: none; }
+.franklin-content h3 a { color: inherit; }
+.franklin-content h3 a:hover { text-decoration: none; }
+.franklin-content h4 a { color: inherit; }
+.franklin-content h4 a:hover { text-decoration: none; }
+.franklin-content h5 a { color: inherit; }
+.franklin-content h5 a:hover { text-decoration: none; }
+.franklin-content h6 a { color: inherit; }
+.franklin-content h6 a:hover { text-decoration: none; }
+
+.franklin-content table {
+  margin-left: auto;
+  margin-right: auto;
+  border-collapse: collapse;
+  text-align: center;
+}
+
+.franklin-toc ol ol {
+  list-style-type: lower-alpha;
+}
+
+.franklin-content th,
+td {
+  font-size: var(--small);
+  padding: 10px;
+  border: 1px solid var(--ink);
+}
+
+.franklin-content blockquote {
+  background: transparent;
+  border-left: 2px solid var(--accent);
+  margin: 1.5em 0;
+  padding: 0.2em 0 0.2em 1rem;
+  font-style: italic;
+}
+
+.franklin-content blockquote p {
+  display: inline;
+}
+
+/* ==================================================================
+    GENERAL FORMATTING
+================================================================== */
+
+/* Spacing between bullet points. */
+.franklin-content li p {
+  margin: 10px 0;
+}
+
+.franklin-content a {
+  color: var(--accent);
+  text-decoration: none;
+}
+
+.franklin-content a:hover {
+  text-decoration: underline;
+}
+
+/* ==================================================================
+    HYPERREFS AND FOOTNOTES
+================================================================== */
+
+.franklin-content .eqref a { color: var(--accent); }
+.franklin-content .bibref a { color: var(--accent); }
+
+.franklin-content sup {
+  font-size: 70%;
+  vertical-align: super;
+  line-height: 0;
+}
+
+.franklin-content table.fndef {
+  margin: 0;
+  margin-bottom: 10px;
+}
+
+.franklin-content .fndef tr,
+td {
+  padding: 0;
+  border: 0;
+  text-align: left;
+}
+
+.franklin-content .fndef tr {
+  border-left: 2px solid var(--line);
+}
+
+.franklin-content .fndef td.fndef-backref {
+  vertical-align: top;
+  font-size: 70%;
+  padding-left: 5px;
+}
+
+.franklin-content .fndef td.fndef-content {
+  font-size: 80%;
+  padding-left: 10px;
+  width: 100%;
+}
+
+/* ==================================================================
+    IMAGES in CONTENT
+================================================================== */
+
+/* Was width:70%; padding-left:10% — another sidebar-era offset that shifted
+   every image right of the text it sits in. Images now fit the measure. */
+.franklin-content img {
+  max-width: 100%;
+  height: auto;
+}
+
+.franklin-content .img-small img {
+  width: 50%;
+  text-align: center;
+  padding-left: 20%;
+}
+
+/* Image modifier classes */
+
+img.rounded {
+  border-radius: 8px;
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.18);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+img.rounded:hover {
+  transform: scale(1.02);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.22);
+}
+
+img.framed {
+  border: 1px solid var(--line);
+  padding: 3px;
+  background-color: var(--paper);
+}
+
+img.soft {
+  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.16);
+}
+
+img.shadow {
+  box-shadow: 0 22px 48px rgba(0, 0, 0, 0.26);
+}
+
+figcaption {
+  text-align: center;
+  color: var(--muted);
+  font-style: italic;
+  font-size: 0.9em;
+  margin-top: 0.4em;
+}
+
+/* ==================================================================
+    KATEX
+================================================================== */
+
+body { counter-reset: eqnum; }
+
+.katex { font-size: 1em !important; }
+
+.katex-display .katex {
+  /* Overwrite KaTeX settings. */
+  display: inline-block;
+
+  /* Allow display equations to wrap on small screens. */
+  white-space: normal;
+}
+
+.katex-display::after {
+  counter-increment: eqnum;
+  content: "(" counter(eqnum) ")";
+  position: relative;
+  float: right;
+  padding-right: 5px;
+}
+
+.nonumber .katex-display::after {
+  counter-increment: nothing;
+  content: "";
+}
+
+/* ==================================================================
+    CODE & HIGHLIGHT.JS
+================================================================== */
+
+/* Inline code is styled by `:not(pre) > code` in the syntax-highlighting
+   section, which is more specific and later. The bare `code` rule that used to
+   sit here was entirely overridden and only invited confusion. */
+
+.hljs {
+  font-size: var(--small);
+  line-height: 1.35em;
+  border-radius: 10px;
+}
+
+.hljs-meta { font-weight: bold;}
+
+.hljs-meta.shell_ {color: crimson;}
+.hljs-meta.prompt_ {color: rgb(25, 179, 51);}
+
+.code-output {
+  background: var(--output-background);
+  border: 1px dashed var(--line);
+}
+
+/* ==================================================================
+    BOXES
+================================================================== */
+
+.franklin-content .colbox-blue {
+  background-color: var(--wash);
+  padding-top: 5px;
+  padding-right: 10px;
+  padding-left: 10px;
+  padding-bottom: 5px;
+  margin-left: 5px;
+  margin-top: 5px;
+  margin-bottom: 5px;
+  border-radius: 0 10px 10px 0;
+  border-left: 5px solid var(--accent);
+}
+
+/*
+ *                        ___
+ *                       /\_ \
+ *  _____     ___     ___\//\ \      __
+ * /\ '__`\  / __`\  / __`\\ \ \   /'__`\
+ * \ \ \_\ \/\ \_\ \/\ \_\ \\_\ \_/\  __/
+ *  \ \ ,__/\ \____/\ \____//\____\ \____\
+ *   \ \ \/  \/___/  \/___/ \/____/\/____/
+ *    \ \_\
+ *     \/_/
+ *
+ * Designed, built, and released under MIT license by @mdo. Learn more at
+ * https://github.com/poole/poole.
+ */
+
+
+/*
+ * Body resets
+ *
+ * Update the foundational and global aspects of the page.
+ */
+
+* {
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+}
+
+html,
+body {
+  margin: 0;
+  padding: 0;
+}
+
+/* Hyde set the root size here (16px, 20px above 38em) and the line-height.
+   Both came later in the file than the design's `html { font-size: 18px;
+   line-height: 1.65 }`, so they silently won and the designed reading size
+   never applied. The root size is now set once, near the top, with the type
+   scale. Do not reintroduce a font-size or line-height on html here. */
+
+body {
+  color: var(--ink);
+  background-color: var(--paper);
+  -webkit-text-size-adjust: 100%;
+  -ms-text-size-adjust: 100%;
+}
+
+/* No `:visited` state is required by default (browsers will use `a`) */
+a {
+  color: var(--accent);
+  text-decoration: none;
+}
+
+a strong {
+  color: inherit;
+}
+
+/* `:focus` is linked to `:hover` for basic accessibility */
+a:hover,
+a:focus {
+  text-decoration: underline;
+}
+
+/* Headings */
+/* `font-weight: bold` and the font-sizes that used to live in this block came
+   later in the file than the type scale, so they won. That meant every
+   heading asked Instrument Serif — which ships ONLY weight 400 — for a bold
+   face the family does not have, and the browser synthesised one by smearing
+   the outlines. Sizes and weight now come from the scale near the top of this
+   file. Do not set font-weight or font-size on headings here. */
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  margin-bottom: 0.5rem;
+  color: var(--ink);
+  text-rendering: optimizeLegibility;
+}
+
+h2 {
+  margin-top: 1rem;
+}
+
+h3 {
+  margin-top: 1.5rem;
+}
+
+h4,
+h5,
+h6 {
+  margin-top: 1rem;
+  font-size: 1rem;
+}
+
+/* Body text */
+p {
+  margin-top: 0;
+  margin-bottom: 1rem;
+}
+
+strong {
+  color: var(--ink);
+}
+
+
+/* Lists */
+ul,
+ol,
+dl {
+  margin-top: 0;
+  margin-bottom: 1rem;
+}
+
+dt {
+  font-weight: 600;
+}
+
+dd {
+  margin-bottom: 0.5rem;
+}
+
+/* Misc */
+hr {
+  position: relative;
+  margin: 1.5rem 0;
+  border: 0;
+  border-top: 1px solid var(--wash);
+  border-bottom: 1px solid var(--paper);
+}
+
+abbr {
+  font-size: 85%;
+  font-weight: 600;
+  color: var(--ink);
+  text-transform: uppercase;
+}
+
+abbr[title] {
+  cursor: help;
+  border-bottom: 1px dotted var(--line);
+}
+
+/* Quotes */
+blockquote {
+  padding: 0.5rem 1rem;
+  margin: 0.8rem 0;
+  color: var(--muted);
+  border-left: 0.25rem solid var(--line);
+}
+
+blockquote p:last-child {
+  margin-bottom: 0;
+}
+
+@media (min-width: 30em) {
+  blockquote {
+    padding-right: 5rem;
+    padding-left: 1.25rem;
+  }
+}
+
+img {
+  display: block;
+  max-width: 100%;
+  margin: 0 0 1rem;
+  border-radius: 5px;
+}
+
+/* Tables */
+table {
+  margin-bottom: 1rem;
+  width: 100%;
+  border: 1px solid var(--line);
+  border-collapse: collapse;
+}
+
+td,
+th {
+  padding: 0.25rem 0.5rem;
+  border: 1px solid var(--line);
+}
+
+tbody tr:nth-child(odd) td,
+tbody tr:nth-child(odd) th {
+  background-color: var(--paper);
+}
+
+/*
+ *  __                  __
+ * /\ \                /\ \
+ * \ \ \___   __  __   \_\ \     __
+ *  \ \  _ `\/\ \/\ \  /'_` \  /'__`\
+ *   \ \ \ \ \ \ \_\ \/\ \_\ \/\  __/
+ *    \ \_\ \_\/`____ \ \___,_\ \____\
+ *     \/_/\/_/`/___/> \/__,_ /\/____/
+ *                /\___/
+ *                \/__/
+ *
+ * Designed, built, and released under MIT license by @mdo. Learn more at
+ * https://github.com/poole/hyde.
+ */
+
+
+/*
+ * Global resets
+ *
+ * Update the foundational and global aspects of the page.
+ */
+
+/*
+ * Header Navigation
+ */
+
+.site-header {
+  background: var(--surface-raised);
+  border-bottom: 1px solid var(--line);
+}
+.site-header__inner {
+  max-width: 68rem;
+  margin: 0 auto;
+  padding: 0.85rem 1.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+.site-header__brand {
+  font-family: var(--font-display);
+  font-size: 1.15rem;
+  color: var(--on-raised);
+  text-decoration: none;
+}
+.site-header__nav {
+  display: flex;
+  align-items: center;
+  gap: 1.1rem;
+}
+.site-header__link {
+  font-size: 0.8rem;
+  color: var(--on-raised-muted);
+  text-decoration: none;
+  padding-bottom: 2px;
+  border-bottom: 2px solid transparent;
+}
+.site-header__link:hover { color: var(--on-raised); }
+.site-header__link.is-active {
+  color: var(--accent-on-raised);
+  border-bottom-color: var(--accent-on-raised);
+}
+.site-header__theme {
+  background: none;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  color: var(--on-raised-muted);
+  cursor: pointer;
+  font-size: 0.85rem;
+  line-height: 1;
+  padding: 0.3rem 0.55rem;
+}
+.site-header__theme:hover { color: var(--on-raised); border-color: var(--on-raised-muted); }
+
+.content.container {
+  max-width: 68rem;
+  margin: 0 auto;
+  padding: 2.5rem 1.5rem 3rem;
+}
+
+@media (max-width: 640px) {
+  .site-header__inner { flex-direction: column; align-items: flex-start; }
+  .site-header__nav { flex-wrap: wrap; gap: 0.8rem; }
+}
+
+/* ==================================================================
+    SITE OVERRIDES
+    (intentionally after Poole/Hyde to take precedence)
+================================================================== */
+
+/* The 17px root size that used to live here predates the type scale and, being
+   later in the file, silently beat the designed 18px. The scale near the top
+   of this file is now the single place the root size is set. */
+
+/* ==================================================================
+    FOOTER SOCIAL
+================================================================== */
+
+.site-footer__social {
+  display: flex;
+  gap: 0.75rem;
+  margin-top: 1.5rem;
+}
+
+.site-footer__social-link {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  border: 1px solid var(--line);
+  color: var(--ink);
+  text-decoration: none;
+  transition: background 0.2s ease, border-color 0.2s ease, color 0.2s ease;
+}
+
+.site-footer__social-link:hover {
+  background: var(--wash);
+  border-color: var(--muted);
+  color: var(--ink);
+}
+
+.site-footer__social-icon {
+  width: 18px;
+  height: 18px;
+  fill: currentColor;
+}
+
+/* ==================================================================
+    BLOG COMPONENTS
+================================================================== */
+
+.blog-filters {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-bottom: 1.5rem;
+}
+
+.blog-summary {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 0.5rem;
+  margin-bottom: 1rem;
+  font-size: 0.95rem;
+  color: var(--ink);
+}
+
+.blog-summary__count {
+  font-weight: 600;
+  color: var(--ink);
+}
+
+.blog-summary__sep {
+  color: var(--muted);
+}
+
+.blog-summary__latest {
+  color: var(--muted);
+}
+
+.blog-filter__btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  background: transparent;
+  border: 1px solid var(--muted);
+  border-radius: 999px;
+  padding: 0.35rem 0.85rem;
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: background 0.2s ease, color 0.2s ease;
+}
+
+.blog-filter__btn:hover,
+.blog-filter__btn.is-active {
+  background: var(--ink);
+  color: var(--paper);
+}
+
+.blog-filter__count {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 1.4rem;
+  padding: 0.1rem 0.4rem;
+  border-radius: 999px;
+  background: var(--wash);
+  color: var(--ink);
+  font-size: 0.75rem;
+  font-weight: 500;
+}
+
+.blog-filter__btn.is-active .blog-filter__count {
+  background: rgba(255, 255, 255, 0.18);
+  color: var(--paper);
+}
+
+.blog-filter__label {
+  line-height: 1.2;
+}
+
+.blog-list {
+  display: grid;
+  gap: 1.5rem;
+}
+
+.blog-card {
+  border: 1px solid var(--line);
+  border-radius: 0.75rem;
+  padding: 1.25rem 1.5rem;
+  background: var(--paper);
+  transition: border-color 0.2s ease, transform 0.2s ease;
+}
+
+.blog-card:hover {
+  border-color: var(--muted);
+  transform: translateY(-2px);
+}
+
+.blog-card__meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.6rem;
+  font-size: 0.85rem;
+  color: var(--muted);
+  margin-bottom: 0.4rem;
+}
+
+.blog-card__meta-item {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+}
+
+.blog-card__meta-item + .blog-card__meta-item::before {
+  content: "•";
+  color: var(--muted);
+  margin-right: 0.25rem;
+}
+
+.blog-card__title {
+  margin: 0 0 0.8rem 0;
+  font-size: 1.35rem;
+}
+
+.blog-card__snippet {
+  margin: 0 0 1rem 0;
+  color: var(--ink);
+  line-height: 1.5;
+}
+
+.blog-card__tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+}
+
+.blog-card__tag {
+  display: inline-block;
+  background: var(--wash);
+  color: var(--ink);
+  border-radius: 999px;
+  padding: 0.2rem 0.65rem;
+  font-size: 0.8rem;
+}
+
+.blog-card.is-hidden,
+.blog-featured.is-hidden {
+  display: none;
+}
+
+.blog-card__cta {
+  margin-top: 1rem;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  font-weight: 600;
+  color: var(--ink);
+  text-decoration: none;
+}
+
+.blog-card__cta:hover {
+  text-decoration: underline;
+}
+
+/* Blog post navigation */
+
+.blog-nav {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 0.85rem;
+  margin: 3rem 0 1.75rem 0;
+}
+
+.blog-nav__slot {
+  display: flex;
+}
+
+.blog-nav__slot--prev { justify-content: flex-start; }
+.blog-nav__slot--all  { justify-content: center; }
+.blog-nav__slot--next { justify-content: flex-end; }
+
+.blog-nav__slot--next .blog-nav__link {
+  align-items: flex-end;
+  text-align: right;
+}
+
+.blog-nav__link {
+  display: inline-flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  width: 100%;
+  padding: 0.75rem 0.85rem;
+  border: 1px solid var(--line);
+  border-radius: 0.75rem;
+  background: var(--paper);
+  color: var(--ink);
+  text-decoration: none;
+  transition: border-color 0.2s ease, transform 0.2s ease;
+}
+
+.blog-nav__link:hover {
+  border-color: var(--muted);
+  transform: translateY(-1px);
+}
+
+.blog-nav__link--all {
+  max-width: 240px;
+  align-items: center;
+  margin: 0 auto;
+  text-align: center;
+}
+
+.blog-nav__link.is-disabled {
+  border-style: dashed;
+  color: var(--muted);
+  background: transparent;
+  cursor: default;
+  pointer-events: none;
+}
+
+.blog-nav__hint {
+  font-size: 0.7rem;
+  text-transform: uppercase;
+  letter-spacing: 0.07em;
+  color: var(--muted);
+}
+
+.blog-nav__label {
+  font-size: 0.65rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--muted);
+}
+
+.blog-nav__title {
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: var(--ink);
+}
+
+@media (max-width: 600px) {
+  .blog-nav {
+    grid-template-columns: 1fr;
+  }
+
+  .blog-nav__slot--next {
+    justify-content: flex-start;
+  }
+
+  .blog-nav__slot--next .blog-nav__link {
+    align-items: flex-start;
+    text-align: left;
+  }
+
+  .blog-nav__link--all {
+    margin-left: 0;
+  }
+}
+
+/* ==================================================================
+    CV COMPONENTS
+================================================================== */
+
+/* Anchor links */
+
+.cv-anchor {
+  margin-left: 0.35rem;
+  font-size: 0.85rem;
+  text-decoration: none;
+  color: var(--muted);
+  visibility: hidden;
+  transition: color 0.2s ease;
+}
+
+.cv-anchor__target {
+  position: relative;
+  top: -80px;
+  display: block;
+  visibility: hidden;
+}
+
+h2:hover .cv-anchor,
+h3:hover .cv-anchor {
+  visibility: visible;
+}
+
+.cv-anchor:hover {
+  color: var(--muted);
+}
+
+/* Metrics */
+
+.cv-metrics {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: 1rem;
+  margin: 2rem 0 1.5rem 0;
+}
+
+.cv-metrics__item {
+  padding: 1rem 1.1rem;
+  border: 1px solid var(--line);
+  border-radius: 0.9rem;
+  background: var(--paper);
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+}
+
+.cv-metrics__value {
+  font-size: 1.65rem;
+  font-weight: 600;
+  color: var(--ink);
+}
+
+.cv-metrics__label {
+  font-size: 0.9rem;
+  color: var(--ink);
+  font-weight: 600;
+}
+
+.cv-metrics__caption {
+  font-size: 0.8rem;
+  color: var(--muted);
+}
+
+/* Downloads */
+
+.cv-downloads {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  margin-bottom: 2.5rem;
+}
+
+.cv-downloads__btn {
+  display: inline-flex;
+  flex-direction: column;
+  gap: 0.2rem;
+  padding: 0.75rem 1rem;
+  border-radius: 0.75rem;
+  border: 1px solid var(--line);
+  text-decoration: none;
+  background: var(--paper);
+  color: var(--ink);
+  transition: transform 0.15s ease, border-color 0.15s ease;
+}
+
+.cv-downloads__btn:hover {
+  transform: translateY(-1px);
+  border-color: var(--muted);
+}
+
+.cv-downloads__btn.is-disabled {
+  cursor: not-allowed;
+  opacity: 0.6;
+  transform: none;
+  pointer-events: none;
+}
+
+.cv-downloads__label {
+  font-weight: 600;
+}
+
+.cv-downloads__meta {
+  font-size: 0.8rem;
+  color: var(--muted);
+}
+
+/* Section list (education, conferences) */
+
+.cv-section-list {
+  display: grid;
+  gap: 1.4rem;
+  margin-bottom: 2.8rem;
+}
+
+.cv-section-item {
+  padding: 1.25rem 1.4rem;
+  border-radius: 1rem;
+  border: 1px solid var(--line);
+  background: var(--paper);
+  transition: transform 0.2s ease;
+}
+
+.cv-section-item:hover {
+  transform: translateY(-2px);
+}
+
+.cv-section__header {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 0.45rem;
+  font-size: 0.8rem;
+  color: var(--muted);
+}
+
+.cv-section__period {
+  font-weight: 600;
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+}
+
+.cv-section__title {
+  margin: 0 0 0.35rem 0;
+  font-size: 1.15rem;
+}
+
+.cv-section__subtitle {
+  margin: 0 0 0.7rem 0;
+  font-size: 0.9rem;
+  color: var(--ink);
+}
+
+.cv-section__highlights {
+  margin: 0 0 0 1.15rem;
+  color: var(--ink);
+}
+
+.cv-section__highlights li {
+  margin-bottom: 0.35rem;
+}
+
+/* Chips (tags/badges) */
+
+.cv-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+  padding: 0.15rem 0.6rem;
+  border-radius: 999px;
+  background: var(--wash);
+  color: var(--ink);
+  font-size: 0.75rem;
+  font-weight: 500;
+}
+
+.cv-chip--count {
+  margin-left: 0.4rem;
+  background: var(--line);
+  font-size: 0.7rem;
+}
+
+/* Publications */
+
+.cv-publications {
+  display: grid;
+  gap: 1.5rem;
+  margin-bottom: 2.5rem;
+}
+
+.cv-publications__item {
+  padding: 1.25rem 1.4rem;
+  border: 1px solid var(--line);
+  border-radius: 0.95rem;
+  background: var(--paper);
+}
+
+.cv-publications__title {
+  margin: 0 0 0.6rem 0;
+  font-size: 1.15rem;
+}
+
+.cv-publications__meta {
+  margin: 0 0 0.75rem 0;
+  font-size: 0.85rem;
+  color: var(--muted);
+}
+
+.cv-publications__summary {
+  margin: 0 0 0.75rem 0;
+  color: var(--ink);
+}
+
+.cv-publications__links a {
+  color: var(--accent);
+}
+
+.cv-publications__tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.35rem;
+}
+
+/* Teaching */
+
+.cv-teaching {
+  display: grid;
+  gap: 1.2rem;
+  margin-bottom: 3rem;
+}
+
+.cv-teaching__item {
+  padding: 1rem 1.2rem;
+  border-radius: 0.9rem;
+  border: 1px solid var(--line);
+  background: var(--paper);
+}
+
+.cv-teaching__title {
+  margin: 0 0 0.4rem 0;
+  font-size: 1rem;
+}
+
+.cv-teaching__audience {
+  margin: 0 0 0.5rem 0;
+  font-size: 0.85rem;
+  color: var(--ink);
+}
+
+.cv-teaching__tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.35rem;
+}
+
+/* Timeline (employment, conferences) */
+
+.cv-timeline {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  margin-bottom: 3rem;
+}
+
+.cv-timeline__filters {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.6rem;
+}
+
+.cv-timeline__filter {
+  display: inline-flex;
+  align-items: center;
+  background: var(--paper);
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  padding: 0.35rem 0.8rem;
+  font-size: 0.85rem;
+  cursor: pointer;
+  transition: background 0.2s ease, border-color 0.2s ease, color 0.2s ease;
+}
+
+.cv-timeline__filter:hover,
+.cv-timeline__filter.is-active {
+  background: var(--ink);
+  border-color: var(--ink);
+  color: var(--paper);
+}
+
+.cv-timeline__filter.is-active .cv-chip--count {
+  background: rgba(255, 255, 255, 0.18);
+  color: var(--paper);
+}
+
+.cv-timeline__list {
+  display: grid;
+  gap: 1.4rem;
+}
+
+.cv-timeline__item {
+  position: relative;
+  padding: 1.3rem 1.4rem 1.3rem 1.35rem;
+  border-radius: 1rem;
+  border: 1px solid var(--line);
+  background: var(--paper);
+  transition: transform 0.2s ease;
+}
+
+.cv-timeline__item:hover {
+  transform: translateY(-2px);
+}
+
+.cv-timeline__item.is-hidden {
+  display: none;
+}
+
+.cv-timeline__meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.6rem;
+  margin-bottom: 0.5rem;
+  font-size: 0.8rem;
+  color: var(--muted);
+}
+
+.cv-timeline__year {
+  font-weight: 600;
+  color: var(--ink);
+}
+
+.cv-timeline__title {
+  margin: 0 0 0.4rem 0;
+  font-size: 1.1rem;
+}
+
+.cv-timeline__subtitle {
+  margin: 0 0 0.7rem 0;
+  font-size: 0.9rem;
+  color: var(--ink);
+}
+
+.cv-timeline__highlights {
+  margin: 0 0 0 1.15rem;
+  color: var(--ink);
+}
+
+.cv-timeline__highlights li {
+  margin-bottom: 0.4rem;
+}
+
+.cv-timeline__tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.35rem;
+}
+
+/* ==================================================================
+    VISUAL LANGUAGE — HERO
+================================================================== */
+
+.hero {
+  background: var(--surface-raised);
+  color: var(--on-raised);
+  border-radius: 10px;
+  padding: 3rem 2.2rem 2.4rem;
+  margin-bottom: 1rem;
+}
+.hero__kicker {
+  font-size: 0.6rem;
+  text-transform: uppercase;
+  letter-spacing: 0.18em;
+  color: var(--on-raised-muted);
+  margin: 0 0 1rem;
+}
+.hero__title {
+  font-family: var(--font-display);
+  font-weight: 400;
+  font-size: clamp(2.4rem, 7vw, 3.6rem);
+  line-height: 1.02;
+  margin: 0 0 0.8rem;
+  color: var(--on-raised-strong);
+}
+.hero__accent { color: var(--accent-on-raised); }
+.hero__lede {
+  font-size: 0.95rem;
+  line-height: 1.65;
+  color: var(--on-raised-body);
+  max-width: 46ch;
+  margin: 0;
+}
+.hero__chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+  margin-top: 1.2rem;
+}
+.hero__chip {
+  font-size: 0.7rem;
+  padding: 0.2rem 0.65rem;
+  border-radius: 999px;
+  border: 1px solid var(--on-raised-line);
+  color: var(--on-raised-muted);
+}
+
+/* ==================================================================
+    VISUAL LANGUAGE — TIER 1: DARK ZONE
+================================================================== */
+
+.dark-zone {
+  /* This surface is dark in BOTH themes, so its contents use the
+     --on-raised-* tokens, which deliberately have no dark-theme override.
+     Using --ink/--paper here would invert the text into the background. */
+  background: var(--surface-raised);
+  color: var(--on-raised);
+  border-radius: 10px;
+  padding: 1.2rem 1.4rem;
+  margin-bottom: 1rem;
+}
+.dark-zone--secondary {
+  background: var(--surface-raised-2);
+}
+.dark-zone__label {
+  font-size: 0.6rem;
+  text-transform: uppercase;
+  letter-spacing: 0.18em;
+  color: var(--accent-on-raised);
+  display: block;
+  margin-bottom: 0.75rem;
+}
+.dark-zone__grid {
+  display: grid;
+  grid-template-columns: 72px 1fr;
+  gap: 0.55rem 0.9rem;
+  align-items: baseline;
+}
+.dark-zone__year {
+  font-size: 0.7rem;
+  color: var(--on-raised-muted);
+  font-variant-numeric: tabular-nums;
+}
+.dark-zone__role {
+  font-weight: 600;
+  font-size: 0.88rem;
+  color: var(--on-raised);
+}
+.dark-zone__sub {
+  font-size: 0.72rem;
+  color: var(--on-raised-muted);
+  margin-top: 0.1rem;
+}
+.dark-zone__name {
+  font-weight: 600;
+  font-size: 1.05rem;
+  color: var(--on-raised-strong);
+  margin-bottom: 0.35rem;
+}
+.dark-zone__alias {
+  font-weight: 400;
+  font-size: 0.9rem;
+  color: var(--on-raised-muted);
+}
+.dark-zone__tagline {
+  font-size: 0.82rem;
+  color: var(--on-raised-muted);
+  margin-bottom: 0.8rem;
+  line-height: 1.5;
+}
+.dark-zone__body {
+  font-size: 0.85rem;
+  color: var(--on-raised-body);
+}
+.dark-zone__quote {
+  font-size: 0.85rem;
+  color: var(--on-raised-muted);
+  font-style: italic;
+  line-height: 1.55;
+}
+.dark-zone__link {
+  color: var(--accent-on-raised);
+  font-size: 0.85rem;
+}
+.dark-zone__cta {
+  color: var(--on-raised-strong);
+  font-weight: 600;
+  font-size: 1rem;
+  text-decoration: none;
+}
+.dark-zone__cta:hover {
+  color: var(--accent-on-raised);
+}
+.accent-card__doi {
+  font-size: 0.8rem;
+  color: var(--accent);
+}
+
+/* ==================================================================
+    VISUAL LANGUAGE — TIER 2: ACCENT CARD
+================================================================== */
+
+.accent-card {
+  border-left: 3px solid var(--accent);
+  background: var(--wash);
+  border-radius: 0 8px 8px 0;
+  padding: 0.85rem 1rem;
+  margin-bottom: 0.6rem;
+  transition: border-color 0.2s ease;
+  display: block;
+  color: inherit;
+  text-decoration: none;
+}
+
+.accent-card:hover {
+  border-color: var(--ink);
+  text-decoration: none;
+}
+
+.accent-card__title {
+  font-weight: 600;
+  font-size: 0.95rem;
+  color: var(--ink);
+  margin: 0 0 0.25rem 0;
+}
+
+.accent-card__meta {
+  font-size: 0.75rem;
+  color: var(--muted);
+  margin: 0 0 0.45rem 0;
+}
+
+.accent-card__snippet {
+  font-size: 0.8rem;
+  color: var(--ink);
+  margin: 0 0 0.5rem 0;
+  line-height: 1.45;
+}
+
+.accent-card__tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.3rem;
+}
+
+.accent-card__tag {
+  background: var(--paper);
+  color: var(--muted);
+  border-radius: 999px;
+  padding: 0.1rem 0.45rem;
+  font-size: 0.7rem;
+  text-decoration: none;
+}
+.accent-card__tag:hover {
+  background: var(--line);
+  color: var(--ink);
+}
+
+/* ==================================================================
+    VISUAL LANGUAGE — TIER 3: COMPACT ROWS
+================================================================== */
+
+.compact-rows {
+  margin-bottom: 1.8rem;
+}
+
+.compact-rows__heading {
+  font-size: 0.6rem;
+  text-transform: uppercase;
+  letter-spacing: 0.18em;
+  color: var(--muted);
+  border-bottom: 1px solid var(--line);
+  padding-bottom: 0.3rem;
+  margin-bottom: 0.6rem;
+}
+
+.compact-rows__grid {
+  display: grid;
+  grid-template-columns: 72px 1fr;
+  gap: 0.35rem 0.7rem;
+  align-items: baseline;
+}
+
+.compact-rows__key {
+  font-size: 0.7rem;
+  color: var(--muted);
+  font-variant-numeric: tabular-nums;
+}
+
+.compact-rows__val {
+  font-size: 0.82rem;
+  color: var(--ink);
+  line-height: 1.4;
+}
+
+/* ==================================================================
+    VISUAL LANGUAGE — POST HEADER
+================================================================== */
+
+.post-header {
+  background: var(--ink);
+  color: var(--paper);
+  border-radius: 10px;
+  padding: 1.4rem 1.6rem;
+  margin-bottom: 2rem;
+}
+
+.post-header__title {
+  font-size: 1.4rem;
+  font-weight: 600;
+  color: var(--paper);
+  margin: 0 0 0.6rem 0;
+  border: none;
+  padding: 0;
+}
+
+.post-header__meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  align-items: center;
+  font-size: 0.75rem;
+  color: var(--muted);
+  margin-bottom: 0.6rem;
+}
+
+.post-header__tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.35rem;
+}
+
+.post-header__tag {
+  background: var(--ink);
+  color: var(--muted);
+  border-radius: 999px;
+  padding: 0.15rem 0.5rem;
+  font-size: 0.68rem;
+}
+
+/* ==================================================================
+    VISUAL LANGUAGE — BLOG FEATURED CARD (dark zone for latest post)
+================================================================== */
+
+.blog-featured {
+  margin-bottom: 1.2rem;
+}
+
+.blog-featured__label {
+  font-size: 0.6rem;
+  text-transform: uppercase;
+  letter-spacing: 0.18em;
+  color: var(--ink);
+  display: block;
+  margin-bottom: 0.5rem;
+}
+
+.blog-featured__title {
+  font-size: 1.05rem;
+  font-weight: 600;
+  color: var(--paper);
+  margin: 0 0 0.3rem 0;
+  text-decoration: none;
+}
+
+.blog-featured__title:hover {
+  text-decoration: underline;
+  color: var(--paper);
+}
+
+.blog-featured__snippet {
+  font-size: 0.78rem;
+  color: var(--muted);
+  margin: 0 0 0.7rem 0;
+  line-height: 1.45;
+}
+
+.blog-featured__footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+}
+
+.blog-featured__tags {
+  display: flex;
+  gap: 0.35rem;
+  flex-wrap: wrap;
+}
+
+.blog-featured__tag {
+  background: var(--ink);
+  color: var(--muted);
+  border-radius: 999px;
+  padding: 0.15rem 0.5rem;
+  font-size: 0.68rem;
+  text-decoration: none;
+}
+.blog-featured__tag:hover {
+  background: var(--ink);
+  color: var(--muted);
+}
+
+.blog-featured__date {
+  font-size: 0.7rem;
+  color: var(--muted);
+}
+
+/* ==================================================================
+    SYNTAX HIGHLIGHTING
+    Two highlight.js themes, selector-prefixed and inlined. A linked
+    stylesheet cannot be re-scoped by an ancestor attribute, and a
+    prefers-color-scheme media attribute on <link> ignores the manual
+    toggle — so both themes live here. Regenerate with the script in
+    docs/superpowers/plans/2026-07-27-visual-refresh.md Task 7 if
+    highlight.js is ever updated.
+================================================================== */
+
+pre code.hljs,
+pre.hljs {
+  background: var(--code-bg);
+  color: var(--code-ink);
+  border: 1px solid var(--line);
+  border-radius: 7px;
+  padding: 0.85rem 1rem;
+  font-size: 0.8rem;
+  line-height: 1.6;
+  overflow-x: auto;
+}
+:not(pre) > code {
+  background: var(--wash);
+  border-radius: 3px;
+  padding: 0.05rem 0.3rem;
+  font-size: 0.85em;
+}
+
+/* --- BEGIN VENDORED HIGHLIGHT.JS THEMES --- */
+html[data-theme="light"] pre code.hljs{display:block;overflow-x:auto;padding:1em}html[data-theme="light"] code.hljs{padding:3px 5px}html[data-theme="light"] /*!
+  Theme: a11y-light
+  Author: @ericwbailey
+  Maintainer: @ericwbailey
+
+  Based on the Tomorrow Night Eighties theme: https://github.com/isagalaev/highlight.js/blob/master/src/styles/tomorrow-night-eighties.css
+*/.hljs{background:#fefefe;color:#545454}html[data-theme="light"] .hljs-comment,html[data-theme="light"] .hljs-quote{color:#696969}html[data-theme="light"] .hljs-deletion,html[data-theme="light"] .hljs-name,html[data-theme="light"] .hljs-regexp,html[data-theme="light"] .hljs-selector-class,html[data-theme="light"] .hljs-selector-id,html[data-theme="light"] .hljs-tag,html[data-theme="light"] .hljs-template-variable,html[data-theme="light"] .hljs-variable{color:#d91e18}html[data-theme="light"] .hljs-attribute,html[data-theme="light"] .hljs-built_in,html[data-theme="light"] .hljs-link,html[data-theme="light"] .hljs-literal,html[data-theme="light"] .hljs-meta,html[data-theme="light"] .hljs-number,html[data-theme="light"] .hljs-params,html[data-theme="light"] .hljs-type{color:#aa5d00}html[data-theme="light"] .hljs-addition,html[data-theme="light"] .hljs-bullet,html[data-theme="light"] .hljs-string,html[data-theme="light"] .hljs-symbol{color:green}html[data-theme="light"] .hljs-section,html[data-theme="light"] .hljs-title{color:#007faa}html[data-theme="light"] .hljs-keyword,html[data-theme="light"] .hljs-selector-tag{color:#7928a1}html[data-theme="light"] .hljs-emphasis{font-style:italic}html[data-theme="light"] .hljs-strong{font-weight:700}@media screen and (-ms-high-contrast:active){html[data-theme="light"] .hljs-addition,html[data-theme="light"] .hljs-attribute,html[data-theme="light"] .hljs-built_in,html[data-theme="light"] .hljs-bullet,html[data-theme="light"] .hljs-comment,html[data-theme="light"] .hljs-link,html[data-theme="light"] .hljs-literal,html[data-theme="light"] .hljs-meta,html[data-theme="light"] .hljs-number,html[data-theme="light"] .hljs-params,html[data-theme="light"] .hljs-quote,html[data-theme="light"] .hljs-string,html[data-theme="light"] .hljs-symbol,html[data-theme="light"] .hljs-type{color:highlight}html[data-theme="light"] .hljs-keyword,html[data-theme="light"] .hljs-selector-tag{font-weight:700}}
+html[data-theme="dark"] pre code.hljs{display:block;overflow-x:auto;padding:1em}html[data-theme="dark"] code.hljs{padding:3px 5px}html[data-theme="dark"] /*!
+  Theme: a11y-dark
+  Author: @ericwbailey
+  Maintainer: @ericwbailey
+
+  Based on the Tomorrow Night Eighties theme: https://github.com/isagalaev/highlight.js/blob/master/src/styles/tomorrow-night-eighties.css
+*/.hljs{background:#2b2b2b;color:#f8f8f2}html[data-theme="dark"] .hljs-comment,html[data-theme="dark"] .hljs-quote{color:#d4d0ab}html[data-theme="dark"] .hljs-deletion,html[data-theme="dark"] .hljs-name,html[data-theme="dark"] .hljs-regexp,html[data-theme="dark"] .hljs-selector-class,html[data-theme="dark"] .hljs-selector-id,html[data-theme="dark"] .hljs-tag,html[data-theme="dark"] .hljs-template-variable,html[data-theme="dark"] .hljs-variable{color:#ffa07a}html[data-theme="dark"] .hljs-built_in,html[data-theme="dark"] .hljs-link,html[data-theme="dark"] .hljs-literal,html[data-theme="dark"] .hljs-meta,html[data-theme="dark"] .hljs-number,html[data-theme="dark"] .hljs-params,html[data-theme="dark"] .hljs-type{color:#f5ab35}html[data-theme="dark"] .hljs-attribute{color:gold}html[data-theme="dark"] .hljs-addition,html[data-theme="dark"] .hljs-bullet,html[data-theme="dark"] .hljs-string,html[data-theme="dark"] .hljs-symbol{color:#abe338}html[data-theme="dark"] .hljs-section,html[data-theme="dark"] .hljs-title{color:#00e0e0}html[data-theme="dark"] .hljs-keyword,html[data-theme="dark"] .hljs-selector-tag{color:#dcc6e0}html[data-theme="dark"] .hljs-emphasis{font-style:italic}html[data-theme="dark"] .hljs-strong{font-weight:700}@media screen and (-ms-high-contrast:active){html[data-theme="dark"] .hljs-addition,html[data-theme="dark"] .hljs-attribute,html[data-theme="dark"] .hljs-built_in,html[data-theme="dark"] .hljs-bullet,html[data-theme="dark"] .hljs-comment,html[data-theme="dark"] .hljs-link,html[data-theme="dark"] .hljs-literal,html[data-theme="dark"] .hljs-meta,html[data-theme="dark"] .hljs-number,html[data-theme="dark"] .hljs-params,html[data-theme="dark"] .hljs-quote,html[data-theme="dark"] .hljs-string,html[data-theme="dark"] .hljs-symbol,html[data-theme="dark"] .hljs-type{color:highlight}html[data-theme="dark"] .hljs-keyword,html[data-theme="dark"] .hljs-selector-tag{font-weight:700}}
+/* --- END VENDORED HIGHLIGHT.JS THEMES --- */
+
+/* Reclaim the code-block SURFACE from the vendored themes.
+   a11y-light/dark each ship their own `.hljs` background (#fefefe / #2b2b2b).
+   Prefixed, those become `html[data-theme="..."] .hljs` at specificity
+   (0,2,0), which beats the `pre code.hljs` chrome above at (0,1,2) — and they
+   also come later in the file. The result was a cold white slab on the warm
+   paper, instead of the tinted block the design calls for.
+   We keep the vendored TOKEN colours (keywords, strings, comments) and take
+   back only the container surface, at (0,2,2) so it wins cleanly. */
+html[data-theme] pre code.hljs,
+html[data-theme] pre.hljs {
+  background: var(--code-bg);
+  color: var(--code-ink);
+}
+html[data-theme] :not(pre) > code.hljs {
+  background: var(--wash);
+  color: var(--code-ink);
+}
