@@ -1447,6 +1447,41 @@ h3:hover .cv-anchor {
   color: #a1968a;
   margin-top: 0.1rem;
 }
+.dark-zone__name {
+  font-weight: 700;
+  font-size: 1.05rem;
+  color: #ffffff;
+  margin-bottom: 0.35rem;
+}
+.dark-zone__alias {
+  font-weight: 400;
+  font-size: 0.9rem;
+  color: #a1968a;
+}
+.dark-zone__tagline {
+  font-size: 0.82rem;
+  color: #a1968a;
+  margin-bottom: 0.8rem;
+  line-height: 1.5;
+}
+.dark-zone__body {
+  font-size: 0.85rem;
+  color: #c9bfb2;
+}
+.dark-zone__quote {
+  font-size: 0.85rem;
+  color: #a1968a;
+  font-style: italic;
+  line-height: 1.55;
+}
+.dark-zone__link {
+  color: var(--accent);
+  font-size: 0.85rem;
+}
+.accent-card__doi {
+  font-size: 0.8rem;
+  color: var(--accent);
+}
 
 /* ==================================================================
     VISUAL LANGUAGE — TIER 2: ACCENT CARD

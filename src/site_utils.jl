@@ -1140,7 +1140,7 @@ function hfun_cv_publications(_=nothing)
       if !isempty(doi)
         write(
           io,
-          "<a href=\"$(html_escape(doi))\" style=\"font-size:0.8rem;color:#444;\">DOI link</a>",
+          "<a class=\"accent-card__doi\" href=\"$(html_escape(doi))\">DOI link</a>",
         )
       end
       write(io, "</article>")

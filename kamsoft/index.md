@@ -4,14 +4,14 @@
 ~~~
 <div class="dark-zone" style="margin-top:1rem;">
   <span class="dark-zone__label">KAMSOFT</span>
-  <div style="font-weight:700;font-size:1.1rem;color:#fff;margin-bottom:0.5rem;">Data Science · Data Engineering · Scientific Computing</div>
-  <div style="font-size:0.85rem;color:#aaa;line-height:1.55;">Independent consulting for research-driven companies and individual clients. I turn exploratory code, numerical models, and ad-hoc data workflows into reliable, maintainable systems.</div>
+  <div class="dark-zone__name" style="font-size:1.1rem;margin-bottom:0.5rem;">Data Science · Data Engineering · Scientific Computing</div>
+  <div class="dark-zone__body" style="line-height:1.55;">Independent consulting for research-driven companies and individual clients. I turn exploratory code, numerical models, and ad-hoc data workflows into reliable, maintainable systems.</div>
 </div>
 
 <div style="margin-bottom:0.4rem;margin-top:1.5rem;" class="compact-rows__heading">Quick facts</div>
 <div class="compact-rows__grid" style="margin-bottom:1.5rem;">
   <span class="compact-rows__key">Owner</span><span class="compact-rows__val">Kamil Bruchal (Kamsoft)</span>
-  <span class="compact-rows__key">Email</span><span class="compact-rows__val"><a href="mailto:kamsoft@kambr.pl" style="color:#555;">kamsoft@kambr.pl</a></span>
+  <span class="compact-rows__key">Email</span><span class="compact-rows__val"><a class="dark-zone__label" href="mailto:kamsoft@kambr.pl">kamsoft@kambr.pl</a></span>
   <span class="compact-rows__key">NIP</span><span class="compact-rows__val">8993048156</span>
   <span class="compact-rows__key">REGON</span><span class="compact-rows__val">543855110</span>
 </div>
@@ -43,7 +43,7 @@
 </div>
 
 <div class="dark-zone" style="margin-top:1.5rem;text-align:center;">
-  <div style="font-size:0.85rem;color:#aaa;margin-bottom:0.5rem;">If your data, models, or compute setup is becoming a bottleneck</div>
-  <a href="mailto:kamsoft@kambr.pl" style="color:#fff;font-weight:700;font-size:1rem;">kamsoft@kambr.pl</a>
+  <div class="dark-zone__body" style="margin-bottom:0.5rem;">If your data, models, or compute setup is becoming a bottleneck</div>
+  <a class="dark-zone__name" href="mailto:kamsoft@kambr.pl" style="font-size:1rem;">kamsoft@kambr.pl</a>
 </div>
 ~~~

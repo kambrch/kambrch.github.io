@@ -148,6 +148,17 @@ PY
   fi
 fi
 
+# --- 7. No colour literals in emitted HTML ----------------------------------
+# Inline style="color:#..." in Markdown and Julia emitters bypasses the token
+# layer entirely and is invisible until someone switches theme.
+inline_colour="$(grep -rlE 'style="[^"]*(color|background)[^"]*#[0-9a-fA-F]{3,8}' \
+  --include='*.html' "${site_dir}" 2>/dev/null || true)"
+if [[ -n "${inline_colour}" ]]; then
+  fail "inline colour literals in emitted HTML:"
+  printf '  %s\n' ${inline_colour} >&2
+  echo "  -> move to a class in _assets/css/site.css that uses var(--...)" >&2
+fi
+
 if [[ "${status}" -eq 0 ]]; then
   echo "Build verification passed: ${site_dir}"
 fi

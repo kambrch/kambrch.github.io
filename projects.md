@@ -8,8 +8,8 @@ tags = ["projects"]
 ~~~
 <div class="dark-zone" style="margin-top:1rem;">
   <span class="dark-zone__label">Projects</span>
-  <div style="font-weight:700;font-size:1.05rem;color:#fff;margin-bottom:0.3rem;">Things I've built</div>
-  <div style="font-size:0.82rem;color:#aaa;">Lab instruments, data tools, site infrastructure, and other tinkering.</div>
+  <div class="dark-zone__name" style="margin-bottom:0.3rem;">Things I've built</div>
+  <div class="dark-zone__tagline">Lab instruments, data tools, site infrastructure, and other tinkering.</div>
 </div>
 
 <!-- Add project accent cards below. Example structure:

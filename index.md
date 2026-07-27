@@ -4,11 +4,11 @@
 ~~~
 <div class="dark-zone" style="margin-top:1rem;">
   <span class="dark-zone__label">About</span>
-  <div style="font-weight:700;font-size:1.05rem;color:#fff;margin-bottom:0.35rem;">Kamil Bruchal <span style="font-weight:400;color:#777;font-size:0.9rem;">· Kamaś · Kambr</span></div>
-  <div style="font-size:0.82rem;color:#aaa;margin-bottom:0.8rem;line-height:1.5;">Physicist · Julia developer · Amateur chemist · Hacker · Based in Wrocław, Poland</div>
-  <div style="font-size:0.85rem;color:#999;">PhD researcher in optical refrigeration of rare-earth microcrystals. When not in the lab or in the REPL, usually at Hackerspace or on the air as SP6WRN.</div>
+  <div class="dark-zone__name">Kamil Bruchal <span class="dark-zone__alias">· Kamaś · Kambr</span></div>
+  <div class="dark-zone__tagline">Physicist · Julia developer · Amateur chemist · Hacker · Based in Wrocław, Poland</div>
+  <div class="dark-zone__body">PhD researcher in optical refrigeration of rare-earth microcrystals. When not in the lab or in the REPL, usually at Hackerspace or on the air as SP6WRN.</div>
   <div style="margin-top:0.9rem;">
-    <a href="mailto:kambr@kambr.pl" style="color:#ccc;font-size:0.85rem;">kambr@kambr.pl</a>
+    <a class="dark-zone__link" href="mailto:kambr@kambr.pl">kambr@kambr.pl</a>
   </div>
 </div>
 
