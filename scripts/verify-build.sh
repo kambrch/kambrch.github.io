@@ -198,6 +198,15 @@ for font in instrument-serif-400 instrument-serif-400-italic \
   fi
 done
 
+# --- 9. Dead stylesheets must not be published ------------------------------
+# These were linked by no template but shipped on every deploy. Franklin
+# republishes anything left in the working tree, so deletion needs a guard.
+for dead in css/franklin.css css/poole_hyde.css assets/css/style.css; do
+  if [[ -f "${site_dir}/${dead}" ]]; then
+    fail "dead stylesheet published: ${dead}"
+  fi
+done
+
 if [[ "${status}" -eq 0 ]]; then
   echo "Build verification passed: ${site_dir}"
 fi
