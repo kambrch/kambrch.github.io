@@ -8,7 +8,11 @@
   --line: #ddd3c2;
   --ink: #22201d;
   --muted: #6b6157;
-  --accent: #c8873c;
+  /* Darkened from #c8873c, which measured 2.79:1 on --paper — well under the
+     WCAG AA 4.5:1 required for body text, and this is the link colour. Same
+     32deg hue at higher saturation, so it still reads as burnt amber rather
+     than brown. Now 5.20:1 on --paper and 4.59:1 on --wash. */
+  --accent: #935b1a;
   --surface-raised: #22201d;
   --surface-raised-2: #2e2b26;
   --code-bg: #f2ebdd;
@@ -26,6 +30,11 @@
   --on-raised-muted: #a1968a;
   --on-raised-body: #c9bfb2;
   --on-raised-line: #3a332b;
+  /* The accent needs two values for the same reason the text does. A single
+     amber cannot clear 4.5:1 against BOTH the light paper and a dark slab —
+     darkening it for one drives the other below AA. This is the slab variant:
+     7.32:1 on --surface-raised light, 8.68:1 dark, 6.35:1 on the secondary. */
+  --accent-on-raised: #e0a252;
 
   /* Retained for compatibility with rules not yet migrated (Task 2). */
   --block-background: var(--wash);
@@ -761,8 +770,8 @@ tbody tr:nth-child(odd) th {
 }
 .site-header__link:hover { color: var(--on-raised); }
 .site-header__link.is-active {
-  color: var(--accent);
-  border-bottom-color: var(--accent);
+  color: var(--accent-on-raised);
+  border-bottom-color: var(--accent-on-raised);
 }
 .site-header__theme {
   background: none;
@@ -1469,7 +1478,7 @@ h3:hover .cv-anchor {
   margin: 0 0 0.8rem;
   color: var(--on-raised-strong);
 }
-.hero__accent { color: var(--accent); }
+.hero__accent { color: var(--accent-on-raised); }
 .hero__lede {
   font-size: 0.95rem;
   line-height: 1.65;
@@ -1512,7 +1521,7 @@ h3:hover .cv-anchor {
   font-size: 0.6rem;
   text-transform: uppercase;
   letter-spacing: 0.18em;
-  color: var(--accent);
+  color: var(--accent-on-raised);
   display: block;
   margin-bottom: 0.75rem;
 }
@@ -1565,7 +1574,7 @@ h3:hover .cv-anchor {
   line-height: 1.55;
 }
 .dark-zone__link {
-  color: var(--accent);
+  color: var(--accent-on-raised);
   font-size: 0.85rem;
 }
 .dark-zone__cta {
@@ -1575,7 +1584,7 @@ h3:hover .cv-anchor {
   text-decoration: none;
 }
 .dark-zone__cta:hover {
-  color: var(--accent);
+  color: var(--accent-on-raised);
 }
 .accent-card__doi {
   font-size: 0.8rem;
