@@ -133,6 +133,9 @@ if [[ -f "${css}" ]]; then
   stray="$(python3 - "${css}" <<'PY'
 import re, sys
 css = open(sys.argv[1], encoding="utf-8", errors="replace").read()
+# Strip the vendored highlight.js themes — they are third-party CSS whose
+# palette is not ours to tokenise. They are between sentinel comments.
+css = re.sub(r'/\* --- BEGIN VENDORED HIGHLIGHT\.JS THEMES --- \*/.*?/\* --- END VENDORED HIGHLIGHT\.JS THEMES --- \*/', '', css, flags=re.DOTALL)
 # Remove the token declaration blocks, then look for what survives.
 css = re.sub(r':root(?:\[data-theme="[a-z]+"\])?\s*\{[^}]*\}', '', css)
 css = re.sub(r'@media\s*\(prefers-color-scheme:\s*dark\)\s*\{(?:[^{}]|\{[^}]*\})*\}', '', css)

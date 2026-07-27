@@ -1797,3 +1797,48 @@ h3:hover .cv-anchor {
   font-size: 0.7rem;
   color: var(--muted);
 }
+
+/* ==================================================================
+    SYNTAX HIGHLIGHTING
+    Two highlight.js themes, selector-prefixed and inlined. A linked
+    stylesheet cannot be re-scoped by an ancestor attribute, and a
+    prefers-color-scheme media attribute on <link> ignores the manual
+    toggle — so both themes live here. Regenerate with the script in
+    docs/superpowers/plans/2026-07-27-visual-refresh.md Task 7 if
+    highlight.js is ever updated.
+================================================================== */
+
+pre code.hljs,
+pre.hljs {
+  background: var(--code-bg);
+  color: var(--code-ink);
+  border: 1px solid var(--line);
+  border-radius: 7px;
+  padding: 0.85rem 1rem;
+  font-size: 0.8rem;
+  line-height: 1.6;
+  overflow-x: auto;
+}
+:not(pre) > code {
+  background: var(--wash);
+  border-radius: 3px;
+  padding: 0.05rem 0.3rem;
+  font-size: 0.85em;
+}
+
+/* --- BEGIN VENDORED HIGHLIGHT.JS THEMES --- */
+html[data-theme="light"] pre code.hljs{display:block;overflow-x:auto;padding:1em}html[data-theme="light"] code.hljs{padding:3px 5px}html[data-theme="light"] /*!
+  Theme: a11y-light
+  Author: @ericwbailey
+  Maintainer: @ericwbailey
+
+  Based on the Tomorrow Night Eighties theme: https://github.com/isagalaev/highlight.js/blob/master/src/styles/tomorrow-night-eighties.css
+*/.hljs{background:#fefefe;color:#545454}html[data-theme="light"] .hljs-comment,html[data-theme="light"] .hljs-quote{color:#696969}html[data-theme="light"] .hljs-deletion,html[data-theme="light"] .hljs-name,html[data-theme="light"] .hljs-regexp,html[data-theme="light"] .hljs-selector-class,html[data-theme="light"] .hljs-selector-id,html[data-theme="light"] .hljs-tag,html[data-theme="light"] .hljs-template-variable,html[data-theme="light"] .hljs-variable{color:#d91e18}html[data-theme="light"] .hljs-attribute,html[data-theme="light"] .hljs-built_in,html[data-theme="light"] .hljs-link,html[data-theme="light"] .hljs-literal,html[data-theme="light"] .hljs-meta,html[data-theme="light"] .hljs-number,html[data-theme="light"] .hljs-params,html[data-theme="light"] .hljs-type{color:#aa5d00}html[data-theme="light"] .hljs-addition,html[data-theme="light"] .hljs-bullet,html[data-theme="light"] .hljs-string,html[data-theme="light"] .hljs-symbol{color:green}html[data-theme="light"] .hljs-section,html[data-theme="light"] .hljs-title{color:#007faa}html[data-theme="light"] .hljs-keyword,html[data-theme="light"] .hljs-selector-tag{color:#7928a1}html[data-theme="light"] .hljs-emphasis{font-style:italic}html[data-theme="light"] .hljs-strong{font-weight:700}@media screen and (-ms-high-contrast:active){html[data-theme="light"] .hljs-addition,html[data-theme="light"] .hljs-attribute,html[data-theme="light"] .hljs-built_in,html[data-theme="light"] .hljs-bullet,html[data-theme="light"] .hljs-comment,html[data-theme="light"] .hljs-link,html[data-theme="light"] .hljs-literal,html[data-theme="light"] .hljs-meta,html[data-theme="light"] .hljs-number,html[data-theme="light"] .hljs-params,html[data-theme="light"] .hljs-quote,html[data-theme="light"] .hljs-string,html[data-theme="light"] .hljs-symbol,html[data-theme="light"] .hljs-type{color:highlight}html[data-theme="light"] .hljs-keyword,html[data-theme="light"] .hljs-selector-tag{font-weight:700}}
+html[data-theme="dark"] pre code.hljs{display:block;overflow-x:auto;padding:1em}html[data-theme="dark"] code.hljs{padding:3px 5px}html[data-theme="dark"] /*!
+  Theme: a11y-dark
+  Author: @ericwbailey
+  Maintainer: @ericwbailey
+
+  Based on the Tomorrow Night Eighties theme: https://github.com/isagalaev/highlight.js/blob/master/src/styles/tomorrow-night-eighties.css
+*/.hljs{background:#2b2b2b;color:#f8f8f2}html[data-theme="dark"] .hljs-comment,html[data-theme="dark"] .hljs-quote{color:#d4d0ab}html[data-theme="dark"] .hljs-deletion,html[data-theme="dark"] .hljs-name,html[data-theme="dark"] .hljs-regexp,html[data-theme="dark"] .hljs-selector-class,html[data-theme="dark"] .hljs-selector-id,html[data-theme="dark"] .hljs-tag,html[data-theme="dark"] .hljs-template-variable,html[data-theme="dark"] .hljs-variable{color:#ffa07a}html[data-theme="dark"] .hljs-built_in,html[data-theme="dark"] .hljs-link,html[data-theme="dark"] .hljs-literal,html[data-theme="dark"] .hljs-meta,html[data-theme="dark"] .hljs-number,html[data-theme="dark"] .hljs-params,html[data-theme="dark"] .hljs-type{color:#f5ab35}html[data-theme="dark"] .hljs-attribute{color:gold}html[data-theme="dark"] .hljs-addition,html[data-theme="dark"] .hljs-bullet,html[data-theme="dark"] .hljs-string,html[data-theme="dark"] .hljs-symbol{color:#abe338}html[data-theme="dark"] .hljs-section,html[data-theme="dark"] .hljs-title{color:#00e0e0}html[data-theme="dark"] .hljs-keyword,html[data-theme="dark"] .hljs-selector-tag{color:#dcc6e0}html[data-theme="dark"] .hljs-emphasis{font-style:italic}html[data-theme="dark"] .hljs-strong{font-weight:700}@media screen and (-ms-high-contrast:active){html[data-theme="dark"] .hljs-addition,html[data-theme="dark"] .hljs-attribute,html[data-theme="dark"] .hljs-built_in,html[data-theme="dark"] .hljs-bullet,html[data-theme="dark"] .hljs-comment,html[data-theme="dark"] .hljs-link,html[data-theme="dark"] .hljs-literal,html[data-theme="dark"] .hljs-meta,html[data-theme="dark"] .hljs-number,html[data-theme="dark"] .hljs-params,html[data-theme="dark"] .hljs-quote,html[data-theme="dark"] .hljs-string,html[data-theme="dark"] .hljs-symbol,html[data-theme="dark"] .hljs-type{color:highlight}html[data-theme="dark"] .hljs-keyword,html[data-theme="dark"] .hljs-selector-tag{font-weight:700}}
+/* --- END VENDORED HIGHLIGHT.JS THEMES --- */
