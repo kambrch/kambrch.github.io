@@ -145,10 +145,9 @@ body {
     DEFAULT FONT AND LAYOUT
 ================================================================== */
 
-html {
-  font-size: var(--normal);
-  color: var(--text-color);
-}
+/* Root size and colour are set once, with the type scale near the top of this
+   file. This rule used to set font-size: var(--normal) (19px) and override the
+   designed 18px. --normal/--text-color remain only as compatibility aliases. */
 
 /* ==================================================================
     ACCESSIBILITY
@@ -544,16 +543,11 @@ body {
   padding: 0;
 }
 
-html {
-  font-size: 16px;
-  line-height: 1.5;
-}
-
-@media (min-width: 38em) {
-  html {
-    font-size: 20px;
-  }
-}
+/* Hyde set the root size here (16px, 20px above 38em) and the line-height.
+   Both came later in the file than the design's `html { font-size: 18px;
+   line-height: 1.65 }`, so they silently won and the designed reading size
+   never applied. The root size is now set once, near the top, with the type
+   scale. Do not reintroduce a font-size or line-height on html here. */
 
 body {
   color: var(--ink);
@@ -579,6 +573,12 @@ a:focus {
 }
 
 /* Headings */
+/* `font-weight: bold` and the font-sizes that used to live in this block came
+   later in the file than the type scale, so they won. That meant every
+   heading asked Instrument Serif — which ships ONLY weight 400 — for a bold
+   face the family does not have, and the browser synthesised one by smearing
+   the outlines. Sizes and weight now come from the scale near the top of this
+   file. Do not set font-weight or font-size on headings here. */
 h1,
 h2,
 h3,
@@ -586,24 +586,16 @@ h4,
 h5,
 h6 {
   margin-bottom: 0.5rem;
-  font-weight: bold;
-  line-height: 1.25;
   color: var(--ink);
   text-rendering: optimizeLegibility;
 }
 
-h1 {
-  font-size: 2rem;
-}
-
 h2 {
   margin-top: 1rem;
-  font-size: 1.5rem;
 }
 
 h3 {
   margin-top: 1.5rem;
-  font-size: 1.25rem;
 }
 
 h4,
@@ -633,7 +625,7 @@ dl {
 }
 
 dt {
-  font-weight: bold;
+  font-weight: 600;
 }
 
 dd {
@@ -651,7 +643,7 @@ hr {
 
 abbr {
   font-size: 85%;
-  font-weight: bold;
+  font-weight: 600;
   color: var(--ink);
   text-transform: uppercase;
 }
@@ -797,9 +789,9 @@ tbody tr:nth-child(odd) th {
     (intentionally after Poole/Hyde to take precedence)
 ================================================================== */
 
-html {
-  font-size: 17px;
-}
+/* The 17px root size that used to live here predates the type scale and, being
+   later in the file, silently beat the designed 18px. The scale near the top
+   of this file is now the single place the root size is set. */
 
 /* ==================================================================
     FOOTER SOCIAL
@@ -1142,7 +1134,7 @@ h3:hover .cv-anchor {
 
 .cv-metrics__value {
   font-size: 1.65rem;
-  font-weight: 700;
+  font-weight: 600;
   color: var(--ink);
 }
 
@@ -1418,7 +1410,7 @@ h3:hover .cv-anchor {
 }
 
 .cv-timeline__year {
-  font-weight: 700;
+  font-weight: 600;
   color: var(--ink);
 }
 
@@ -1533,7 +1525,7 @@ h3:hover .cv-anchor {
   font-variant-numeric: tabular-nums;
 }
 .dark-zone__role {
-  font-weight: 700;
+  font-weight: 600;
   font-size: 0.88rem;
   color: var(--on-raised);
 }
@@ -1543,7 +1535,7 @@ h3:hover .cv-anchor {
   margin-top: 0.1rem;
 }
 .dark-zone__name {
-  font-weight: 700;
+  font-weight: 600;
   font-size: 1.05rem;
   color: var(--on-raised-strong);
   margin-bottom: 0.35rem;
@@ -1575,7 +1567,7 @@ h3:hover .cv-anchor {
 }
 .dark-zone__cta {
   color: var(--on-raised-strong);
-  font-weight: 700;
+  font-weight: 600;
   font-size: 1rem;
   text-decoration: none;
 }
@@ -1609,7 +1601,7 @@ h3:hover .cv-anchor {
 }
 
 .accent-card__title {
-  font-weight: 700;
+  font-weight: 600;
   font-size: 0.95rem;
   color: var(--ink);
   margin: 0 0 0.25rem 0;
@@ -1698,7 +1690,7 @@ h3:hover .cv-anchor {
 
 .post-header__title {
   font-size: 1.4rem;
-  font-weight: 700;
+  font-weight: 600;
   color: var(--paper);
   margin: 0 0 0.6rem 0;
   border: none;
@@ -1748,7 +1740,7 @@ h3:hover .cv-anchor {
 
 .blog-featured__title {
   font-size: 1.05rem;
-  font-weight: 700;
+  font-weight: 600;
   color: var(--paper);
   margin: 0 0 0.3rem 0;
   text-decoration: none;
