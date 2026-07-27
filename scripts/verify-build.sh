@@ -124,6 +124,30 @@ if [[ "${missing_theme}" -gt 0 ]]; then
   echo "  -> the script belongs in _layout/head.html, inlined, before first paint" >&2
 fi
 
+# --- 6. Colour literals may live only in token declarations -----------------
+# 62 hex literals used to be scattered through site.css, which made dark mode
+# impossible. Scanning emitted HTML alone would pass while the stylesheet
+# stayed un-themeable, so this targets the stylesheet itself.
+css="${site_dir}/assets/css/site.css"
+if [[ -f "${css}" ]]; then
+  stray="$(python3 - "${css}" <<'PY'
+import re, sys
+css = open(sys.argv[1], encoding="utf-8", errors="replace").read()
+# Remove the token declaration blocks, then look for what survives.
+css = re.sub(r':root(?:\[data-theme="[a-z]+"\])?\s*\{[^}]*\}', '', css)
+css = re.sub(r'@media\s*\(prefers-color-scheme:\s*dark\)\s*\{(?:[^{}]|\{[^}]*\})*\}', '', css)
+css = re.sub(r'\.dark-zone[^{]*\{[^}]*\}', '', css)
+hits = re.findall(r'#[0-9a-fA-F]{3,8}\b', css)
+print("\n".join(sorted(set(hits))))
+PY
+)"
+  if [[ -n "${stray}" ]]; then
+    fail "hex colour literals outside token blocks in site.css:"
+    printf '  %s\n' ${stray} >&2
+    echo "  -> replace with var(--paper|--wash|--line|--ink|--muted|--accent|...)" >&2
+  fi
+fi
+
 if [[ "${status}" -eq 0 ]]; then
   echo "Build verification passed: ${site_dir}"
 fi
