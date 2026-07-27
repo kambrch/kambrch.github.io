@@ -1,0 +1,19 @@
+<a class="skip-link" href="#main-content" aria-label="Skip to main content">Skip to main content</a>
+<header class="site-header">
+  <div class="site-header__inner">
+    <a class="site-header__brand" href="/" aria-label="Go to home page">Kamil Bruchal</a>
+    <nav class="site-header__nav" aria-label="Main navigation">
+      <a class="site-header__link {{ispage index.html}}is-active{{end}}" href="/">About</a>
+      <a class="site-header__link {{ispage projects/*}}is-active{{end}}" href="/projects/">Projects</a>
+      <a class="site-header__link {{ispage cv/*}}is-active{{end}}" href="/cv/">CV</a>
+      <a class="site-header__link {{ispage blog/*}}is-active{{end}}" href="/blog/">Blog</a>
+      <a class="site-header__link {{ispage kamsoft/*}}is-active{{end}}" href="/kamsoft/">KAMSOFT</a>
+      <button class="site-header__theme" type="button"
+              onclick="window.__toggleTheme()"
+              aria-label="Toggle light and dark theme">
+        <span aria-hidden="true">◐</span>
+      </button>
+    </nav>
+  </div>
+</header>
+<main id="main-content" class="content container">

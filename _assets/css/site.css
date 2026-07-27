@@ -715,94 +715,67 @@ tbody tr:nth-child(odd) th {
  */
 
 /*
- * Sidebar
- *
- * Flexible banner for housing site name, intro, and "footer" content. Starts
- * out above content in mobile and later moves to the side with wider viewports.
+ * Header Navigation
  */
 
-.sidebar {
-  text-align: center;
-  padding: 2rem 1rem;
-  color: rgba(255, 255, 255, 0.5);
-  background-color: var(--ink);
+.site-header {
+  background: var(--surface-raised);
+  border-bottom: 1px solid var(--line);
+}
+.site-header__inner {
+  max-width: 68rem;
+  margin: 0 auto;
+  padding: 0.85rem 1.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+.site-header__brand {
+  font-family: var(--font-display);
+  font-size: 1.15rem;
+  color: var(--ink);
+  text-decoration: none;
+}
+.site-header__nav {
+  display: flex;
+  align-items: center;
+  gap: 1.1rem;
+}
+.site-header__link {
+  font-size: 0.8rem;
+  color: var(--muted);
+  text-decoration: none;
+  padding-bottom: 2px;
+  border-bottom: 2px solid transparent;
+}
+.site-header__link:hover { color: var(--ink); }
+.site-header__link.is-active {
+  color: var(--accent);
+  border-bottom-color: var(--accent);
+}
+.site-header__theme {
+  background: none;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  color: var(--muted);
+  cursor: pointer;
+  font-size: 0.85rem;
+  line-height: 1;
+  padding: 0.3rem 0.55rem;
+}
+.site-header__theme:hover { color: var(--ink); border-color: var(--muted); }
+
+.content.container {
+  max-width: 68rem;
+  margin: 0 auto;
+  padding: 2.5rem 1.5rem 3rem;
 }
 
-@media (min-width: 768px) {
-  .sidebar {
-    position: fixed;
-    top: 0;
-    left: 0;
-    bottom: 0;
-    width: 15rem;
-    text-align: left;
-  }
-}
-
-/* Sidebar links */
-.sidebar a {
-  color: var(--paper);
-}
-
-/* About section */
-.sidebar-about h1 {
-  color: var(--paper);
-  margin-top: 0;
-  font-size: 3.25rem;
-}
-
-/* Sidebar nav */
-.sidebar-nav {
-  margin-bottom: 1rem;
-}
-
-.sidebar-nav-item {
-  display: block;
-  line-height: 1.75;
-}
-
-a.sidebar-nav-item:hover,
-a.sidebar-nav-item:focus {
-  text-decoration: underline;
-}
-
-.sidebar-nav-item.active {
-  font-weight: bold;
-}
-
-/* Sticky sidebar
- *
- * Add the `sidebar-sticky` class to the sidebar's container to affix it the
- * contents to the bottom of the sidebar in tablets and up.
- */
-
-@media (min-width: 768px) {
-  .sidebar-sticky {
-    position: absolute;
-    right: 1rem;
-    bottom: 1rem;
-    left: 1rem;
-  }
-}
-
-
-/* Container
- *
- * Align the contents of the site above the proper threshold with some margin-fu
- * with a 25%-wide `.sidebar`.
- */
-
-.content {
-  padding-top: 4rem;
-  padding-bottom: 4rem;
-}
-
-@media (min-width: 768px) {
-  .content {
-    max-width: 45rem;
-    margin-left: 15rem;
-    margin-right: 2rem;
-  }
+@media (max-width: 640px) {
+  .site-header__inner { flex-direction: column; align-items: flex-start; }
+  .site-header__nav { flex-wrap: wrap; gap: 0.8rem; }
 }
 
 /* ==================================================================
@@ -815,16 +788,16 @@ html {
 }
 
 /* ==================================================================
-    SIDEBAR SOCIAL
+    FOOTER SOCIAL
 ================================================================== */
 
-.sidebar-social {
+.site-footer__social {
   display: flex;
   gap: 0.75rem;
   margin-top: 1.5rem;
 }
 
-.sidebar-social__link {
+.site-footer__social-link {
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -837,13 +810,13 @@ html {
   transition: background 0.2s ease, border-color 0.2s ease, color 0.2s ease;
 }
 
-.sidebar-social__link:hover {
+.site-footer__social-link:hover {
   background: var(--wash);
   border-color: var(--muted);
   color: var(--ink);
 }
 
-.sidebar-social__icon {
+.site-footer__social-icon {
   width: 18px;
   height: 18px;
   fill: currentColor;
