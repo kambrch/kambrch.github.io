@@ -1842,3 +1842,21 @@ html[data-theme="dark"] pre code.hljs{display:block;overflow-x:auto;padding:1em}
   Based on the Tomorrow Night Eighties theme: https://github.com/isagalaev/highlight.js/blob/master/src/styles/tomorrow-night-eighties.css
 */.hljs{background:#2b2b2b;color:#f8f8f2}html[data-theme="dark"] .hljs-comment,html[data-theme="dark"] .hljs-quote{color:#d4d0ab}html[data-theme="dark"] .hljs-deletion,html[data-theme="dark"] .hljs-name,html[data-theme="dark"] .hljs-regexp,html[data-theme="dark"] .hljs-selector-class,html[data-theme="dark"] .hljs-selector-id,html[data-theme="dark"] .hljs-tag,html[data-theme="dark"] .hljs-template-variable,html[data-theme="dark"] .hljs-variable{color:#ffa07a}html[data-theme="dark"] .hljs-built_in,html[data-theme="dark"] .hljs-link,html[data-theme="dark"] .hljs-literal,html[data-theme="dark"] .hljs-meta,html[data-theme="dark"] .hljs-number,html[data-theme="dark"] .hljs-params,html[data-theme="dark"] .hljs-type{color:#f5ab35}html[data-theme="dark"] .hljs-attribute{color:gold}html[data-theme="dark"] .hljs-addition,html[data-theme="dark"] .hljs-bullet,html[data-theme="dark"] .hljs-string,html[data-theme="dark"] .hljs-symbol{color:#abe338}html[data-theme="dark"] .hljs-section,html[data-theme="dark"] .hljs-title{color:#00e0e0}html[data-theme="dark"] .hljs-keyword,html[data-theme="dark"] .hljs-selector-tag{color:#dcc6e0}html[data-theme="dark"] .hljs-emphasis{font-style:italic}html[data-theme="dark"] .hljs-strong{font-weight:700}@media screen and (-ms-high-contrast:active){html[data-theme="dark"] .hljs-addition,html[data-theme="dark"] .hljs-attribute,html[data-theme="dark"] .hljs-built_in,html[data-theme="dark"] .hljs-bullet,html[data-theme="dark"] .hljs-comment,html[data-theme="dark"] .hljs-link,html[data-theme="dark"] .hljs-literal,html[data-theme="dark"] .hljs-meta,html[data-theme="dark"] .hljs-number,html[data-theme="dark"] .hljs-params,html[data-theme="dark"] .hljs-quote,html[data-theme="dark"] .hljs-string,html[data-theme="dark"] .hljs-symbol,html[data-theme="dark"] .hljs-type{color:highlight}html[data-theme="dark"] .hljs-keyword,html[data-theme="dark"] .hljs-selector-tag{font-weight:700}}
 /* --- END VENDORED HIGHLIGHT.JS THEMES --- */
+
+/* Reclaim the code-block SURFACE from the vendored themes.
+   a11y-light/dark each ship their own `.hljs` background (#fefefe / #2b2b2b).
+   Prefixed, those become `html[data-theme="..."] .hljs` at specificity
+   (0,2,0), which beats the `pre code.hljs` chrome above at (0,1,2) — and they
+   also come later in the file. The result was a cold white slab on the warm
+   paper, instead of the tinted block the design calls for.
+   We keep the vendored TOKEN colours (keywords, strings, comments) and take
+   back only the container surface, at (0,2,2) so it wins cleanly. */
+html[data-theme] pre code.hljs,
+html[data-theme] pre.hljs {
+  background: var(--code-bg);
+  color: var(--code-ink);
+}
+html[data-theme] :not(pre) > code.hljs {
+  background: var(--wash);
+  color: var(--code-ink);
+}
