@@ -37,6 +37,11 @@ ignore = ["node_modules/", ".venv/", "docs/", "scripts/",
           "data/",
           # hidden dirs are copied too: .julia_depot alone is ~87 MB locally
           ".claude/", ".superpowers/", ".julia_depot/",
+          # _css/ held franklin.css and poole_hyde.css, which no template ever
+          # linked; they shipped on every deploy until they were deleted. The
+          # directory is kept only so Franklin's expected layout is intact, so
+          # exclude it rather than let a placeholder leak into the build.
+          "_css/",
           "README.md", "Project.toml", "Manifest.toml", "requirements.txt",
           "package.json", "package-lock.json",
           ".markdownlint.json", ".markdownlint-cli2.yaml", ".gitlab-ci.yml",
