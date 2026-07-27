@@ -109,10 +109,15 @@
   --font-mono: "JetBrains Mono", ui-monospace, SFMono-Regular, monospace;
 }
 
+/* The single place the root element is styled. Keep it that way: every visual
+   defect in this refresh that survived the build assertions was a later rule
+   quietly outranking an earlier one. */
 html {
   font-family: var(--font-body);
   font-size: 18px;
   line-height: 1.65;
+  background: var(--paper);
+  color: var(--ink);
 }
 
 /* Instrument Serif ships no bold. Headings take hierarchy from scale and
@@ -139,11 +144,6 @@ code, pre, time, .compact-rows__key, .dark-zone__year {
 
 .franklin-content {
   max-width: 64ch;
-}
-
-html {
-  background: var(--paper);
-  color: var(--ink);
 }
 
 body {
@@ -481,12 +481,9 @@ body { counter-reset: eqnum; }
     CODE & HIGHLIGHT.JS
 ================================================================== */
 
-code {
-  background-color: var(--block-background);
-  padding: 0.1em 0.2em;
-  border-radius: 2px;
-  font-size: var(--small);
-}
+/* Inline code is styled by `:not(pre) > code` in the syntax-highlighting
+   section, which is more specific and later. The bare `code` rule that used to
+   sit here was entirely overridden and only invited confusion. */
 
 .hljs {
   font-size: var(--small);
