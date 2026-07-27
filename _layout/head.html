@@ -30,6 +30,8 @@
 
   {{if hasmath}} {{insert head_katex.html }}     {{end}}
   {{if hascode}} {{insert head_highlight.html }}   {{end}}
+  <link rel="preload" href="/assets/fonts/source-sans-3-400.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="/assets/fonts/instrument-serif-400.woff2" as="font" type="font/woff2" crossorigin>
   {{insert style.html}}
   {{isdef title}} <title>{{fill title}}</title>  {{end}}
   <!-- Theme bootstrap. Must stay inline and must stay before first paint:

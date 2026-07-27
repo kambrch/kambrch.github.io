@@ -159,6 +159,17 @@ if [[ -n "${inline_colour}" ]]; then
   echo "  -> move to a class in _assets/css/site.css that uses var(--...)" >&2
 fi
 
+# --- 8. Self-hosted fonts must publish --------------------------------------
+# Franklin's ignore list fails open in one direction and silently drops
+# unreferenced directories in the other. A missing woff2 degrades to a system
+# fallback that looks almost right, so this must be asserted, not eyeballed.
+for font in instrument-serif-400 instrument-serif-400-italic \
+            source-sans-3-400 source-sans-3-600; do
+  if [[ ! -f "${site_dir}/assets/fonts/${font}.woff2" ]]; then
+    fail "missing font: assets/fonts/${font}.woff2"
+  fi
+done
+
 if [[ "${status}" -eq 0 ]]; then
   echo "Build verification passed: ${site_dir}"
 fi

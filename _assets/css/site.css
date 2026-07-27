@@ -52,6 +52,73 @@
   }
 }
 
+@font-face {
+  font-family: "Instrument Serif";
+  src: url("/assets/fonts/instrument-serif-400.woff2") format("woff2");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Instrument Serif";
+  src: url("/assets/fonts/instrument-serif-400-italic.woff2") format("woff2");
+  font-weight: 400;
+  font-style: italic;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Source Sans 3";
+  src: url("/assets/fonts/source-sans-3-400.woff2") format("woff2");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Source Sans 3";
+  src: url("/assets/fonts/source-sans-3-600.woff2") format("woff2");
+  font-weight: 600;
+  font-style: normal;
+  font-display: swap;
+}
+
+:root {
+  --font-display: "Instrument Serif", Georgia, serif;
+  --font-body: "Source Sans 3", system-ui, -apple-system, sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, SFMono-Regular, monospace;
+}
+
+html {
+  font-family: var(--font-body);
+  font-size: 18px;
+  line-height: 1.65;
+}
+
+/* Instrument Serif ships no bold. Headings take hierarchy from scale and
+   italic; never set font-weight above 400 on the display face. */
+h1, h2, h3 {
+  font-family: var(--font-display);
+  font-weight: 400;
+  letter-spacing: -0.01em;
+  line-height: 1.1;
+}
+h1 { font-size: 2.6rem; margin: 0 0 0.6rem; }
+h2 { font-size: 1.6rem; margin: 2rem 0 0.7rem; }
+h3 { font-size: 1.25rem; margin: 1.6rem 0 0.5rem; }
+
+/* Anything needing strength at small size uses the body face at 600. */
+h4, h5, h6, th, .accent-card__title, .dark-zone__role {
+  font-family: var(--font-body);
+  font-weight: 600;
+}
+
+code, pre, time, .compact-rows__key, .dark-zone__year {
+  font-family: var(--font-mono);
+}
+
+.franklin-content {
+  max-width: 64ch;
+}
+
 html {
   background: var(--paper);
   color: var(--ink);
@@ -66,7 +133,6 @@ body {
 ================================================================== */
 
 html {
-  font-family: Helvetica, Arial, sans-serif;
   font-size: var(--normal);
   color: var(--text-color);
 }
@@ -134,7 +200,6 @@ html {
 
 .page-foot {
   font-size: 80%;
-  font-family: Arial, serif;
   color: var(--muted);
   text-align: center;
   margin-top: 6em;
@@ -466,7 +531,6 @@ body {
 }
 
 html {
-  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
   font-size: 16px;
   line-height: 1.5;
 }
@@ -650,10 +714,6 @@ tbody tr:nth-child(odd) th {
  * Update the foundational and global aspects of the page.
  */
 
-html {
-  font-family: "PT Sans", Helvetica, Arial, sans-serif;
-}
-
 /*
  * Sidebar
  *
@@ -688,7 +748,6 @@ html {
 .sidebar-about h1 {
   color: var(--paper);
   margin-top: 0;
-  font-family: "Abril Fatface", serif;
   font-size: 3.25rem;
 }
 
