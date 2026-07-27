@@ -76,6 +76,21 @@ if [[ -n "${unresolved}" ]]; then
   echo "  -> the hfun is probably missing from the export block in src/site_utils.jl" >&2
 fi
 
+# --- 5. Theme bootstrap must be inlined in every page -----------------------
+# The theme script must run before first paint. If it is ever moved to an
+# external file or dropped, every page loads in the wrong theme and flashes.
+missing_theme=0
+while IFS= read -r page; do
+  if ! grep -q '__toggleTheme' "${page}"; then
+    missing_theme=$((missing_theme + 1))
+  fi
+done < <(find "${site_dir}" -name '*.html' -print)
+
+if [[ "${missing_theme}" -gt 0 ]]; then
+  fail "${missing_theme} page(s) lack the inline theme bootstrap"
+  echo "  -> the script belongs in _layout/head.html, inlined, before first paint" >&2
+fi
+
 if [[ "${status}" -eq 0 ]]; then
   echo "Build verification passed: ${site_dir}"
 fi

@@ -32,6 +32,40 @@
   {{if hascode}} {{insert head_highlight.html }}   {{end}}
   {{insert style.html}}
   {{isdef title}} <title>{{fill title}}</title>  {{end}}
+  <!-- Theme bootstrap. Must stay inline and must stay before first paint:
+       an external file would load too late and every page would flash the
+       wrong theme. Reads an explicit choice, else defers to the OS. -->
+  <script>
+    (function () {
+      var root = document.documentElement;
+      var saved = null;
+      try {
+        saved = localStorage.getItem("theme");
+      } catch (e) {
+        /* localStorage unavailable (private mode); fall back to OS preference. */
+      }
+      // Always resolve to an explicit value. Leaving the attribute unset means
+      // the first toggle click reads the OS, computes the value already on
+      // screen, and appears to do nothing — the reader has to click twice.
+      // An explicit attribute also lets the prefixed highlight.js themes in
+      // site.css match on the very first paint.
+      if (saved !== "light" && saved !== "dark") {
+        saved = window.matchMedia("(prefers-color-scheme: dark)").matches
+          ? "dark"
+          : "light";
+      }
+      root.setAttribute("data-theme", saved);
+      window.__toggleTheme = function () {
+        var next = root.getAttribute("data-theme") === "dark" ? "light" : "dark";
+        root.setAttribute("data-theme", next);
+        try {
+          localStorage.setItem("theme", next);
+        } catch (e) {
+          /* Not persistable; the choice still applies for this page load. */
+        }
+      };
+    })();
+  </script>
   <!-- Built in Julia rather than inline: Franklin does not expand {{...}}
        inside <script> tags, so an inline block ships literal placeholders. -->
   {{schema_jsonld}}

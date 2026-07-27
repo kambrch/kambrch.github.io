@@ -3,11 +3,62 @@
 ================================================================== */
 
 :root {
-  --block-background: hsl(0, 0%, 94%);
-  --output-background: hsl(0, 0%, 98%);
+  --paper: #faf6ef;
+  --wash: #efe8db;
+  --line: #ddd3c2;
+  --ink: #22201d;
+  --muted: #6b6157;
+  --accent: #c8873c;
+  --surface-raised: #22201d;
+  --surface-raised-2: #2e2b26;
+  --code-bg: #f2ebdd;
+  --code-ink: #3a352e;
+
+  /* Retained for compatibility with rules not yet migrated (Task 2). */
+  --block-background: var(--wash);
+  --output-background: var(--paper);
+  --text-color: var(--ink);
   --small: 14px;
   --normal: 19px;
-  --text-color: hsl(0, 0%, 20%);
+}
+
+:root[data-theme="dark"] {
+  --paper: #1a1714;
+  --wash: #241f1a;
+  --line: #3a332b;
+  --ink: #f2ebdf;
+  --muted: #a1968a;
+  --accent: #e0a252;
+  --surface-raised: #100e0c;
+  --surface-raised-2: #1c1916;
+  --code-bg: #100e0c;
+  --code-ink: #ddd3c2;
+}
+
+/* OS preference applies only when the reader has not chosen explicitly.
+   :not([data-theme="light"]) lets an explicit light choice win over a dark OS. */
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --paper: #1a1714;
+    --wash: #241f1a;
+    --line: #3a332b;
+    --ink: #f2ebdf;
+    --muted: #a1968a;
+    --accent: #e0a252;
+    --surface-raised: #100e0c;
+    --surface-raised-2: #1c1916;
+    --code-bg: #100e0c;
+    --code-ink: #ddd3c2;
+  }
+}
+
+html {
+  background: var(--paper);
+  color: var(--ink);
+}
+
+body {
+  background: var(--paper);
 }
 
 /* ==================================================================
