@@ -1478,6 +1478,15 @@ h3:hover .cv-anchor {
   color: var(--accent);
   font-size: 0.85rem;
 }
+.dark-zone__cta {
+  color: #ffffff;
+  font-weight: 700;
+  font-size: 1rem;
+  text-decoration: none;
+}
+.dark-zone__cta:hover {
+  color: var(--accent);
+}
 .accent-card__doi {
   font-size: 0.8rem;
   color: var(--accent);

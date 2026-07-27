@@ -11,7 +11,7 @@
 <div style="margin-bottom:0.4rem;margin-top:1.5rem;" class="compact-rows__heading">Quick facts</div>
 <div class="compact-rows__grid" style="margin-bottom:1.5rem;">
   <span class="compact-rows__key">Owner</span><span class="compact-rows__val">Kamil Bruchal (Kamsoft)</span>
-  <span class="compact-rows__key">Email</span><span class="compact-rows__val"><a class="dark-zone__label" href="mailto:kamsoft@kambr.pl">kamsoft@kambr.pl</a></span>
+  <span class="compact-rows__key">Email</span><span class="compact-rows__val"><a href="mailto:kamsoft@kambr.pl">kamsoft@kambr.pl</a></span>
   <span class="compact-rows__key">NIP</span><span class="compact-rows__val">8993048156</span>
   <span class="compact-rows__key">REGON</span><span class="compact-rows__val">543855110</span>
 </div>
@@ -44,6 +44,6 @@
 
 <div class="dark-zone" style="margin-top:1.5rem;text-align:center;">
   <div class="dark-zone__body" style="margin-bottom:0.5rem;">If your data, models, or compute setup is becoming a bottleneck</div>
-  <a class="dark-zone__name" href="mailto:kamsoft@kambr.pl" style="font-size:1rem;">kamsoft@kambr.pl</a>
+  <a class="dark-zone__cta" href="mailto:kamsoft@kambr.pl">kamsoft@kambr.pl</a>
 </div>
 ~~~
