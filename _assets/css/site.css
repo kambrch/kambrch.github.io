@@ -142,8 +142,13 @@ code, pre, time, .compact-rows__key, .dark-zone__year {
   font-family: var(--font-mono);
 }
 
+/* Reading measure. This was 64ch, which sounds like ~64 characters but is
+   not: ch is the advance of "0", 0.497em in Source Sans 3, so 64ch at 18px is
+   573px, and the universal border-box sizing then took the 1.5rem side
+   paddings out of that, leaving a 519px column on a 1440px viewport. Set in
+   rem so the padding no longer erodes it. 40rem = 720px box, 666px of text. */
 .franklin-content {
-  max-width: 64ch;
+  max-width: 40rem;
 }
 
 body {
