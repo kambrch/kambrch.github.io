@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<rss version="2.0"
+  xmlns:content="http://purl.org/rss/1.0/modules/content/"
+  xmlns:dc="http://purl.org/dc/elements/1.1/"
+  xmlns:media="http://search.yahoo.com/mrss/"
+  xmlns:atom="http://www.w3.org/2005/Atom"
+  xmlns:georss="http://www.georss.org/georss">
+
+  <channel>
+    <title>
+      <![CDATA[  Kamash Site  ]]>
+    </title>
+    <link> https://www.kambr.pl/ </link>
+    <description>
+      
+      <![CDATA[  Physicist, Julia developer, and hardware hacker based in Wrocław.  ]]>
+      
+    </description>
+    <atom:link
+      href="https://www.kambr.pl/feed.xml"
+      rel="self"
+      type="application/rss+xml" />
+
+
+<item>
+  <title>
+    <![CDATA[  sgrep — semantic-aware grep  ]]>
+  </title>
+  
+  <link> https://www.kambr.pl/blog/2026-04-05-sgrep-idea/ </link>
+  <guid> https://www.kambr.pl/blog/2026-04-05-sgrep-idea/ </guid>
+  <description>
+    <![CDATA[  Notes on sgrep — a local semantic search tool that stays grep-shaped: one binary, no daemon, composable output.  ]]>
+  </description>  
+    
+  <pubDate>Sun, 05 Apr 2026 00:00:00 +0000</pubDate>  
+  
+  
+  <atom:author>
+    <atom:name>Kamil 'Kamash' Bruchal</atom:name>
+  </atom:author>
+        
+</item>
+</channel></rss>
