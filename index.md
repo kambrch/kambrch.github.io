@@ -4,27 +4,32 @@
 ~~~
 <section class="hero">
   <p class="hero__kicker">Wrocław, Poland</p>
-  <h1 class="hero__title">Physicist.<br><span class="hero__accent">Julia developer.</span></h1>
-  <p class="hero__lede">PhD researcher in optical refrigeration of rare-earth microcrystals — and the person who writes the code that makes sense of the data. Amateur chemist, hacker, SP6WRN.</p>
-  <div class="hero__chips">
-    <span class="hero__chip">Physics</span>
-    <span class="hero__chip">Julia</span>
-    <span class="hero__chip">Hardware</span>
+  <h1 class="hero__title">Physicist. <span class="hero__accent">Julia developer.</span></h1>
+  <div class="hero__band">
+    <dl class="hero__facts">
+      <dt>Also known as</dt>
+      <dd>Kamaś · Kambr</dd>
+      <dt>Doing</dt>
+      <dd>Physicist · Julia developer · Amateur chemist · Hacker</dd>
+      <dt>Call sign</dt>
+      <dd>SP6WRN</dd>
+      <dt>Mail</dt>
+      <dd><a href="mailto:kambr@kambr.pl">kambr@kambr.pl</a></dd>
+    </dl>
+    <div class="hero__intro">
+      <p class="hero__lede">PhD researcher in optical refrigeration of rare-earth microcrystals — and the person who writes the code that makes sense of the data. Amateur chemist, hacker. When not in the lab or in the REPL, usually at Hackerspace Wrocław or on the air as SP6WRN.</p>
+      <div class="hero__chips">
+        <span class="hero__chip">Physics</span>
+        <span class="hero__chip">Julia</span>
+        <span class="hero__chip">Hardware</span>
+      </div>
+    </div>
   </div>
 </section>
 
-<div class="dark-zone dark-zone--secondary" style="margin-top:1rem;">
-  <span class="dark-zone__label">About</span>
-  <div class="dark-zone__name">Kamil Bruchal <span class="dark-zone__alias">· Kamaś · Kambr</span></div>
-  <div class="dark-zone__tagline">Physicist · Julia developer · Amateur chemist · Hacker · Based in Wrocław, Poland</div>
-  <div class="dark-zone__body">PhD researcher in optical refrigeration of rare-earth microcrystals. When not in the lab or in the REPL, usually at Hackerspace or on the air as SP6WRN.</div>
-  <div style="margin-top:0.9rem;">
-    <a class="dark-zone__link" href="mailto:kambr@kambr.pl">kambr@kambr.pl</a>
-  </div>
-</div>
-
 <div style="margin-bottom:0.4rem;margin-top:1.5rem;" class="compact-rows__heading">Around the web</div>
 
+<div class="accent-grid">
 <a class="accent-card" href="https://github.com/kambrch">
   <div class="accent-card__title">GitHub</div>
   <div class="accent-card__meta">kambrch — code and projects</div>
@@ -49,6 +54,7 @@
   <div class="accent-card__title">Amateur radio — SP6WRN</div>
   <div class="accent-card__meta">qrz.com/db/SP6WRN</div>
 </a>
+</div>
 
 <div class="compact-rows" style="margin-top:1.5rem;">
   <div class="compact-rows__heading">Interests</div>
