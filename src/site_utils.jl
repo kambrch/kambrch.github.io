@@ -22,7 +22,9 @@ export blog_posts,
   hfun_cv_employment,
   hfun_cv_education,
   hfun_cv_conferences,
-  hfun_cv_anchor
+  hfun_cv_anchor,
+  hfun_home_latest_post,
+  hfun_home_latest_paper
 
 const BlogPostTuple = NamedTuple{
   (
@@ -1409,6 +1411,32 @@ function hfun_cv_anchor(args)
     "aria-label=\"Link to $(html_escape(title)) section\">#</a>",
   )
   return String(take!(write_buffer))
+end
+
+# Home page: one line for the newest post, one for the newest paper. Both are
+# generated so the home page cannot drift out of date without the source
+# (blog/ and data/cv_data.jl) drifting with it.
+function hfun_home_latest_post(_=nothing)
+  posts = blog_posts(ascending = false)
+  isempty(posts) && return "<p>No posts yet.</p>"
+  post = posts[1]
+  date_iso = Dates.format(post.date, "yyyy-mm-dd")
+  return "<p class=\"home-line\"><a href=\"$(html_escape(post.url))\">$(html_escape(post.title))</a>" *
+    " <time datetime=\"$date_iso\">$(html_escape(long_date_label(post.date)))</time></p>"
+end
+
+function hfun_home_latest_paper(_=nothing)
+  isempty(CV_PUBLICATIONS) && return "<p>No publications listed yet.</p>"
+  pub = first(sort(CV_PUBLICATIONS, by = p -> getfield_safe(p, :year, 0), rev = true))
+  title = html_escape(getfield_safe(pub, :title, "Untitled Publication"))
+  doi = getfield_safe(pub, :doi, "")
+  venue = html_escape(getfield_safe(pub, :venue, ""))
+  year = getfield_safe(pub, :year, "")
+  head = isempty(doi) ? title : "<a href=\"$(html_escape(doi))\">$title</a>"
+  # Venue strings often already name the year ("... Conference 2025").
+  year_str = occursin(string(year), venue) ? "" : string(year)
+  tail = join(filter(!isempty, [venue, year_str]), ", ")
+  return "<p class=\"home-line\">$head. $tail.</p>"
 end
 
 end # module SiteUtils

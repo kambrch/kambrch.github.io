@@ -1459,59 +1459,22 @@ h3:hover .cv-anchor {
 ================================================================== */
 
 /* The hero sits directly on the page, not on a raised slab, so it uses the
-   inverting tokens (--ink/--muted/--accent) and flips with the theme. */
+   inverting tokens (--ink/--muted) and flips with the theme. The home page
+   stays inside the 40rem reading measure like every other page: it is one
+   column of text, and the measure is what keeps the bio at ~65 characters. */
 .hero {
   margin-bottom: 2.5rem;
-}
-/* The home page is the one page that is not prose: let it out of the 40rem
-   reading measure and up to the header's 68rem so the title lines up with the
-   brand. Keyed on the hero so no other page is affected. */
-.franklin-content:has(.hero) {
-  max-width: none;
-}
-.hero__kicker {
-  font-size: 0.6rem;
-  text-transform: uppercase;
-  letter-spacing: 0.18em;
-  color: var(--muted);
-  margin: 0 0 1rem;
 }
 /* Scoped under .franklin-content to outrank the `.franklin-content h1` rule
    above, which would otherwise add its own top margin, padding and border. */
 .franklin-content .hero__title {
   font-family: var(--font-display);
   font-weight: 400;
-  font-size: clamp(2.4rem, 7vw, 5.5rem);
-  line-height: 1.02;
+  font-size: clamp(2rem, 4vw, 2.8rem);
+  line-height: 1.1;
   padding: 0;
   border: 0;
-  margin: 0 0 1.8rem;
-  color: var(--ink);
-}
-.hero__accent { color: var(--accent); }
-.hero__band {
-  display: grid;
-  grid-template-columns: minmax(14rem, 18rem) 1fr;
-  gap: 1rem 3.5rem;
-  align-items: start;
-  border-top: 1px solid var(--line);
-  padding-top: 1.6rem;
-}
-.hero__facts {
-  margin: 0;
-  font-size: 0.85rem;
-  line-height: 1.5;
-}
-.hero__facts dt {
-  font-size: 0.6rem;
-  text-transform: uppercase;
-  letter-spacing: 0.18em;
-  color: var(--muted);
-  margin: 0.9rem 0 0.1rem;
-}
-.hero__facts dt:first-child { margin-top: 0; }
-.hero__facts dd {
-  margin: 0;
+  margin: 0 0 1.2rem;
   color: var(--ink);
 }
 .hero__lede {
@@ -1519,25 +1482,14 @@ h3:hover .cv-anchor {
   line-height: 1.6;
   color: var(--ink);
   margin: 0;
-  column-count: 2;
-  column-gap: 2.5rem;
 }
-.hero__chips {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.4rem;
-  margin-top: 1.2rem;
+.home-line {
+  margin: 0;
 }
-.hero__chip {
-  font-size: 0.7rem;
-  padding: 0.2rem 0.65rem;
-  border-radius: 999px;
-  border: 1px solid var(--line);
+.home-line time {
   color: var(--muted);
-}
-@media (max-width: 768px) {
-  .hero__band { grid-template-columns: 1fr; }
-  .hero__lede { column-count: 1; }
+  font-size: 0.85rem;
+  margin-left: 0.5rem;
 }
 
 /* ==================================================================
